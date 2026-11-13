@@ -132,12 +132,13 @@ function stats(rs){
   out.fwr = avg(fs.map(r => r.f.v / (r.f.v + r.f.d)));
   out.fv = avg(fs.map(r => r.f.v)); out.fd = avg(fs.map(r => r.f.d));
   out.f = avg(rs.filter(r => r.f.p !== undefined).map(r => r.f.p));
-  out.osl = avg(rs.filter(r => ['o','s','l'].every(d => r[d].p !== undefined)).map(r => r.o.p + r.s.p + r.l.p));
   for (const d of ['o','s','l']){
     const ok = rs.filter(r => r[d].p !== undefined);
-    out[d] = avg(ok.map(r => r[d].p));
     out[d + 't'] = avg(ok.map(r => toSec(r[d].t)));
+    // points of the average time, using the same formula as your own time, so the two always match
+    out[d] = out[d + 't'] === null ? null : POINTS[d](out[d + 't']);
   }
+  out.osl = (out.o !== null && out.s !== null && out.l !== null) ? out.o + out.s + out.l : null;
   out.t = avg(rs.filter(r => ['f','o','s','l'].every(d => r[d].p !== undefined)).map(r => r.tot));
   return out;
 }
@@ -191,16 +192,16 @@ function update(){
     yourTotal += pts; filled++;
     el.innerHTML = bar(pct) + verdict(pct, 'time') + '<br><span class="muted">'
       + t(sec <= avgT ? 'f.aheadT' : 'f.needT', {s: num(Math.abs(sec - avgT), 2)}) + ' '
-      + t('f.youScore', {n: pts, a: num(S[d])}) + '</span>';
+      + t('f.youScore', {n: pts, a: S[d]}) + '</span>';
   }
   const tc = $('totalCard');
   let h = '<span class="k">' + t('f.three') + '</span>';
   if (filled === 3){
     const pct = (yourTotal - S.osl) / S.osl * 100;
-    h += '<div class="big">' + yourTotal + '<small>' + t('f.avg') + ': ' + num(S.osl) + '</small></div><div class="res">' + verdict(pct, 'pts') + '<br><span class="muted">'
-      + t(yourTotal >= S.osl ? 'f.aheadP' : 'f.needP', {s: num(Math.abs(S.osl - yourTotal))}) + '</span></div>';
+    h += '<div class="big">' + yourTotal + '<small>' + t('f.avg') + ': ' + S.osl + '</small></div><div class="res">' + verdict(pct, 'pts') + '<br><span class="muted">'
+      + t(yourTotal >= S.osl ? 'f.aheadP' : 'f.needP', {s: num(Math.abs(S.osl - yourTotal), 0)}) + '</span></div>';
   } else {
-    h += '<div class="big">–<small>' + t('f.avg') + ': ' + num(S.osl) + '</small></div><div class="res"><span class="muted">' + t('f.threeHint') + '</span></div>';
+    h += '<div class="big">–<small>' + t('f.avg') + ': ' + S.osl + '</small></div><div class="res"><span class="muted">' + t('f.threeHint') + '</span></div>';
   }
   tc.innerHTML = h;
 }
@@ -221,12 +222,12 @@ function render(){
   $('basis').textContent = t('f.basis', {n: rs.length, list: evs.map(evShort).join(', ')});
   $('cards').innerHTML = ['f','o','s','l'].map(cardHTML).join('');
   $('avg-f').innerHTML = num(S.fwr * 100) + '%<small>' + t('f.wr') + ' · ' + t('f.fSeed', {v: num(S.fv), d: num(S.fd)}) + '</small>';
-  for (const d of ['o','s','l']) $('avg-' + d).innerHTML = fmtTime(S[d + 't']) + '<small>' + num(S[d]) + ' ' + t('points').toLowerCase() + '</small>';
+  for (const d of ['o','s','l']) $('avg-' + d).innerHTML = fmtTime(S[d + 't']) + '<small>' + S[d] + ' ' + t('points').toLowerCase() + '</small>';
   ['fv','fd','o','s','l'].forEach(d => $('in-' + d).addEventListener('input', update));
   // by competition
   $('ch').innerHTML = '<tr><th>' + t('b.comp') + '</th>' + ['f','o','s','l'].map(d => '<th>' + t('d.' + d) + '</th>').join('') + '<th>' + t('total') + '</th></tr>';
   const row = (name, s, cls) => '<tr class="' + (cls || '') + '"><td>' + esc(name) + '</td><td>' + num(s.fwr * 100) + '%<span>' + t('f.wr') + '</span></td>'
-    + ['o','s','l'].map(d => '<td>' + num(s[d]) + '<span>' + fmtTime(s[d + 't']) + '</span></td>').join('') + '<td>' + num(s.t) + '</td></tr>';
+    + ['o','s','l'].map(d => '<td>' + s[d] + '<span>' + fmtTime(s[d + 't']) + '</span></td>').join('') + '<td>' + num(s.t) + '</td></tr>';
   $('cb').innerHTML = evs.map(e => row(evShort(e), stats(finals(e.id)))).join('') + row(t('f.all'), S, 'all');
   update();
 }
