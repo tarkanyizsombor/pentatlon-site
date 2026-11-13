@@ -67,6 +67,29 @@ a{color:inherit}
   .pcard{scroll-snap-align:start}
 }
 
+/* effects */
+.hero .spot{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%),rgba(255,255,255,.16),transparent 60%)}
+.hero:hover .spot{opacity:1}
+.hero h1 .shine{background:linear-gradient(100deg,#fff 0%,#fff 40%,#bfe3ff 50%,#fff 60%,#fff 100%);background-size:250% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent}
+.pcard{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,background-color .35s}
+@media (prefers-reduced-motion:no-preference){
+  @keyframes drift1{50%{transform:translate(6%,8%) scale(1.08)}}
+  @keyframes drift2{50%{transform:translate(-7%,-6%) scale(1.1)}}
+  @keyframes bob{50%{transform:translateY(-7px)}}
+  @keyframes shine{0%,55%{background-position:100% 0}100%{background-position:-50% 0}}
+  @keyframes cardin{from{opacity:0;transform:translateY(26px) scale(.96)}}
+  .hero .g1{animation:drift1 14s ease-in-out infinite}
+  .hero .g2{animation:drift2 17s ease-in-out infinite}
+  .hero h1 .shine{animation:shine 6s ease-in-out 1s infinite}
+  .pcard{animation:cardin .7s cubic-bezier(.2,.7,.2,1) both}
+  .pcard .art{animation:bob 4.2s ease-in-out infinite}
+  .pcard:nth-child(1){animation-delay:.10s}.pcard:nth-child(2){animation-delay:.18s}.pcard:nth-child(3){animation-delay:.26s}.pcard:nth-child(4){animation-delay:.34s}.pcard:nth-child(5){animation-delay:.42s}
+  .pcard:nth-child(2) .art{animation-delay:-.8s}.pcard:nth-child(3) .art{animation-delay:-1.6s}.pcard:nth-child(4) .art{animation-delay:-2.4s}.pcard:nth-child(5) .art{animation-delay:-3.2s}
+  .pcard:hover{transform:translateY(-8px) rotate(-1.5deg);box-shadow:0 22px 44px rgba(8,20,80,.35),inset 0 1px 0 rgba(255,255,255,.45);background-color:rgba(255,255,255,.08)}
+  .pcard:nth-child(even):hover{transform:translateY(-8px) rotate(1.5deg)}
+  .nextbar b{display:inline-block;min-width:2ch}
+}
+
 .nextbar{display:flex;align-items:center;gap:12px;margin:-14px 0 28px;padding:14px 18px;border-radius:16px;background:var(--soft);border:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:600}
 .nextbar:hover{border-color:var(--accent)}
 .nextbar b{color:var(--accent);font-size:1.25rem;font-variant-numeric:tabular-nums}
@@ -98,7 +121,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
   <nav id="nav"></nav>
 
   <header class="hero">
-    <div class="g1"></div><div class="g2"></div><div class="dots"></div>
+    <div class="g1"></div><div class="g2"></div><div class="dots"></div><div class="spot"></div>
     <div class="top">
       <div class="brand"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="Hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563eb"/><stop offset=".55" stop-color="#1d4ed8"/><stop offset="1" stop-color="#172f8f"/></linearGradient>
 <radialGradient id="Hglow" cx=".22" cy=".18" r=".75"><stop offset="0" stop-color="#93c5fd" stop-opacity=".75"/><stop offset=".45" stop-color="#60a5fa" stop-opacity=".18"/><stop offset="1" stop-color="#60a5fa" stop-opacity="0"/></radialGradient>
@@ -106,7 +129,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
 <linearGradient id="Hshine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient><clipPath id="Hc"><rect width="512" height="512" rx="112"/></clipPath></defs><g clip-path="url(#Hc)"><rect width="512" height="512" fill="url(#Hbg)"/><rect width="512" height="512" fill="url(#Hglow)"/><rect width="512" height="512" fill="url(#Hglow2)"/><rect width="512" height="256" fill="url(#Hshine)"/><path d="M43.95195312499999 357.85546875H99.73320312499999V279.10546875C99.73320312499999 265.98046875 98.63945312499999 239.8671875 97.95585937499999 214.7109375C104.51835937499999 239.59375 111.35429687499999 265.296875 115.59257812499999 279.10546875L139.655078125 357.85546875H185.592578125L209.244921875 279.10546875C213.483203125 264.75 220.592578125 237.81640625 227.018359375 212.25C226.471484375 238.08984375 225.241015625 265.43359375 225.241015625 279.10546875V357.85546875H281.022265625V154.14453125H195.846484375L177.799609375 217.85546875C173.834765625 231.6640625 167.819140625 255.31640625 162.623828125 276.234375C157.428515625 255.31640625 151.276171875 231.6640625 147.311328125 217.85546875L128.991015625 154.14453125H43.95195312499999ZM308.497265625 357.85546875H365.372265625V296.33203125H395.040234375C443.712109375 296.33203125 474.200390625 268.8515625 474.200390625 225.23828125C474.200390625 181.625 443.712109375 154.14453125 395.040234375 154.14453125H308.497265625ZM365.372265625 249.57421875V200.90234375H390.801953125C407.891796875 200.90234375 418.692578125 210.3359375 418.692578125 225.23828125C418.692578125 240.140625 407.891796875 249.57421875 390.801953125 249.57421875Z" fill="#fff"/></g></svg><span>ottusaeredmenyek.com</span></div>
       <p class="by" data-i18n="home.by"></p>
     </div>
-    <h1>Modern Pentathlon</h1>
+    <h1><span class="shine">Modern Pentathlon</span></h1>
     <p class="tag" data-i18n="home.tag"></p>
     <div class="row">
       <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
@@ -291,8 +314,15 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
     const name = SITE.lang === 'hu' && e.name_hu ? e.name_hu : e.name;
     bar.innerHTML = '<b>' + (startMs(e) <= now ? '●' : n) + '</b><span><span class="lbl">' + SITE.t('nx.next') + '</span>' + name + ' · ' + (startMs(e) <= now ? SITE.t('nx.now') : (n === 1 ? SITE.t('nx.tomorrow') : SITE.t('nx.inDays', {n}))) + '</span><span class="go2">' + SITE.t('nx.title') + ' →</span>';
     bar.hidden = false;
+    if (!drawn && startMs(e) > now && SITE.countUp) SITE.countUp(bar.querySelector('b'), n, 1100);
+    drawn = true;
   }
+  let drawn = false;
   SITE.onLang(draw); draw();
+})();
+(function(){
+  const h = document.querySelector('.hero'); if (!h || !matchMedia('(pointer:fine)').matches) return;
+  h.addEventListener('pointermove', e => { const r = h.getBoundingClientRect(); h.style.setProperty('--mx', (e.clientX - r.left) + 'px'); h.style.setProperty('--my', (e.clientY - r.top) + 'px'); });
 })();
 </script>
 </div>

@@ -63,6 +63,16 @@ h2{font-size:1.05rem;margin:28px 0 10px}
 .card p:last-child{margin:0}
 .card a{color:var(--accent)}
 .muted{color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){
+  @keyframes drift1{50%{transform:translate(6%,8%) scale(1.08)}}
+  @keyframes drift2{50%{transform:translate(-7%,-6%) scale(1.1)}}
+  @keyframes pulse{50%{opacity:.45}}
+  @keyframes tickin{from{transform:translateY(-35%);opacity:.2}}
+  .hero .g1{animation:drift1 14s ease-in-out infinite}.hero .g2{animation:drift2 17s ease-in-out infinite}
+  .now{animation:pulse 1.6s ease-in-out infinite}
+  .count b.tk{animation:tickin .35s cubic-bezier(.2,.7,.2,1)}
+  .count div{transition:transform .25s,background-color .25s}.count div:hover{transform:translateY(-3px);background:rgba(255,255,255,.2)}
+}
 @media (max-width:640px){.wrap{padding:12px 12px 40px}.hero{padding:22px 18px;border-radius:20px}.count{gap:8px}.count div{padding:10px 4px;border-radius:14px}.ev{flex-wrap:wrap;gap:4px 12px}.ev .date{min-width:0;width:100%}}
 </style>
 </head>
@@ -112,7 +122,7 @@ function ics(e){
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 
-let current = null, timer = null;
+let current = null, timer = null, introDone = false;
 function pickCurrent(){ const now = Date.now(); return dated().find(e => endMs(e) >= now) || null; }
 
 function tick(){
@@ -124,7 +134,9 @@ function tick(){
   }
   const s = Math.floor(ms / 1000);
   const parts = [Math.floor(s / 86400), Math.floor(s % 86400 / 3600), Math.floor(s % 3600 / 60), s % 60];
-  box.querySelectorAll('b').forEach((b, i) => b.textContent = i ? String(parts[i]).padStart(2, '0') : parts[i]);
+  if (box.dataset.intro) return;
+  box.querySelectorAll('b').forEach((b, i) => { const v = i ? String(parts[i]).padStart(2, '0') : String(parts[i]);
+    if (b.textContent !== v){ const first = b.textContent === '–'; b.textContent = v; if (!first){ b.classList.remove('tk'); void b.offsetWidth; b.classList.add('tk'); } } });
 }
 
 function render(){
@@ -137,6 +149,8 @@ function render(){
     + '<button class="ics" id="icsBtn" type="button">📅 ' + t('nx.ics') + '</button>';
   if (current) $('icsBtn').addEventListener('click', () => ics(current));
   tick(); clearInterval(timer); timer = setInterval(tick, 1000);
+  const cd = $('cd'), dB = cd && cd.querySelector('b');
+  if (dB && !introDone && SITE.countUp && !SITE.calm()){ introDone = true; const v = +dB.textContent; cd.dataset.intro = '1'; SITE.countUp(dB, v, 1000); setTimeout(() => { delete cd.dataset.intro; }, 1050); }
 
   const now = Date.now();
   const rest = dated().filter(e => e !== current && endMs(e) >= now);

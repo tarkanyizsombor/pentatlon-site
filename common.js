@@ -349,11 +349,57 @@
       const on = id === here;
       return '<a href="' + href + '"' + (on ? ' class="on" aria-current="page"' : '') + ' data-i18n="' + key + '"></a>';
     }).join('') + '</div><div class="tools"><button class="theme" type="button" aria-pressed="false"></button><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="hu">HU</button></div></div>';
-    el.querySelector('.theme').addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
+    el.querySelector('.theme').addEventListener('click', e => switchTheme(e.currentTarget));
     paintThemeButton();
     const cur = el.querySelector('.links a.on');
     if (cur) requestAnimationFrame(() => { const L = el.querySelector('.links'); L.scrollLeft = Math.max(0, cur.offsetLeft - L.offsetLeft - 40); });
     el.querySelector('.lang').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setLang(b.dataset.l); });
+  }
+
+  // ---------- effects ----------
+  const calm = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // first visit (coming from Google, Instagram, a typed address…): gentle fade-in of the page
+  try { if (!document.referrer || new URL(document.referrer).origin !== location.origin) document.documentElement.classList.add('fx-first'); } catch(e){}
+
+  function switchTheme(btn){
+    const next = theme === 'dark' ? 'light' : 'dark', root = document.documentElement;
+    if (calm()) { setTheme(next); return; }
+    if (!document.startViewTransition){
+      root.classList.add('fx-fade'); setTheme(next); setTimeout(() => root.classList.remove('fx-fade'), 450); return;
+    }
+    const r = btn.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.classList.add('fx-theme');
+    const vt = document.startViewTransition(() => setTheme(next));
+    vt.ready.then(() => root.animate({clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + end + 'px at ' + x + 'px ' + y + 'px)']},
+      {duration: 550, easing: 'cubic-bezier(.4,0,.2,1)', pseudoElement: '::view-transition-new(root)'})).catch(() => {});
+    vt.finished.finally(() => root.classList.remove('fx-theme'));
+  }
+
+  // numbers that count up when they appear: <b data-count="124">124</b>
+  function countUp(el, to, ms){
+    to = +to; if (!isFinite(to) || calm()) { el.textContent = to; return; }
+    const t0 = performance.now(), dur = ms || 900;
+    (function step(now){ const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(to * e); if (k < 1) requestAnimationFrame(step); })(t0);
+  }
+
+  // blocks further down the page float up as they scroll into view
+  const REVEAL = '.card,.tbl,.ev,.go>a,.disc>div,.contact>a,.tile,.wrap>h2,.wrap>section>h3,.chart';
+  function reveal(){
+    if (calm() || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver(list => {
+      let i = 0;
+      list.forEach(en => { if (!en.isIntersecting) return;
+        en.target.style.setProperty('--fxd', Math.min(i++, 5) * 70 + 'ms');
+        en.target.classList.add('fx-in'); io.unobserve(en.target);
+        setTimeout(() => { en.target.removeAttribute('data-fx'); en.target.classList.remove('fx-in'); en.target.style.removeProperty('--fxd'); }, 1200);
+      });
+    }, {rootMargin: '0px 0px -8% 0px'});
+    // only things that start below the screen are hidden, so nothing ever flickers at the top
+    document.querySelectorAll(REVEAL).forEach(el => {
+      if (el.getBoundingClientRect().top > innerHeight * 0.92) { el.setAttribute('data-fx', ''); io.observe(el); }
+    });
   }
 
   const css = document.createElement('style');
@@ -366,6 +412,29 @@
     + ':root[data-theme="dark"] .total .k,:root[data-theme="dark"] .total .big small,:root[data-theme="dark"] .total .muted,:root[data-theme="dark"] .total small{color:rgba(4,18,31,.72)}'
     + ':root[data-theme="dark"] .total .big,:root[data-theme="dark"] .total .res .pct,:root[data-theme="dark"] .total b{color:var(--ink)}'
     + ':root[data-theme="dark"] .card,:root[data-theme="dark"] .tbl,:root[data-theme="dark"] .go a{box-shadow:none}'
+    // ---------- effects (all switched off when the visitor's device asks for reduced motion) ----------
+    + '@view-transition{navigation:auto}'
+    + '#nav{view-transition-name:sitenav}'
+    + '@keyframes fxfade{from{opacity:0}}@keyframes fxrise{from{opacity:0;transform:translateY(14px)}}@keyframes fxsink{to{opacity:0;transform:translateY(-6px)}}'
+    + '@media (prefers-reduced-motion:no-preference){'
+    +   '::view-transition-old(root){animation:fxsink .18s ease-in both}'
+    +   '::view-transition-new(root){animation:fxrise .38s cubic-bezier(.2,.7,.2,1) .05s both}'
+    +   'html.fx-first body{animation:fxfade .45s ease-out both}'
+    +   '[data-fx]{transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:var(--fxd,0s)}'
+    +   '[data-fx]:not(.fx-in){opacity:0;transform:translateY(22px)}'
+    +   '.go a,.nextbar,.contact a,.ev,.tile,.disc>div{transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .2s,background-color .2s}'
+    +   '.go a:hover,.nextbar:hover,.contact a:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(29,78,216,.16)}'
+    +   '.ev:hover,.tile:hover,.disc>div:hover{transform:translateY(-2px);border-color:var(--accent)}'
+    +   ':root[data-theme="dark"] .go a:hover,:root[data-theme="dark"] .nextbar:hover,:root[data-theme="dark"] .contact a:hover{box-shadow:0 0 0 1px var(--accent),0 12px 34px rgba(124,200,255,.16)}'
+    +   'button,.seg button,#nav .links a{transition:transform .12s,background-color .2s,color .2s,border-color .2s}'
+    +   'button:active:not(:disabled){transform:scale(.95)}'
+    +   'tbody tr{transition:background-color .15s}'
+    +   '#nav .theme svg{transition:transform .5s cubic-bezier(.2,.7,.2,1)}#nav .theme:hover svg{transform:rotate(25deg)}'
+    + '}'
+    + '#nav .links a:not(.on):hover{background:var(--soft)}'
+    + 'html.fx-theme ::view-transition-old(root),html.fx-theme ::view-transition-new(root){animation:none;mix-blend-mode:normal}'
+    + 'html.fx-theme #nav{view-transition-name:none}'
+    + 'html.fx-fade,html.fx-fade *{transition:background-color .4s,color .4s,border-color .4s,fill .4s !important}'
     + '#nav .tools{display:flex;align-items:center;gap:6px;flex:none}'
     + '#nav .theme{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;padding:0}'
     + '#nav .theme:hover{color:var(--accent);border-color:var(--accent)}'
@@ -386,6 +455,6 @@
   document.head.appendChild(css);
 
   window.SITE = { t, nation, share, get lang(){ return lang; }, get theme(){ return theme; }, onLang: fn => listeners.push(fn), onTheme: fn => themeListeners.push(fn), apply,
-    color: name => getComputedStyle(document.documentElement).getPropertyValue(name).trim() };
-  document.addEventListener('DOMContentLoaded', () => { nav(); apply(); });
+    color: name => getComputedStyle(document.documentElement).getPropertyValue(name).trim(), countUp, calm };
+  document.addEventListener('DOMContentLoaded', () => { nav(); apply(); reveal(); });
 })();
