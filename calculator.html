@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Modern Pentathlon Points Calculator</title>
+<title>Points Calculator · Modern Pentathlon</title>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="common.js"></script>
 <style>
 :root{--tint:#f5f8ff;--soft:#eef4ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -12,9 +15,6 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-ap
 .wrap{max-width:720px;margin:0 auto;padding:24px 16px 48px}
 h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
 .sub{color:var(--muted);margin:0 0 20px}
-nav{display:flex;gap:6px;margin-bottom:18px}
-nav a{padding:7px 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.9rem}
-nav a.on{background:var(--accent);color:var(--ink)}
 .total{background:var(--accent);color:var(--ink);border-radius:16px;padding:20px;margin-bottom:16px}
 .total small{display:block;opacity:.85;font-size:.85rem}
 .total b{display:block;font-size:3rem;line-height:1.1;font-variant-numeric:tabular-nums}
@@ -38,59 +38,60 @@ input:focus{outline:2px solid var(--accent);outline-offset:1px}
 </head>
 <body>
 <div class="wrap">
-  <nav><a href="index.html">Home</a><a href="calculator.html" class="on">Calculator</a><a href="athletes.html">Athletes</a></nav>
-  <h1>Modern Pentathlon Points Calculator</h1>
-  <p class="sub">Enter your results. Points update as you type.</p>
+  <nav id="nav"></nav>
+  <h1 data-i18n="c.title"></h1>
+  <p class="sub" data-i18n="c.sub"></p>
 
   <div class="seg" id="mode" role="tablist" aria-label="Competition round">
-    <button data-m="q" class="on" role="tab">Qualification</button>
-    <button data-m="de" role="tab">Semi-final / Final</button>
+    <button data-m="q" class="on" role="tab" data-i18n="c.q"></button>
+    <button data-m="de" role="tab" data-i18n="c.de"></button>
   </div>
 
-  <div class="total"><small>Total points</small><b id="total">0</b><small id="count">0 of 4 events entered</small></div>
+  <div class="total"><small data-i18n="c.total"></small><b id="total">0</b><small id="count"></small></div>
 
   <div class="grid">
     <section class="card">
-      <div class="head"><h2 id="f-title">Fencing (ranking round)</h2><span class="pts" id="p-f">–</span></div>
+      <div class="head"><h2 id="f-title"></h2><span class="pts" id="p-f">–</span></div>
       <div id="f-q">
         <div class="row">
-          <div><label for="f-v">Victories</label><input id="f-v" inputmode="numeric" placeholder="e.g. 22"></div>
-          <div><label for="f-d">Defeats</label><input id="f-d" inputmode="numeric" placeholder="e.g. 13"></div>
-          <div><label for="f-w">Points per victory</label><input id="f-w" inputmode="numeric" placeholder="auto"></div>
-          <div><label for="f-pen">Penalty points</label><input id="f-pen" inputmode="numeric" placeholder="0"></div>
+          <div><label for="f-v" data-i18n="c.v"></label><input id="f-v" inputmode="numeric" placeholder="22"></div>
+          <div><label for="f-d" data-i18n="c.d"></label><input id="f-d" inputmode="numeric" placeholder="13"></div>
+          <div><label for="f-w" data-i18n="c.w"></label><input id="f-w" inputmode="numeric" placeholder="auto"></div>
+          <div><label for="f-pen" data-i18n="c.pen"></label><input id="f-pen" inputmode="numeric" placeholder="0"></div>
         </div>
       </div>
       <div id="f-de" class="hide">
-        <label for="f-p">Final place in direct elimination (1–18)</label>
-        <input id="f-p" inputmode="numeric" placeholder="e.g. 5">
+        <label for="f-p" data-i18n="c.dePlace"></label>
+        <input id="f-p" inputmode="numeric" placeholder="5">
       </div>
       <p class="hint" id="h-f"></p>
     </section>
 
     <section class="card">
-      <div class="head"><h2>Obstacle</h2><span class="pts" id="p-o">–</span></div>
-      <label for="o-t">Time (e.g. 27,60 or 27.60)</label>
-      <input id="o-t" inputmode="decimal" placeholder="e.g. 27.60">
+      <div class="head"><h2 data-i18n="d.o"></h2><span class="pts" id="p-o">–</span></div>
+      <label for="o-t" data-i18n="c.oTime"></label>
+      <input id="o-t" inputmode="decimal" placeholder="27,60">
     </section>
 
     <section class="card">
-      <div class="head"><h2>Swimming (100m)</h2><span class="pts" id="p-s">–</span></div>
-      <label for="s-t">Time (e.g. 1:01,50 or 1.01,50)</label>
-      <input id="s-t" inputmode="decimal" placeholder="e.g. 1:01.50">
-      <p class="hint">1:10.00 = 250 points.</p>
+      <div class="head"><h2 data-i18n="c.swim"></h2><span class="pts" id="p-s">–</span></div>
+      <label for="s-t" data-i18n="c.sTime"></label>
+      <input id="s-t" inputmode="decimal" placeholder="1:01,50">
+      <p class="hint" data-i18n="c.sHint"></p>
     </section>
 
     <section class="card">
-      <div class="head"><h2>Laser Run</h2><span class="pts" id="p-l">–</span></div>
-      <label for="l-t">Running time (e.g. 11:45,00 or 11.45,00)</label>
-      <input id="l-t" inputmode="decimal" placeholder="e.g. 11:45.00">
-      <p class="hint">One point per second. 10:00 = 700 points.</p>
+      <div class="head"><h2 data-i18n="d.l"></h2><span class="pts" id="p-l">–</span></div>
+      <label for="l-t" data-i18n="c.lTime"></label>
+      <input id="l-t" inputmode="decimal" placeholder="11:45,00">
+      <p class="hint" data-i18n="c.lHint"></p>
     </section>
   </div>
 
-  <p class="note">All formulas were checked against every result from the 2026 World Cups, European Championships and World Championships. In qualification, fencing is the ranking round (70% of bouts won = 250 points); in semi-finals and finals it is direct elimination, scored by final place. A red card in the ranking round costs 10 points; enter it as penalty points.</p>
+  <p class="note" data-i18n="c.note"></p>
 </div>
 <script>
+const T = SITE.t;
 const $ = id => document.getElementById(id);
 const up = x => Math.max(0, Math.ceil(x - 1e-9));
 // Accepts 1:05.64, 1:05,64, 1.05,64, 65,64 or 65.64. Phones that only offer a comma (and no colon) work too.
@@ -136,14 +137,14 @@ function fencingQ(){
   const h = $('h-f'); h.classList.remove('err');
   const V = $('f-v').value.trim(), D = $('f-d').value.trim();
   if(V === '' || D === ''){
-    $('p-f').textContent = '–'; $('f-w').placeholder = 'auto';
-    h.textContent = 'Enter victories and defeats. 70% of bouts won = 250 points.';
+    $('p-f').textContent = '–'; $('f-w').placeholder = T('c.auto');
+    h.textContent = T('c.hEnterVD');
     return null;
   }
   const v = parseInt(V, 10), d = parseInt(D, 10);
   if(isNaN(v) || isNaN(d) || v < 0 || d < 0 || v + d < 1 || v + d > 60){
-    $('p-f').textContent = '?'; $('f-w').placeholder = 'auto';
-    h.textContent = 'Victories and defeats must be whole numbers.';
+    $('p-f').textContent = '?'; $('f-w').placeholder = T('c.auto');
+    h.textContent = T('c.hBadVD');
     h.classList.add('err'); return null;
   }
   const bouts = v + d;
@@ -154,9 +155,9 @@ function fencingQ(){
   const base = Math.floor((7*bouts + 5)/10);   // 70% of bouts, rounded half up
   const p = v === 0 ? 0 : Math.max(0, Math.round(250 + w*(v - base) - pen));
   $('p-f').textContent = p;
-  h.textContent = '70% of ' + bouts + ' bouts = ' + base + ' victories = 250 points, each victory ±' + w + '.'
-    + (pen ? ' Minus ' + pen + ' penalty points.' : '')
-    + (!auto.seen && $('f-w').value.trim() === '' ? ' This group size didn’t appear in 2026 results, so the victory value is an estimate.' : '');
+  h.textContent = T('c.hRule', {b:bouts, base, w})
+    + (pen ? T('c.hPen', {p:pen}) : '')
+    + (!auto.seen && $('f-w').value.trim() === '' ? T('c.hEst') : '');
   return p;
 }
 
@@ -165,14 +166,15 @@ function fencingDE(){
   const FT = [250,244,238,236,230,228,226,224,218,216,214,212,210,208,206,204,198,196];
   const pl = parseInt($('f-p').value,10);
   const h = $('h-f'); h.classList.remove('err');
-  if($('f-p').value.trim() === ''){ $('p-f').textContent = '–'; h.textContent = 'Winning the final = 250 points. Athletes out in the same round are ranked by seeding.'; return null; }
-  if(!(pl >= 1 && pl <= 18)){ $('p-f').textContent = '?'; h.textContent = 'Enter a place from 1 to 18.'; h.classList.add('err'); return null; }
+  if($('f-p').value.trim() === ''){ $('p-f').textContent = '–'; h.textContent = T('c.hDE0'); return null; }
+  if(!(pl >= 1 && pl <= 18)){ $('p-f').textContent = '?'; h.textContent = T('c.hDEbad'); h.classList.add('err'); return null; }
   $('p-f').textContent = FT[pl-1];
-  h.textContent = (pl === 1 ? 'Won the final' : pl === 2 ? 'Lost the final' : pl <= 4 ? 'Lost in the semi-final' : pl <= 8 ? 'Lost in the round of 8' : pl <= 16 ? 'Lost in the round of 16' : 'Lost in the round of 32') + '.';
+  h.textContent = T(pl === 1 ? 'c.de1' : pl === 2 ? 'c.de2' : pl <= 4 ? 'c.de4' : pl <= 8 ? 'c.de8' : pl <= 16 ? 'c.de16' : 'c.de32');
   return FT[pl-1];
 }
 
 function calc(){
+  $('f-title').textContent = T(mode === 'q' ? 'c.fq' : 'c.fde');
   const res = [];
   res.push(mode === 'q' ? fencingQ() : fencingDE());
   res.push(timed('o-t','p-o', t => up(445 - 3*t)));
@@ -180,7 +182,7 @@ function calc(){
   res.push(timed('l-t','p-l', t => up(1300 - t), 300));
   const got = res.filter(x => x !== null && x !== undefined);
   $('total').textContent = got.reduce((a,b) => a+b, 0);
-  $('count').textContent = got.length + ' of 4 events entered';
+  $('count').textContent = T('c.count', {n:got.length});
 }
 document.querySelectorAll('input').forEach(i => i.addEventListener('input', calc));
 $('mode').addEventListener('click', e => {
@@ -189,9 +191,9 @@ $('mode').addEventListener('click', e => {
   $('mode').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
   $('f-q').classList.toggle('hide', mode !== 'q');
   $('f-de').classList.toggle('hide', mode === 'q');
-  $('f-title').textContent = mode === 'q' ? 'Fencing (ranking round)' : 'Fencing (direct elimination)';
   calc();
 });
+SITE.onLang(calc);
 calc();
 </script>
 </body>

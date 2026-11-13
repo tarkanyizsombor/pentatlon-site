@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Modern Pentathlon by Tárkányi Zsombor</title>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="common.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,800&display=swap" rel="stylesheet">
@@ -13,9 +16,6 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:960px;margin:0 auto;padding:16px 16px 56px}
-nav{display:flex;gap:6px;margin-bottom:12px}
-nav a{padding:7px 14px;border-radius:999px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.9rem}
-nav a.on{background:var(--accent);color:var(--ink)}
 a{color:inherit}
 
 .hero{padding:44px 0 36px}
@@ -29,7 +29,7 @@ h1{font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.05;letter-spacing:-.03em;mar
 .stripe span{flex:1;height:6px;border-radius:3px;background:var(--accent)}
 .stripe span:nth-child(2){opacity:.8}.stripe span:nth-child(3){opacity:.6}.stripe span:nth-child(4){opacity:.4}
 
-.go{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:48px}
+.go{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:48px}
 .go a{display:flex;flex-direction:column;gap:8px;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 1px 3px rgba(29,78,216,.06);transition:border-color .15s,transform .15s}
 .go a:hover{border-color:var(--accent);transform:translateY(-2px)}
 .go a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -52,38 +52,43 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
 </head>
 <body>
 <div class="wrap">
-  <nav><a href="index.html" class="on">Home</a><a href="calculator.html">Calculator</a><a href="athletes.html">Athletes</a></nav>
+  <nav id="nav"></nav>
 
   <header class="hero">
     <h1 class="title">Modern Pentathlon</h1>
-    <p class="by">by Tárkányi Zsombor</p>
+    <p class="by" data-i18n="home.by"></p>
     <div class="stripe" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
   </header>
 
   <section class="go" aria-label="Get started">
     <a href="calculator.html" class="primary">
-      <h2>Points calculator</h2>
-      <p>Enter your fencing, obstacle, swimming and laser run results and see your total. Works for qualification and for semi-finals and finals.</p>
-      <span class="arrow">Open the calculator →</span>
+      <h2 data-i18n="home.calcT"></h2>
+      <p data-i18n="home.calcP"></p>
+      <span class="arrow" data-i18n="home.calcA"></span>
     </a>
     <a href="athletes.html">
-      <h2>Athlete results</h2>
-      <p>Official standings from every competition, each athlete’s rounds, and season averages for every discipline.</p>
-      <span class="arrow">See the results →</span>
+      <h2 data-i18n="home.athT"></h2>
+      <p data-i18n="home.athP"></p>
+      <span class="arrow" data-i18n="home.athA"></span>
+    </a>
+    <a href="bests.html">
+      <h2 data-i18n="home.bestT"></h2>
+      <p data-i18n="home.bestP"></p>
+      <span class="arrow" data-i18n="home.bestA"></span>
     </a>
   </section>
 
   <section aria-labelledby="how">
-    <h3 class="sec" id="how">How scoring works</h3>
+    <h3 class="sec" id="how" data-i18n="home.how"></h3>
     <div class="disc">
-      <div><span class="n">01</span><h4>Fencing</h4><p>In qualification, winning <b>70% of your bouts = 250 points</b>. In semi-finals and finals it’s direct elimination, and <b>1st place = 250</b>.</p></div>
-      <div><span class="n">02</span><h4>Obstacle</h4><p>Faster is better: <b>every second = 3 points</b>. A 30-second run scores 355.</p></div>
-      <div><span class="n">03</span><h4>Swimming</h4><p>100m freestyle. <b>1:10.00 = 250 points</b>, and every second faster or slower is worth 5 points.</p></div>
-      <div><span class="n">04</span><h4>Laser Run</h4><p>Shooting and running combined. <b>10:00 = 700 points</b>, and every second is worth 1 point.</p></div>
+      <div><span class="n">01</span><h4 data-i18n="d.f"></h4><p data-i18n-html="home.f"></p></div>
+      <div><span class="n">02</span><h4 data-i18n="d.o"></h4><p data-i18n-html="home.o"></p></div>
+      <div><span class="n">03</span><h4 data-i18n="d.s"></h4><p data-i18n-html="home.s"></p></div>
+      <div><span class="n">04</span><h4 data-i18n="d.l"></h4><p data-i18n-html="home.l"></p></div>
     </div>
   </section>
 
-  <footer>Results come from official UIPM result exports. This is an independent site and is not affiliated with UIPM.</footer>
+  <footer data-i18n="footer"></footer>
 </div>
 </body>
 </html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Season bests 2026 · Modern Pentathlon</title>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="common.js"></script>
+<script src="data.js"></script>
+<style>
+:root{--tint:#f5f8ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;--soft:#eef4ff;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 16px;max-width:65ch}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;align-items:center}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--ink)}
+select{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--tint);color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 6px;box-shadow:0 1px 3px rgba(29,78,216,.06)}
+.card h2{font-size:1rem;margin:0 0 8px;color:var(--accent)}
+ol{list-style:none;margin:0;padding:0}
+li{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+li:first-child{border-top:0}
+.rk{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+li:nth-child(1) .rk{color:var(--accent)}
+.who{min-width:0}
+.who b{font-weight:600}
+.nat{color:var(--muted);font-size:.78rem;margin-left:5px}
+.where{display:block;color:var(--muted);font-size:.75rem}
+.val{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+.val span{display:block;font-weight:400;color:var(--muted);font-size:.75rem}
+.empty{color:var(--muted);padding:10px 0 12px;font-size:.9rem}
+.note{font-size:.8rem;color:var(--muted);margin-top:16px;line-height:1.5}
+@media (max-width:640px){.wrap{padding:12px 12px 40px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav id="nav"></nav>
+  <h1 data-i18n="b.title"></h1>
+  <p class="sub" data-i18n="b.sub"></p>
+  <div class="controls">
+    <div class="seg" id="gender"><button data-g="W" class="on" data-i18n="g.W"></button><button data-g="M" data-i18n="g.M"></button></div>
+    <select id="nation" aria-label="Nation"></select>
+  </div>
+  <div class="grid" id="grid"></div>
+  <p class="note" data-i18n="b.note"></p>
+</div>
+<script>
+const DATA = window.DATA, t = SITE.t;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const evById = Object.fromEntries(DATA.events.map(e => [e.id, e]));
+const evShort = e => SITE.lang === 'hu' && e.short_hu ? e.short_hu : e.short;
+const TOP = 10;
+let state = {g:'W', nat:''};
+
+function where(r){ return esc(evShort(evById[r.e])) + ' · ' + t('r.' + r.r) + (r.grp ? ' ' + esc(r.grp) : ''); }
+
+// Best performance per athlete for a scoring function (higher score = better)
+function best(score){
+  const top = {};
+  for (const r of DATA.results){
+    const a = DATA.athletes[r.a];
+    if (a.g !== state.g || (state.nat && a.c !== state.nat)) continue;
+    const s = score(r); if (s === null) continue;
+    if (!top[r.a] || s > top[r.a].s) top[r.a] = {s, r};
+  }
+  return Object.values(top).sort((x,y) => y.s - x.s).slice(0, TOP);
+}
+
+function list(title, rows, value){
+  let h = '<section class="card"><h2>' + esc(title) + '</h2>';
+  if (!rows.length) return h + '<p class="empty">' + t('b.none') + '</p></section>';
+  h += '<ol>' + rows.map((x, i) => {
+    const a = DATA.athletes[x.r.a];
+    return '<li><span class="rk">' + (i + 1) + '</span><span class="who"><b>' + esc(a.n) + '</b><span class="nat">' + esc(a.c) + '</span><span class="where">' + where(x.r) + '</span></span><span class="val">' + value(x.r) + '</span></li>';
+  }).join('') + '</ol>';
+  return h + '</section>';
+}
+
+function render(){
+  const timed = d => best(r => r[d].p !== undefined ? r[d].p : null);
+  const time = (r, d) => esc(r[d].t.replace(/^00:/, '').replace(/^0(\d:)/, '$1')) + '<span>' + t('pts', {n:r[d].p}) + '</span>';
+  // fencing: ranking-round win rate (qualification rounds), ties broken by number of victories
+  const fen = best(r => r.r === 'Q' && r.f.v !== undefined && (r.f.v + r.f.d) > 0 ? r.f.v / (r.f.v + r.f.d) + r.f.v / 1e4 : null);
+  const tot = best(r => ['f','o','s','l'].every(d => r[d].p !== undefined) ? r.tot : null);
+  $('grid').innerHTML =
+    list(t('b.o'), timed('o'), r => time(r, 'o')) +
+    list(t('b.s'), timed('s'), r => time(r, 's')) +
+    list(t('b.l'), timed('l'), r => time(r, 'l')) +
+    list(t('b.f'), fen, r => Math.round(100 * r.f.v / (r.f.v + r.f.d)) + '%<span>' + t('raw.vd', {v:r.f.v, d:r.f.d}) + '</span>') +
+    list(t('b.t'), tot, r => r.tot + '<span>' + t('points') + '</span>');
+}
+function fillNations(){
+  const nats = [...new Set(Object.values(DATA.athletes).filter(a => a.g === state.g).map(a => a.c))].sort();
+  if (state.nat && !nats.includes(state.nat)) state.nat = '';
+  $('nation').innerHTML = '<option value="">' + t('allNations') + '</option>' + nats.map(c => '<option>' + esc(c) + '</option>').join('');
+  $('nation').value = state.nat;
+}
+$('gender').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  state.g = b.dataset.g;
+  $('gender').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  fillNations(); render();
+});
+$('nation').addEventListener('change', e => { state.nat = e.target.value; render(); });
+SITE.onLang(() => { fillNations(); render(); });
+fillNations(); render();
+</script>
+</body>
+</html>
