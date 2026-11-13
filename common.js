@@ -110,6 +110,7 @@
       'about.contact':'Contact', 'about.insta':'Instagram', 'about.email':'Email',
 
       /* home */
+      'la.k':'Olympic Games · Los Angeles 2028', 'la.t':'Modern Pentathlon', 'la.where':'15–18 July 2028 · Valley Complex, Los Angeles', 'la.until':'until the first event', 'la.now':'The Olympic competition is on', 'la.done':'The Olympic competition has finished', 'la.ws':'Women’s semi-final', 'la.ms':'Men’s semi-final', 'la.wf':'Women’s final', 'la.mf':'Men’s final', 'la.la':'LA', 'la.you':'your time',
       'home.by':'by Tárkányi Zsombor', 'home.tag':'Points calculator · 2026 results · Season averages · Finals level',
       'home.calcT':'Points calculator', 'home.calcP':'Enter your fencing, obstacle, swimming and laser run results and see your total. Works for qualification and for semi-finals and finals.', 'home.calcA':'Open the calculator →',
       'home.athT':'Athlete results', 'home.athP':'Official standings from every competition, each athlete’s rounds, season averages and head-to-head comparisons.', 'home.athA':'See the results →',
@@ -233,6 +234,7 @@
       'about.p3':'Az eredmények a UIPM hivatalos eredményexportjaiból származnak, és minden verseny után frissülnek. Ha hibát találsz, vagy ötleted van az oldallal kapcsolatban, örömmel fogadom.',
       'about.contact':'Kapcsolat', 'about.insta':'Instagram', 'about.email':'E-mail',
 
+      'la.k':'Olimpiai játékok · Los Angeles 2028', 'la.t':'Öttusa', 'la.where':'2028. július 15–18. · Valley Complex, Los Angeles', 'la.until':'az első versenyszámig', 'la.now':'Zajlik az olimpiai verseny', 'la.done':'Az olimpiai verseny véget ért', 'la.ws':'Női elődöntő', 'la.ms':'Férfi elődöntő', 'la.wf':'Női döntő', 'la.mf':'Férfi döntő', 'la.la':'LA', 'la.you':'nálad',
       'home.by':'készítette: Tárkányi Zsombor', 'home.tag':'Pontszámító · 2026-os eredmények · Szezonátlagok · Döntős szint',
       'home.calcT':'Pontszámító', 'home.calcP':'Add meg a vívás, akadályfutás, úszás és lézerfutás eredményeidet, és megkapod az összpontszámot. Selejtezőre és elődöntőre/döntőre is működik.', 'home.calcA':'Kalkulátor megnyitása →',
       'home.athT':'Versenyzői eredmények', 'home.athP':'Minden verseny hivatalos végeredménye, a versenyzők fordulói, szezonátlagok és egymás elleni összevetések.', 'home.athA':'Eredmények megtekintése →',

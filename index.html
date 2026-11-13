@@ -90,6 +90,37 @@ a{color:inherit}
   .nextbar b{display:inline-block;min-width:2ch}
 }
 
+/* Los Angeles 2028 countdown */
+.la{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;border-radius:24px;padding:26px 30px;margin:0 0 30px;color:#fff;
+  background:linear-gradient(120deg,#c2410c 0%,#be185d 48%,#5b21b6 100%);box-shadow:0 18px 44px rgba(190,24,93,.22)}
+:root[data-theme="dark"] .la{background:linear-gradient(120deg,#9a3412 0%,#9d174d 48%,#3b0f7a 100%);box-shadow:none;border:1px solid #3b1d3a}
+.la .glow{position:absolute;right:-12%;top:-70%;width:55%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(253,186,116,.45),rgba(253,186,116,0) 65%);pointer-events:none}
+.la>*{position:relative}
+.la .badge{width:150px;height:150px;display:block;filter:drop-shadow(0 10px 22px rgba(60,10,60,.35))}
+.la .k{font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.88}
+.la h2{margin:4px 0 2px;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:900;letter-spacing:-.025em;line-height:1.1}
+.la .where{opacity:.92;font-size:.95rem}
+.la .cd{display:flex;gap:10px;margin:16px 0 4px;flex-wrap:wrap}
+.la .cd div{background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.26);border-radius:14px;padding:10px 6px;min-width:76px;text-align:center}
+.la .cd b{display:block;font-size:clamp(1.5rem,4.5vw,2.2rem);font-weight:900;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.la .cd span{display:block;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;opacity:.85;margin-top:5px}
+.la .until{font-size:.82rem;opacity:.85;margin:0 0 12px}
+.la .sess{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.la .sess li{font-size:.8rem;background:rgba(0,0,0,.16);border-radius:999px;padding:5px 11px}
+.la .sess b{font-weight:700}
+.la .sess small{opacity:.8}
+.la .live{display:inline-block;margin:16px 0 12px;font-size:1.15rem;font-weight:800;background:rgba(255,255,255,.18);border-radius:999px;padding:8px 16px}
+@media (prefers-reduced-motion:no-preference){
+  @keyframes sunrise{from{transform:translateY(5px)}to{transform:translateY(-3px)}}
+  @keyframes sway{50%{transform:rotate(2.5deg)}}
+  .la .sun{animation:sunrise 5s ease-in-out infinite alternate}
+  .la .palm{transform-box:fill-box;transform-origin:50% 100%;animation:sway 6s ease-in-out infinite}
+  .la .palm2{animation-delay:-3s}
+  .la .cd b.tk{animation:tickin .35s cubic-bezier(.2,.7,.2,1)}
+  @keyframes tickin{from{transform:translateY(-35%);opacity:.2}}
+}
+@media (max-width:640px){.la{grid-template-columns:1fr;gap:12px;padding:22px 18px;border-radius:20px}.la .badge{width:96px;height:96px}.la .cd{gap:6px}.la .cd div{flex:1;min-width:0;padding:9px 2px}.la .sess li{border-radius:12px;width:100%}}
+
 .nextbar{display:flex;align-items:center;gap:12px;margin:-14px 0 28px;padding:14px 18px;border-radius:16px;background:var(--soft);border:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:600}
 .nextbar:hover{border-color:var(--accent)}
 .nextbar b{color:var(--accent);font-size:1.25rem;font-variant-numeric:tabular-nums}
@@ -274,6 +305,43 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
 
   <a class="nextbar" id="nextbar" href="/next" hidden></a>
 
+  <section class="la" id="la" aria-labelledby="laT">
+    <div class="glow"></div>
+    <svg class="badge" viewBox="0 0 160 160" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="laSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4c1d95"/><stop offset=".55" stop-color="#db2777"/><stop offset="1" stop-color="#fb923c"/></linearGradient>
+        <linearGradient id="laSun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef08a"/><stop offset="1" stop-color="#fb923c"/></linearGradient>
+        <linearGradient id="laSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#1e3a8a"/></linearGradient>
+        <clipPath id="laC"><circle cx="80" cy="80" r="74"/></clipPath>
+      </defs>
+      <circle cx="80" cy="80" r="78" fill="#fff" opacity=".22"/>
+      <g clip-path="url(#laC)">
+        <rect width="160" height="160" fill="url(#laSky)"/>
+        <g class="sun"><circle cx="80" cy="96" r="38" fill="url(#laSun)"/>
+          <rect x="30" y="84" width="100" height="3" fill="#e0457b"/><rect x="30" y="92" width="100" height="4" fill="#e0457b"/><rect x="30" y="101" width="100" height="5" fill="#e0457b"/></g>
+        <rect y="108" width="160" height="52" fill="url(#laSea)"/>
+        <path d="M0 116 Q20 111 40 116 T80 116 T120 116 T160 116" stroke="#7dd3fc" stroke-width="2.5" fill="none" opacity=".8"/>
+        <path d="M10 130 Q30 125 50 130 T90 130 T130 130 T170 130" stroke="#7dd3fc" stroke-width="2" fill="none" opacity=".5"/>
+        <g class="palm" fill="#2a0f3d">
+          <path d="M37 110 C38 90 40 72 46 56 L49 57 C44 73 42 91 41 110 Z"/>
+          <path d="M47 56 C38 48 26 48 18 54 C28 50 38 52 47 58Z M47 56 C44 44 34 38 26 38 C36 42 42 48 46 58Z M47 56 C52 44 62 40 72 42 C62 44 54 50 48 58Z M47 56 C58 50 70 52 76 60 C66 54 56 54 48 58Z M47 56 C48 46 46 36 40 30 C48 36 50 46 48 57Z"/>
+        </g>
+        <g class="palm palm2" fill="#2a0f3d">
+          <path d="M122 110 C121 96 119 84 114 72 L116 71 C121 83 124 95 125 110 Z"/>
+          <path d="M115 72 C108 66 99 66 93 71 C101 68 108 69 115 74Z M115 72 C113 63 106 58 100 58 C107 61 112 66 114 74Z M115 72 C119 63 127 60 134 62 C127 63 121 68 116 74Z M115 72 C123 68 132 70 136 76 C129 72 122 72 116 74Z"/>
+        </g>
+      </g>
+      <circle cx="80" cy="80" r="74" fill="none" stroke="#fff" stroke-width="3" opacity=".9"/>
+    </svg>
+    <div>
+      <div class="k" data-i18n="la.k"></div>
+      <h2 id="laT" data-i18n="la.t"></h2>
+      <div class="where" data-i18n="la.where"></div>
+      <div id="laBox"></div>
+      <ul class="sess" id="laSess"></ul>
+    </div>
+  </section>
+
   <section class="go" aria-label="Get started">
     <a href="/calculator" class="primary">
       <h2 data-i18n="home.calcT"></h2>
@@ -319,6 +387,36 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
   }
   let drawn = false;
   SITE.onLang(draw); draw();
+})();
+(function(){
+  // LA28 modern pentathlon sessions (Pacific Daylight Time, UTC−7), from the official LA28 / UIPM schedule
+  const S = [['2028-07-15T09:00:00-07:00','la.ws'],['2028-07-16T09:00:00-07:00','la.ms'],['2028-07-17T09:00:00-07:00','la.wf'],['2028-07-18T09:00:00-07:00','la.mf']];
+  const START = Date.parse(S[0][0]), END = Date.parse('2028-07-18T11:00:00-07:00');
+  const box = document.getElementById('laBox'), list = document.getElementById('laSess'); if (!box) return;
+  const loc = () => SITE.lang === 'hu' ? 'hu-HU' : 'en-GB';
+  let intro = false;
+  function draw(){
+    const now = Date.now();
+    if (now >= END) box.innerHTML = '<div class="live">' + SITE.t('la.done') + '</div>';
+    else if (now >= START) box.innerHTML = '<div class="live">● ' + SITE.t('la.now') + '</div>';
+    else box.innerHTML = '<div class="cd" role="timer" aria-live="off">' + ['nx.d','nx.h','nx.m','nx.s'].map(k => '<div><b>–</b><span>' + SITE.t(k) + '</span></div>').join('') + '</div><p class="until">' + SITE.t('la.until') + '</p>';
+    list.innerHTML = S.map(([iso, k]) => { const d = new Date(iso);
+      const day = d.toLocaleDateString(loc(), {timeZone: 'America/Los_Angeles', weekday: 'short', month: 'short', day: 'numeric'});
+      const mine = d.toLocaleTimeString(loc(), {hour: '2-digit', minute: '2-digit'});
+      return '<li><b>' + day + '</b> · ' + SITE.t(k) + ' <small>· 9:00 ' + SITE.t('la.la') + (mine.replace(/^0/, '') !== '9:00' ? ' / ' + mine + ' ' + SITE.t('la.you') : '') + '</small></li>'; }).join('');
+    tick();
+  }
+  function tick(){
+    const bs = box.querySelectorAll('.cd b'); if (!bs.length) return;
+    const ms = START - Date.now(); if (ms <= 0) { draw(); return; }
+    const s = Math.floor(ms / 1000), parts = [Math.floor(s / 86400), Math.floor(s % 86400 / 3600), Math.floor(s % 3600 / 60), s % 60];
+    if (!intro){ intro = true; bs.forEach((b, i) => b.textContent = i ? String(parts[i]).padStart(2, '0') : parts[i]);
+      if (SITE.countUp && !SITE.calm()) { box.dataset.intro = 1; SITE.countUp(bs[0], parts[0], 1300); setTimeout(() => delete box.dataset.intro, 1350); } return; }
+    if (box.dataset.intro) return;
+    bs.forEach((b, i) => { const v = i ? String(parts[i]).padStart(2, '0') : String(parts[i]);
+      if (b.textContent !== v){ const first = b.textContent === '–'; b.textContent = v; if (!first){ b.classList.remove('tk'); void b.offsetWidth; b.classList.add('tk'); } } });
+  }
+  SITE.onLang(draw); draw(); setInterval(tick, 1000);
 })();
 (function(){
   const h = document.querySelector('.hero'); if (!h || !matchMedia('(pointer:fine)').matches) return;
