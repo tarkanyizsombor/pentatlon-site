@@ -106,6 +106,48 @@ tr.detail>td{padding:0 0 12px;text-align:left;background:var(--soft);white-space
 .cmp td.win.b{color:#b8471b;background:#fdf0ea}
 .cmp th.a{color:var(--accent)} .cmp th.b{color:#b8471b}
 
+/* following filter */
+.folchip{display:inline-flex;align-items:center;gap:6px;font:inherit;font-weight:600;font-size:.9rem;padding:8px 13px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer}
+.folchip b{color:#f59e0b;font-size:1rem;line-height:1}
+.folchip .cnt{font-size:.75rem;font-weight:700;background:var(--soft);color:var(--accent);border-radius:999px;padding:1px 7px}
+.folchip[aria-pressed="true"]{border-color:#f59e0b;background:rgba(245,158,11,.1);color:var(--text)}
+.folchip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.followbtn{font:inherit;font-size:.8rem;font-weight:700;border-radius:999px;padding:6px 12px;cursor:pointer;border:1px solid #f59e0b;background:var(--card);color:#b45309;margin-right:8px}
+.followbtn.on{background:#f59e0b;color:#fff}
+:root[data-theme="dark"] .followbtn{color:#fbbf24}:root[data-theme="dark"] .followbtn.on{color:#1a1206;background:#fbbf24;border-color:#fbbf24}
+.followbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* strength profile */
+.sp{margin:12px 12px 4px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.sp h3{font-size:.95rem;margin:0}
+.sp .s{font-size:.76rem;color:var(--muted);margin:2px 0 12px;line-height:1.45}
+.sp .row{display:grid;grid-template-columns:110px 1fr 128px;gap:12px;align-items:center;padding:7px 0}
+.sp .row+.row{border-top:1px dashed var(--line)}
+.sp .lbl b{display:block;font-size:.88rem}
+.sp .lbl small{color:var(--muted);font-size:.74rem}
+.sp .track{position:relative;height:12px;border-radius:999px;background:var(--soft);overflow:visible}
+.sp .fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,#93c5fd,#1d4ed8)}
+:root[data-theme="dark"] .sp .fill{background:linear-gradient(90deg,#2b5c9e,#7cc8ff)}
+.sp .mid{position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;border-radius:1px;background:var(--muted);opacity:.45}
+.sp .val{text-align:right;line-height:1.25}
+.sp .val b{display:block;font-size:.9rem;color:var(--accent)}
+.sp .val small{color:var(--muted);font-size:.74rem}
+.sp .row.na .val b{color:var(--muted)}
+.sp .sum{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.sp .sum span{font-size:.8rem;border-radius:999px;padding:5px 11px;background:var(--soft);color:var(--text)}
+.sp .sum span b{color:var(--accent)}
+@media (prefers-reduced-motion:no-preference){@keyframes grow{from{transform:scaleX(0)}}.sp .fill{transform-origin:0 50%;animation:grow .8s cubic-bezier(.2,.7,.2,1) both}.sp .row:nth-child(4) .fill{animation-delay:.06s}.sp .row:nth-child(5) .fill{animation-delay:.12s}.sp .row:nth-child(6) .fill{animation-delay:.18s}}
+
+/* relay cells: time first, points under it */
+.rt{font-weight:700;color:var(--text)}
+.rgrid{display:none}
+@media (max-width:640px){.sp .row{grid-template-columns:84px 1fr 96px;gap:8px}.sp{margin:10px 8px 4px;padding:12px}
+  .rgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+  .rgrid div{background:var(--tint);border:1px solid var(--line);border-radius:10px;padding:6px 8px;white-space:normal}
+  .rgrid .k{display:block;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  .rgrid .rt{font-size:.9rem}
+  .rgrid .raw{display:block}}
+
 @media (max-width:640px){
   .wrap{padding:12px 12px 40px}
   #list th.c,#list td.c{display:none}
@@ -143,6 +185,7 @@ tr.detail>td{padding:0 0 12px;text-align:left;background:var(--soft);white-space
     <select id="event" aria-label="Competition"></select>
     <select id="nation" aria-label="Nation"></select>
     <input id="q" type="search" data-i18n-ph="search" aria-label="Search">
+    <button type="button" class="folchip" id="folBtn" aria-pressed="false"><b>★</b><span data-i18n="fol.filter"></span><span class="cnt" id="folN">0</span></button>
   </div>
   <p class="hint" id="hint"></p>
 
@@ -176,12 +219,12 @@ const evShort = e => SITE.lang === 'hu' && e.short_hu ? e.short_hu : e.short;
 const byAth = {}; for (const r of DATA.results) (byAth[r.a] ||= []).push(r);
 const stByAth = {}; for (const s of DATA.standings) (stByAth[s.a] ||= []).push(s);
 
-let state = {view:'results', g:'W', ev:DATA.events[DATA.events.length-1].id, nat:'', q:'', sort:'i', dir:1, open:null, ha:'', hb:''};
+let state = {view:'results', g:'W', ev:DATA.events[DATA.events.length-1].id, nat:'', q:'', sort:'i', dir:1, open:null, ha:'', hb:'', fol:false};
 
 /* ---------- shareable links: the address bar always describes what's on screen ---------- */
 const slugOf = n => n.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const SLUG = {}, ID_BY_SLUG = {};
-for (const [id, a] of Object.entries(DATA.athletes)){ let sl = slugOf(a.n); if (ID_BY_SLUG[sl]) sl += '-' + id.toLowerCase(); SLUG[id] = sl; ID_BY_SLUG[sl] = id; }
+for (const [id, a] of Object.entries(DATA.athletes)){ a.id = id; let sl = slugOf(a.n); if (ID_BY_SLUG[sl]) sl += '-' + id.toLowerCase(); SLUG[id] = sl; ID_BY_SLUG[sl] = id; }
 const VIEWS = ['results','sf','q','all','h2h','relay'];
 const RELAY_EVENTS = DATA.events.filter(e => (DATA.relays || []).some(r => r.e === e.id));
 let scrollToOpen = false;
@@ -232,7 +275,8 @@ const shareUrl = hash => location.origin + location.pathname + '#' + hash;
 
 const avg = a => a.length ? a.reduce((x,y) => x+y, 0) / a.length : null;
 const fmt = v => v === null || v === undefined ? '–' : (Number.isInteger(v) ? String(v) : v.toFixed(1));
-const matches = a => (!state.nat || a.c === state.nat) && (!state.q || (a.n + ' ' + a.c + ' ' + (a.alt || []).join(' ')).toLowerCase().includes(state.q));
+const idOf = {}; for (const [id, a] of Object.entries(DATA.athletes)) idOf[a.n + '|' + a.g] = id;
+const matches = a => (!state.fol || SITE.follow.has(a.id || idOf[a.n + '|' + a.g])) && (!state.nat || a.c === state.nat) && (!state.q || (a.n + ' ' + a.c + ' ' + (a.alt || []).join(' ')).toLowerCase().includes(state.q));
 const roundName = r => t('r.' + r.r) + (r.grp ? ' ' + esc(r.grp) : '');
 
 function cell(x, d){
@@ -291,10 +335,67 @@ function progress(ids){
   return h;
 }
 
+/* ---------- strength profile: where an athlete stands in the field, per discipline ---------- */
+const secs = s => { const p = String(s).split(':').map(Number); return p.length === 2 ? p[0] * 60 + p[1] : p[0]; };
+const fmtSecs = v => { if (v >= 60){ const m = Math.floor(v / 60); return m + ':' + (v - m * 60).toFixed(2).padStart(5, '0'); } return v.toFixed(2); };
+const SP = {};   // SP[g][d] = {val:{id:value}, sorted:[values best→worst]}
+(function(){
+  for (const g of ['W','M']){
+    SP[g] = {};
+    const ids = Object.keys(DATA.athletes).filter(id => DATA.athletes[id].g === g);
+    for (const d of DISC){
+      const val = {};
+      for (const id of ids){
+        const rs = byAth[id] || [];
+        if (d === 'f'){
+          let v = 0, n = 0; for (const r of rs) if (r.f.v !== undefined){ v += r.f.v; n += r.f.v + r.f.d; }
+          if (n) val[id] = v / n;
+        } else {
+          const ts = rs.filter(r => r[d].p !== undefined && r[d].t).map(r => secs(r[d].t)).filter(x => x > 0);
+          if (ts.length) val[id] = avg(ts);
+        }
+      }
+      SP[g][d] = {val, n: Object.keys(val).length};
+    }
+  }
+})();
+function standing(id, d){
+  const g = DATA.athletes[id].g, S = SP[g][d], me = S.val[id];
+  if (me === undefined) return null;
+  const better = d === 'f' ? (x => x > me) : (x => x < me), worse = d === 'f' ? (x => x < me) : (x => x > me);
+  let b = 0, w = 0; for (const x of Object.values(S.val)){ if (better(x)) b++; else if (worse(x)) w++; }
+  const pct = S.n > 1 ? w / (S.n - 1) : 1;           // share of the rest of the field this athlete beats
+  return {me, rank: b + 1, n: S.n, pct};
+}
+function strength(id){
+  const a = DATA.athletes[id];
+  const rows = DISC.map(d => ({d, st: standing(id, d)}));
+  const have = rows.filter(r => r.st);
+  if (!have.length) return '';
+  let h = '<div class="sp"><h3>' + t('sp.title') + '</h3><p class="s">' + t('sp.sub', {g: t('sp.g' + a.g)}) + '</p>';
+  for (const {d, st} of rows){
+    if (!st){ h += '<div class="row na"><div class="lbl"><b>' + t('d.' + d) + '</b></div><div class="track"><span class="mid"></span></div><div class="val"><b>–</b><small>' + t('sp.na') + '</small></div></div>'; continue; }
+    const p = Math.round(st.pct * 100), topP = Math.max(1, Math.round(st.rank / st.n * 100));
+    const botP = Math.max(1, 100 - Math.round((st.rank - 1) / st.n * 100));
+    const label = topP <= 45 ? t('sp.top', {p: topP}) : botP <= 45 ? t('sp.bottom', {p: botP}) : t('sp.mid');
+    const info = d === 'f' ? t('sp.win', {p: Math.round(st.me * 100)}) : t('sp.avg', {t: fmtSecs(st.me)});
+    h += '<div class="row" title="' + esc(t('d.' + d) + ': ' + label + ' · ' + t('sp.rank', {r: st.rank, n: st.n})) + '"><div class="lbl"><b>' + t('d.' + d) + '</b><small>' + info + '</small></div>'
+      + '<div class="track" role="img" aria-label="' + esc(t('d.' + d) + ': ' + label) + '"><span class="fill" style="width:' + Math.max(3, p) + '%"></span><span class="mid"></span></div>'
+      + '<div class="val"><b>' + label + '</b><small>' + t('sp.rank', {r: st.rank, n: st.n}) + '</small></div></div>';
+  }
+  if (have.length > 1){
+    const best = have.reduce((x, y) => y.st.pct > x.st.pct ? y : x), weak = have.reduce((x, y) => y.st.pct < x.st.pct ? y : x);
+    h += '<div class="sum"><span>💪 ' + t('sp.best') + ': <b>' + t('d.' + best.d) + '</b></span>' + (weak !== best ? '<span>🎯 ' + t('sp.grow') + ': <b>' + t('d.' + weak.d) + '</b></span>' : '') + '</div>';
+  }
+  return h + '</div>';
+}
+
 function detail(id){
   const rs = byAth[id] || [];
   const groups = {}; for (const r of rs) (groups[r.e] ||= []).push(r);
-  let h = '<div class="shareRow"><button class="sharebtn" type="button" data-share="a" data-id="' + esc(id) + '">↗ ' + t('share.athlete') + '</button></div>' + progress([id]);
+  const fo = SITE.follow.has(id), an = DATA.athletes[id].n;
+  let h = '<div class="shareRow"><button class="followbtn' + (fo ? ' on' : '') + '" type="button" data-follow="' + esc(id) + '" aria-pressed="' + fo + '">' + (fo ? '★ ' + t('fol.following') : '☆ ' + t('fol.follow')) + '</button>'
+    + '<button class="sharebtn" type="button" data-share="a" data-id="' + esc(id) + '">↗ ' + t('share.athlete') + '</button></div>' + strength(id) + progress([id]);
   for (const ev of DATA.events){
     const g = groups[ev.id]; if (!g) continue;
     g.sort((a,b) => RORD[a.r] - RORD[b.r]);
@@ -375,13 +476,13 @@ function renderList(){
     h += '<tr class="grp"><td colspan="' + ncol + '">' + esc(g.title) + ' · ' + g.rows.length + '</td></tr>';
     for (const r of g.rows){
       const mini = v.cols.filter(c => c.k !== 'n').map(c => colLabel(c.k) + ' ' + (typeof r[c.k] === 'string' ? r[c.k] : fv(r[c.k], c.k))).join(' · ');
-      h += '<tr class="ath' + (state.open === r.id ? ' open' : '') + '" data-id="' + esc(r.id) + '"><td>' + r.i + '</td><td>' + esc(r.name) + '<span class="nat">' + esc(r.nat) + '</span><span class="mini">' + esc(mini) + '</span></td>'
+      h += '<tr class="ath' + (state.open === r.id ? ' open' : '') + '" data-id="' + esc(r.id) + '"><td>' + r.i + '</td><td>' + SITE.follow.star(r.id, r.name) + esc(r.name) + '<span class="nat">' + esc(r.nat) + '</span><span class="mini">' + esc(mini) + '</span></td>'
         + v.cols.map(c => '<td class="c ' + (c.cls || '') + '">' + (typeof r[c.k] === 'string' ? '<span class="el">' + esc(r[c.k]) + '</span>' : fv(r[c.k], c.k)) + '</td>').join('')
         + '<td class="tot">' + fv(r.t, 't') + '</td></tr>';
       if (state.open === r.id) h += '<tr class="detail"><td colspan="' + ncol + '">' + detail(r.id) + '</td></tr>';
     }
   }
-  $('body').innerHTML = h || '<tr><td colspan="' + ncol + '" class="empty">' + t('noAthletes') + '</td></tr>';
+  $('body').innerHTML = h || '<tr><td colspan="' + ncol + '" class="empty">' + t(state.fol ? 'fol.none' : 'noAthletes') + '</td></tr>';
 }
 
 /* ---------- head-to-head ---------- */
@@ -448,21 +549,21 @@ function relayCell(x, d){
     if (x && x.st === 'NH') return '<span class="n">' + t('rel.nh') + '</span>';
     return '<span class="el">' + esc(x ? x.st : '–') + '</span>';
   }
-  const raw = d === 'f' ? (x.v !== undefined ? t('raw.vd', {v:x.v, d:x.d}) : '') : esc(String(x.t).replace(/^00:/, '').replace(/^0(\d:)/, '$1')) + ' (' + x.rk + ')';
-  return x.p + '<span class="raw">' + raw + '</span>';
+  const main = d === 'f' ? (x.v !== undefined ? t('raw.vd', {v:x.v, d:x.d}) : x.p) : esc(String(x.t).replace(/^00:/, '').replace(/^0(\d:)/, '$1'));
+  return '<span class="rt">' + main + '</span><span class="raw">' + t('pts', {n:x.p}) + ' · ' + t('rel.place', {n:x.rk}) + '</span>';
 }
 function renderRelays(){
   const RD = ['f','s','o','l'];
   $('head').innerHTML = '<tr><th>' + t('rank') + '</th><th>' + t('rel.team') + '</th>' + RD.map(d => '<th class="c">' + t('d.' + d) + '</th>').join('') + '<th>' + t('total') + '</th><th class="c">' + t('rel.gap') + '</th></tr>';
   const q = state.q;
-  const rows = (DATA.relays || []).filter(r => r.e === state.ev && r.cat === state.g && (!state.nat || r.c === state.nat)
+  const rows = (DATA.relays || []).filter(r => r.e === state.ev && r.cat === state.g && (!state.nat || r.c === state.nat) && (!state.fol || r.m.some(m => SITE.follow.has(m.id)))
     && (!q || (r.c + ' ' + SITE.nation(r.c) + ' ' + r.m.map(m => m.n).join(' ')).toLowerCase().includes(q)));
-  if (!rows.length){ $('body').innerHTML = '<tr><td colspan="8" class="empty">' + t((DATA.relays || []).some(r => r.e === state.ev) ? 'noAthletes' : 'rel.none') + '</td></tr>'; return; }
+  if (!rows.length){ $('body').innerHTML = '<tr><td colspan="8" class="empty">' + t(state.fol ? 'fol.none' : (DATA.relays || []).some(r => r.e === state.ev) ? 'noAthletes' : 'rel.none') + '</td></tr>'; return; }
   const noObs = rows.every(r => r.o && r.o.st === 'NH');
   $('body').innerHTML = rows.map(r => {
-    const names = r.m.map(m => DATA.athletes[m.id] ? '<a href="#a=' + SLUG[m.id] + '">' + esc(DATA.athletes[m.id].n) + '</a>' : esc(m.n)).join(' · ');
-    const mini = RD.map(d => t('d.' + d) + ' ' + (r[d].p !== undefined ? r[d].p : (r[d].st === 'NH' ? '–' : r[d].st))).join(' · ');
-    return '<tr><td>' + r.rank + '</td><td><b>' + esc(r.c) + '</b><span class="nat">' + esc(SITE.nation(r.c)) + '</span><span class="members">' + names + '</span><span class="mini">' + esc(mini) + '</span></td>'
+    const names = r.m.map(m => DATA.athletes[m.id] ? SITE.follow.star(m.id, DATA.athletes[m.id].n) + '<a href="#a=' + SLUG[m.id] + '">' + esc(DATA.athletes[m.id].n) + '</a>' : esc(m.n)).join(' · ');
+    const grid = '<div class="rgrid">' + RD.map(d => '<div><span class="k">' + t('d.' + d) + '</span>' + relayCell(r[d], d) + '</div>').join('') + '</div>';
+    return '<tr><td>' + r.rank + '</td><td><b>' + esc(r.c) + '</b><span class="nat">' + esc(SITE.nation(r.c)) + '</span><span class="members">' + names + '</span>' + grid + '</td>'
       + RD.map(d => '<td class="c">' + relayCell(r[d], d) + '</td>').join('') + '<td class="tot">' + r.tot + '</td><td class="c n">' + (r.gap ? '+' + r.gap : '–') + '</td></tr>';
   }).join('') + (noObs ? '<tr><td colspan="8" class="n" style="text-align:left;white-space:normal">' + t('rel.noteObs') + '</td></tr>' : '');
 }
@@ -487,6 +588,7 @@ function render(){
   $('gender').querySelector('[data-g="X"]').hidden = !relay;
   $('event').style.display = (state.view === 'results' || relay) ? '' : 'none';
   $('q').style.display = h2h ? 'none' : '';
+  $('folBtn').style.display = h2h ? 'none' : ''; $('folBtn').setAttribute('aria-pressed', String(state.fol)); $('folN').textContent = SITE.follow.list().length;
   $('listWrap').hidden = h2h; $('h2h').hidden = !h2h;
   $('hint').textContent = t(HINT[state.view]);
   if (h2h) renderH2H(); else if (relay) renderRelays(); else renderList();
@@ -533,6 +635,13 @@ $('body').addEventListener('click', e => {
   render();
 });
 SITE.onLang(() => { fillSelects(); render(); });
+$('folBtn').addEventListener('click', () => { state.fol = !state.fol; state.open = null; render(); });
+let prevFol = SITE.follow.list();
+SITE.follow.onChange(list => {
+  const changed = list.find(x => !prevFol.includes(x)) || prevFol.find(x => !list.includes(x)); prevFol = list;
+  render();
+  if (changed && !SITE.calm()) document.querySelectorAll('[data-follow="' + changed + '"]').forEach(b => b.classList.add('pop'));
+});
 SITE.onTheme(render);
 render();
 </script>

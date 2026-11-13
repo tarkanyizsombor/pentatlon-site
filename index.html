@@ -107,6 +107,29 @@ a{color:inherit}
 @media (max-width:1000px){.pinfo{min-height:162px}}
 @media (max-width:760px){.pinfo{min-height:0;padding:14px 16px}.pinfo .in{grid-template-columns:1fr;gap:10px}.pinfo p{font-size:.86rem}}
 
+/* my athletes */
+.mine{margin:0 0 26px}
+.mine h2{display:flex;align-items:center;gap:8px;font-size:1.15rem;margin:0 0 12px;letter-spacing:-.01em}
+.mine h2 b{color:#f59e0b}
+.mine .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.mcard{position:relative;display:block;text-decoration:none;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 14px 12px;box-shadow:0 1px 2px rgba(29,78,216,.05),0 8px 24px rgba(29,78,216,.07);transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,border-color .2s}
+.mcard:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 14px 34px rgba(29,78,216,.14)}
+.mcard:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+:root[data-theme="dark"] .mcard{box-shadow:none}
+.mcard .who{display:flex;align-items:center;gap:6px;padding-right:28px}
+.mcard .who b{font-size:.98rem;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mcard .who span{color:var(--muted);font-size:.78rem;flex:none}
+.mcard .star{position:absolute;right:8px;top:10px;margin:0}
+.mcard dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:10px 0 0;font-size:.82rem}
+.mcard dt{color:var(--muted)}
+.mcard dd{margin:0;font-weight:600;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mcard dd em{font-style:normal;color:var(--accent)}
+.invite{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--card);border:1.5px dashed var(--line);border-radius:18px;padding:16px 18px}
+.invite p{margin:0;flex:1 1 260px;color:var(--muted);font-size:.9rem}
+.invite p b{color:#f59e0b}
+.invite a{font-weight:700;color:#fff;background:linear-gradient(135deg,#3b82f6,#1d4ed8);text-decoration:none;border-radius:12px;padding:9px 14px;white-space:nowrap}
+:root[data-theme="dark"] .invite a{background:linear-gradient(135deg,#a5dbff,#5fb6f2);color:var(--ink)}
+
 /* Los Angeles 2028 countdown */
 .la{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;border-radius:24px;padding:26px 30px;margin:0 0 30px;color:#fff;
   background:linear-gradient(120deg,#c2410c 0%,#be185d 48%,#5b21b6 100%);box-shadow:0 18px 44px rgba(190,24,93,.22)}
@@ -323,6 +346,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
 
   <a class="nextbar" id="nextbar" href="/next" hidden></a>
 
+  <section class="mine" id="mine" aria-labelledby="mineT"><h2 id="mineT"><b>★</b><span data-i18n="fol.title"></span></h2><div id="mineBody"></div></section>
   <section class="la" id="la" aria-labelledby="laT">
     <div class="glow"></div>
     <svg class="badge" viewBox="0 0 160 160" aria-hidden="true" focusable="false">
@@ -458,6 +482,32 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
   if (fine) row.addEventListener('mouseleave', () => show(pinned));
   document.addEventListener('click', e => { if (!e.target.closest('.hero .row')) { pinned = null; show(null); } });
   SITE.onLang(() => { const k = shown; shown = undefined; show(k); });
+})();
+(function(){
+  // "My athletes": results data is only downloaded when this visitor follows someone
+  const body = document.getElementById('mineBody'); if (!body) return;
+  let loading = null;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const need = () => window.DATA ? Promise.resolve() : (loading ||= new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = '/data.js'; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); }));
+  function draw(){
+    const ids = SITE.follow.list();
+    if (!ids.length){ body.innerHTML = '<div class="invite"><p>' + esc(SITE.t('fol.invite')).replace('☆', '<b>☆</b>') + '</p><a href="/athletes">' + SITE.t('fol.go') + ' →</a></div>'; return; }
+    need().then(() => {
+      const D = window.DATA, ev = Object.fromEntries(D.events.map(e => [e.id, e])), order = Object.fromEntries(D.events.map((e, i) => [e.id, i]));
+      const short = e => SITE.lang === 'hu' && e.short_hu ? e.short_hu : e.short;
+      const slugOf = n => n.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const SL = {}, used = {}; for (const [id, a] of Object.entries(D.athletes)){ let sl = slugOf(a.n); if (used[sl]) sl += '-' + id.toLowerCase(); SL[id] = sl; used[sl] = 1; }
+      const lvl = l => SITE.t('r.' + l);
+      body.innerHTML = '<div class="grid">' + ids.filter(id => D.athletes[id]).map(id => {
+        const a = D.athletes[id], st = D.standings.filter(x => x.a === id).sort((x, y) => order[x.e] - order[y.e]);
+        const best = st.reduce((b, x) => !b || x.rank < b.rank ? x : b, null), last = st[st.length - 1];
+        const fmt = x => x ? '<em>' + x.rank + '.</em> · ' + esc(short(ev[x.e])) : '–';
+        return '<a class="mcard" href="/athletes#a=' + SL[id] + '">' + SITE.follow.star(id, a.n) + '<div class="who"><b>' + esc(a.n) + '</b><span>' + esc(a.c) + '</span></div>'
+          + '<dl><dt>' + SITE.t('fol.best') + '</dt><dd>' + fmt(best) + '</dd><dt>' + SITE.t('fol.last') + '</dt><dd>' + fmt(last) + (last ? ' <span style="color:var(--muted);font-weight:500">' + esc(lvl(last.lvl)) + '</span>' : '') + '</dd></dl></a>';
+      }).join('') + '</div>';
+    }).catch(() => { body.innerHTML = ''; });
+  }
+  SITE.onLang(draw); SITE.follow.onChange(draw); draw();
 })();
 (function(){
   const h = document.querySelector('.hero'); if (!h || !matchMedia('(pointer:fine)').matches) return;

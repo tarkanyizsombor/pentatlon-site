@@ -106,7 +106,7 @@ function render(){
   $('head').innerHTML = '<tr><th>#</th><th>' + t('athlete') + '</th><th>' + t('wr.points') + '</th><th class="c">' + t('wr.best') + '</th></tr>';
   $('body').innerHTML = rows.length ? rows.map(([rk, pts, name, c, lic]) => {
     const a = DATA.athletes[lic];
-    const nm = a ? '<a href="/athletes#a=' + slugOf(a.n) + '">' + esc(name) + '</a>' : esc(name);
+    const nm = a ? SITE.follow.star(lic, a.n) + '<a href="/athletes#a=' + slugOf(a.n) + '">' + esc(name) + '</a>' : esc(name);
     const b = bestByAth[lic];
     const best = b ? b.rank + '. · ' + t('r.' + b.lvl) + ' · ' + esc(evShort(evById[b.e])) : '–';
     return '<tr class="' + (rk <= 3 ? 'top' : '') + '"><td class="rk">' + rk + '</td><td class="name">' + nm + '<span>' + esc(c) + ' · ' + esc(SITE.nation(c)) + '</span></td>'
@@ -117,6 +117,7 @@ $('gender').addEventListener('click', e => { const b = e.target.closest('button'
 $('nation').addEventListener('change', e => { state.nat = e.target.value; render(); });
 $('q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); render(); });
 SITE.onLang(render);
+SITE.follow.onChange(render);
 render();
 </script>
 </body>
