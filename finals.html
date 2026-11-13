@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Finals level · Modern Pentathlon</title>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="common.js"></script>
+<script src="data.js"></script>
+<style>
+:root{--tint:#f5f8ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;--soft:#eef4ff;--behind:#b8471b;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 6px;max-width:68ch}
+.basis{color:var(--muted);font-size:.8rem;margin:0 0 16px}
+.controls{display:flex;gap:10px;margin-bottom:16px}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 1px 3px rgba(29,78,216,.06);display:flex;flex-direction:column}
+.card h2{font-size:.95rem;margin:0 0 10px}
+.k{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.big{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;color:var(--accent);font-variant-numeric:tabular-nums}
+.big small{display:block;font-size:.8rem;font-weight:600;color:var(--muted);letter-spacing:0;margin-top:2px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{display:block;margin-top:14px}
+input{width:100%;font:inherit;font-size:1.05rem;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--tint);color:var(--text);margin-top:4px}
+input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.res{margin-top:12px;min-height:3.6em;font-size:.88rem}
+.res .pct{font-weight:700;font-size:1rem}
+.res .ahead{color:var(--accent)}
+.res .behind{color:var(--behind)}
+.res .muted{color:var(--muted)}
+.bar{position:relative;height:8px;border-radius:4px;background:var(--soft);margin:8px 0 6px;overflow:hidden}
+.bar i{position:absolute;top:0;bottom:0;border-radius:4px}
+.bar b{position:absolute;top:-3px;bottom:-3px;width:2px;left:50%;background:var(--text);opacity:.5}
+.err{color:#c0392b}
+.total{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.total .k,.total .big small,.total .muted{color:rgba(255,255,255,.8)}
+.total .big{color:var(--ink)}
+.total .res .pct{color:var(--ink)}
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto;box-shadow:0 1px 3px rgba(29,78,216,.06);margin-top:18px}
+.tbl h2{font-size:.95rem;margin:14px 14px 4px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:9px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+th:first-child,td:first-child{text-align:left}
+td span{display:block;color:var(--muted);font-size:.72rem}
+tr.all td{font-weight:700;background:var(--tint)}
+.note{font-size:.8rem;color:var(--muted);margin-top:16px;line-height:1.5}
+@media (max-width:640px){.wrap{padding:12px 12px 40px}.grid{grid-template-columns:1fr}th,td{padding:8px 6px;font-size:.82rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav id="nav"></nav>
+  <h1 data-i18n="f.title"></h1>
+  <p class="sub" id="sub"></p>
+  <p class="basis" id="basis"></p>
+  <div class="controls"><div class="seg" id="gender"><button data-g="W" class="on" data-i18n="g.W"></button><button data-g="M" data-i18n="g.M"></button></div></div>
+
+  <div class="grid" id="cards"></div>
+  <div class="grid"><div class="card total" id="totalCard"></div></div>
+
+  <div class="tbl"><h2 data-i18n="f.byComp"></h2><table><thead id="ch"></thead><tbody id="cb"></tbody></table></div>
+  <p class="note" data-i18n="f.note"></p>
+</div>
+<script>
+const DATA = window.DATA, t = SITE.t;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const evShort = e => SITE.lang === 'hu' && e.short_hu ? e.short_hu : e.short;
+const num = (v, d=1) => v.toLocaleString(SITE.lang === 'hu' ? 'hu-HU' : 'en-GB', {minimumFractionDigits:d, maximumFractionDigits:d});
+const avg = a => a.length ? a.reduce((x,y) => x+y, 0) / a.length : null;
+const toSec = s => { const p = s.split(':'); return p.length === 2 ? (+p[0]) * 60 + parseFloat(p[1]) : parseFloat(p[0]); };
+const fmtTime = sec => { const m = Math.floor(sec / 60), s = sec - m * 60; return (m ? m + ':' + (s < 10 ? '0' : '') : '') + s.toFixed(2); };
+const up = x => Math.max(0, Math.ceil(x - 1e-9));
+const POINTS = {o: t => up(445 - 3*t), s: t => up(250 + 5*(70 - t)), l: t => up(1300 - t)};
+const MINSEC = {o: 0, s: 40, l: 300};
+
+// Same flexible time reading as the calculator: 1:05.64, 1:05,64, 1.05,64, 65,64 ...
+function parseT(s, minSec){
+  s = s.trim().replace(/\s+/g, ''); if (!s) return null;
+  let m, sec;
+  if (s.includes(':')){ const [a, b, ...rest] = s.split(':'); if (rest.length || b === undefined) return NaN; m = a; sec = b.replace(',', '.'); }
+  else {
+    const parts = s.split(/[.,]/);
+    if (parts.length === 3){ m = parts[0]; sec = parts[1] + '.' + parts[2]; }
+    else if (parts.length <= 2){ const v = parseFloat(parts.join('.')); if (parts.length === 2 && minSec && v < minSec && parts[1].length === 2){ m = parts[0]; sec = parts[1]; } else { m = '0'; sec = parts.join('.'); } }
+    else return NaN;
+  }
+  if (!/^\d*$/.test(m) || !/^\d+(\.\d+)?$/.test(sec)) return NaN;
+  const v = parseInt(m || '0', 10) * 60 + parseFloat(sec);
+  return isFinite(v) && v > 0 ? v : NaN;
+}
+
+let g = 'W';
+const store = {get(k){ try { return localStorage.getItem('pb.' + k) || ''; } catch(e){ return ''; } }, set(k, v){ try { localStorage.setItem('pb.' + k, v); } catch(e){} }};
+
+// Final-round performances only
+function finals(evId){
+  return DATA.results.filter(r => r.r === 'F' && DATA.athletes[r.a].g === g && (!evId || r.e === evId));
+}
+function stats(rs){
+  const out = {n: rs.length};
+  // fencing: finalists' seeding round record (same pool format as a ranking round)
+  const fs = rs.filter(r => r.f.v !== undefined && (r.f.v + r.f.d) > 0);
+  out.fwr = avg(fs.map(r => r.f.v / (r.f.v + r.f.d)));
+  out.fv = avg(fs.map(r => r.f.v)); out.fd = avg(fs.map(r => r.f.d));
+  out.f = avg(rs.filter(r => r.f.p !== undefined).map(r => r.f.p));
+  out.osl = avg(rs.filter(r => ['o','s','l'].every(d => r[d].p !== undefined)).map(r => r.o.p + r.s.p + r.l.p));
+  for (const d of ['o','s','l']){
+    const ok = rs.filter(r => r[d].p !== undefined);
+    out[d] = avg(ok.map(r => r[d].p));
+    out[d + 't'] = avg(ok.map(r => toSec(r[d].t)));
+  }
+  out.t = avg(rs.filter(r => ['f','o','s','l'].every(d => r[d].p !== undefined)).map(r => r.tot));
+  return out;
+}
+
+function cardHTML(d){
+  if (d === 'f') return '<div class="card"><h2>' + t('d.f') + '</h2><span class="k">' + t('f.avg') + '</span><div class="big" id="avg-f"></div>'
+    + '<div class="pair"><label><span class="k">' + t('c.v') + '</span><input id="in-fv" inputmode="numeric" placeholder="20" value="' + esc(store.get(g + 'fv')) + '"></label>'
+    + '<label><span class="k">' + t('c.d') + '</span><input id="in-fd" inputmode="numeric" placeholder="15" value="' + esc(store.get(g + 'fd')) + '"></label></div>'
+    + '<div class="res" id="res-f"></div></div>';
+  const isF = false;
+  const title = d === 's' ? t('c.swim') : t('d.' + d);
+  const label = isF ? t('f.yourPts') : t('f.yours');
+  const ph = {f:'220', o:'30,00', s:'1:05,00', l:'11:30,00'}[d];
+  return '<div class="card"><h2>' + esc(title) + '</h2><span class="k">' + t('f.avg') + '</span><div class="big" id="avg-' + d + '"></div>'
+    + '<label><span class="k">' + esc(label) + '</span><input id="in-' + d + '" inputmode="decimal" placeholder="' + ph + '" value="' + esc(store.get(g + d)) + '"></label>'
+    + '<div class="res" id="res-' + d + '"></div></div>';
+}
+
+function bar(pct){
+  // 0 = finals average in the middle; ±20% fills each side
+  const w = Math.min(50, Math.abs(pct) / 20 * 50);
+  const ahead = pct >= 0;
+  return '<div class="bar" aria-hidden="true"><i style="' + (ahead ? 'left:50%' : 'right:50%') + ';width:' + w + '%;background:' + (ahead ? 'var(--accent)' : 'var(--behind)') + '"></i><b></b></div>';
+}
+
+function update(){
+  const S = stats(finals());
+  let yourTotal = 0, filled = 0;
+  // fencing: compare win rate with the finalists' seeding round
+  {
+    const el = $('res-f'), V = $('in-fv').value.trim(), D = $('in-fd').value.trim();
+    store.set(g + 'fv', V); store.set(g + 'fd', D);
+    const v = parseInt(V, 10), dd = parseInt(D, 10);
+    if (V === '' || D === '') el.innerHTML = '<span class="muted">' + t('f.fencingNote') + '</span>';
+    else if (isNaN(v) || isNaN(dd) || v < 0 || dd < 0 || v + dd === 0) el.innerHTML = '<span class="err">?</span>';
+    else {
+      const wr = v / (v + dd), pct = (wr - S.fwr) / S.fwr * 100;
+      const diff = Math.round(Math.abs(wr - S.fwr) * 35);
+      el.innerHTML = bar(pct) + verdict(pct, 'pts') + '<br><span class="muted">' + num(wr * 100, 0) + '% ' + t('f.wr') + ' · '
+        + (diff ? t((wr >= S.fwr ? 'f.aheadW' : 'f.needW') + (diff === 1 ? '1' : ''), {n: diff}) : '') + '</span>';
+    }
+  }
+  for (const d of ['o','s','l']){
+    const el = $('res-' + d), val = $('in-' + d).value;
+    store.set(g + d, val);
+    if (!val.trim()){ el.innerHTML = ''; continue; }
+    const sec = parseT(val, MINSEC[d]);
+    if (sec === null || isNaN(sec)){ el.innerHTML = '<span class="err">?</span>'; continue; }
+    const avgT = S[d + 't'], pts = POINTS[d](sec);
+    const pct = (avgT - sec) / avgT * 100;         // positive = faster than the finals average
+    yourTotal += pts; filled++;
+    el.innerHTML = bar(pct) + verdict(pct, 'time') + '<br><span class="muted">'
+      + t(sec <= avgT ? 'f.aheadT' : 'f.needT', {s: num(Math.abs(sec - avgT), 2)}) + ' '
+      + t('f.youScore', {n: pts, a: num(S[d])}) + '</span>';
+  }
+  const tc = $('totalCard');
+  let h = '<span class="k">' + t('f.three') + '</span>';
+  if (filled === 3){
+    const pct = (yourTotal - S.osl) / S.osl * 100;
+    h += '<div class="big">' + yourTotal + '<small>' + t('f.avg') + ': ' + num(S.osl) + '</small></div><div class="res">' + verdict(pct, 'pts') + '<br><span class="muted">'
+      + t(yourTotal >= S.osl ? 'f.aheadP' : 'f.needP', {s: num(Math.abs(S.osl - yourTotal))}) + '</span></div>';
+  } else {
+    h += '<div class="big">–<small>' + t('f.avg') + ': ' + num(S.osl) + '</small></div><div class="res"><span class="muted">' + t('f.threeHint') + '</span></div>';
+  }
+  tc.innerHTML = h;
+}
+function verdict(pct, kind){
+  const p = num(Math.abs(pct));
+  if (Math.abs(pct) < 0.05) return '<span class="pct">' + t('f.equal') + '</span>';
+  const ahead = pct > 0;
+  const key = kind === 'time' ? (ahead ? 'f.faster' : 'f.slower') : (ahead ? 'f.above' : 'f.below');
+  return '<span class="pct ' + (ahead ? 'ahead' : 'behind') + '">' + (ahead ? '▲ ' : '▼ ') + t(key, {p}) + '</span>';
+}
+
+function render(){
+  const rs = finals(), S = stats(rs);
+  const evs = DATA.events.filter(e => rs.some(r => r.e === e.id));
+  $('sub').textContent = t('f.sub', {n: evs.length});
+  $('basis').textContent = t('f.basis', {n: rs.length, list: evs.map(evShort).join(', ')});
+  $('cards').innerHTML = ['f','o','s','l'].map(cardHTML).join('');
+  $('avg-f').innerHTML = num(S.fwr * 100) + '%<small>' + t('f.wr') + ' · ' + t('f.fSeed', {v: num(S.fv), d: num(S.fd)}) + '</small>';
+  for (const d of ['o','s','l']) $('avg-' + d).innerHTML = fmtTime(S[d + 't']) + '<small>' + num(S[d]) + ' ' + t('points').toLowerCase() + '</small>';
+  ['fv','fd','o','s','l'].forEach(d => $('in-' + d).addEventListener('input', update));
+  // by competition
+  $('ch').innerHTML = '<tr><th>' + t('b.comp') + '</th>' + ['f','o','s','l'].map(d => '<th>' + t('d.' + d) + '</th>').join('') + '<th>' + t('total') + '</th></tr>';
+  const row = (name, s, cls) => '<tr class="' + (cls || '') + '"><td>' + esc(name) + '</td><td>' + num(s.fwr * 100) + '%<span>' + t('f.wr') + '</span></td>'
+    + ['o','s','l'].map(d => '<td>' + num(s[d]) + '<span>' + fmtTime(s[d + 't']) + '</span></td>').join('') + '<td>' + num(s.t) + '</td></tr>';
+  $('cb').innerHTML = evs.map(e => row(evShort(e), stats(finals(e.id)))).join('') + row(t('f.all'), S, 'all');
+  update();
+}
+$('gender').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  g = b.dataset.g;
+  $('gender').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+  render();
+});
+SITE.onLang(render);
+render();
+</script>
+</body>
+</html>

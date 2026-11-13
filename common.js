@@ -2,7 +2,7 @@
 (function(){
   const I18N = {
     en: {
-      'nav.home':'Home', 'nav.calc':'Calculator', 'nav.athletes':'Athletes', 'nav.bests':'Season bests', 'nav.about':'About',
+      'nav.home':'Home', 'nav.calc':'Calculator', 'nav.athletes':'Athletes', 'nav.bests':'Season bests', 'nav.final':'Finals level', 'nav.about':'About',
       'g.W':'Women', 'g.M':'Men', 'allNations':'All nations', 'search':'Search athlete or nation',
       'd.f':'Fencing', 'd.o':'Obstacle', 'd.s':'Swim', 'd.l':'Laser Run', 'total':'Total', 'combined':'Combined',
       'rounds':'Rounds', 'rank':'Rank', 'athlete':'Athlete', 'place':'Place', 'round':'Round', 'points':'Points',
@@ -39,6 +39,21 @@
       'b.time':'Time', 'b.comp':'Competition', 'b.wins':'Win rate', 'b.none':'No results.',
       'b.note':'Obstacle courses and laser run courses differ between venues, and swims took place in both 25m and 50m pools, so times are not perfectly comparable. Fencing win rate is ranking-round victories divided by bouts.',
 
+
+      /* finals level */
+      'f.title':'Finals level',
+      'f.sub':'The average of every finalist across the {n} competitions of 2026. Enter your personal bests to see how far you are from final level and how much you need to improve.',
+      'f.basis':'Based on {n} final performances: {list}.',
+      'f.avg':'Finals average', 'f.yours':'Your personal best', 'f.wr':'win rate', 'f.yourV':'Your victories', 'f.yourD':'Your defeats', 'f.fSeed':'Finalists’ seeding round record: {v}V–{d}D on average.', 'f.needW':'In a 35-bout pool that’s about {n} more victories.', 'f.needW1':'In a 35-bout pool that’s about 1 more victory.', 'f.aheadW1':'In a 35-bout pool that’s about 1 victory more.', 'f.aheadW':'In a 35-bout pool that’s about {n} victories more.', 'f.three':'Obstacle + Swim + Laser Run', 'f.threeHint':'Fill in obstacle, swim and laser run to compare your combined points with the finals average.',
+      'f.faster':'{p}% faster than the finals average', 'f.slower':'{p}% slower than the finals average',
+      'f.above':'{p}% above the finals average', 'f.below':'{p}% below the finals average', 'f.equal':'Right on the finals average',
+      'f.needT':'You need to be {s} s faster to reach it.', 'f.aheadT':'You are {s} s ahead of it.',
+      'f.needP':'You need {s} more points to reach it.', 'f.aheadP':'You are {s} points ahead of it.',
+      'f.youScore':'That’s {n} points; the finals average is {a}.',
+      'f.total':'Your total', 'f.totalHint':'Fill in all four to compare your total with the finals average.',
+      'f.byComp':'Finals average by competition', 'f.all':'All competitions',
+      'f.fencingNote':'Finals fencing points are set by direct-elimination place, so the comparison uses the seeding round win rate instead. Enter your victories and defeats from a ranking round.',
+      'f.note':'Averages leave out eliminations. In obstacle, swimming and laser run a lower time is better. Courses and pools differ between venues, so treat the comparison as a guide.',
       /* about */
       'about.title':'About this site',
       'about.p1':'I created this site because there was no single place to see athletes’ average performances across a season. Official results show each competition on its own, but averages reveal much more: how consistent an athlete is, where their strengths lie, and which disciplines offer the most room for improvement.',
@@ -77,7 +92,7 @@
       'c.note':'All formulas were checked against every result from the 2026 World Cups, European Championships and World Championships. In qualification, fencing is the ranking round (70% of bouts won = 250 points); in semi-finals and finals it is direct elimination, scored by final place. A red card in the ranking round costs 10 points; enter it as penalty points.'
     },
     hu: {
-      'nav.home':'Főoldal', 'nav.calc':'Kalkulátor', 'nav.athletes':'Versenyzők', 'nav.bests':'Szezonlegjobbak', 'nav.about':'Rólam',
+      'nav.home':'Főoldal', 'nav.calc':'Kalkulátor', 'nav.athletes':'Versenyzők', 'nav.bests':'Szezonlegjobbak', 'nav.final':'Döntős szint', 'nav.about':'Rólam',
       'g.W':'Nők', 'g.M':'Férfiak', 'allNations':'Minden nemzet', 'search':'Versenyző vagy nemzet keresése',
       'd.f':'Vívás', 'd.o':'Akadályfutás', 'd.s':'Úszás', 'd.l':'Lézerfutás', 'total':'Összesen', 'combined':'Együtt',
       'rounds':'Fordulók', 'rank':'Hely.', 'athlete':'Versenyző', 'place':'Hely', 'round':'Forduló', 'points':'Pont',
@@ -112,6 +127,20 @@
       'b.time':'Idő', 'b.comp':'Verseny', 'b.wins':'Győzelmi arány', 'b.none':'Nincs eredmény.',
       'b.note':'Az akadálypályák és a lézerfutó pályák helyszínenként eltérnek, és az úszás 25 és 50 méteres medencében is zajlott, ezért az idők nem teljesen összehasonlíthatók. A vívás győzelmi aránya a körmérkőzésen szerzett győzelmek és az asszók számának hányadosa.',
 
+
+      'f.title':'Döntős szint',
+      'f.sub':'A 2026-os szezon {n} versenyének összes döntősének átlaga. Add meg az egyéni csúcsaidat, és megmutatjuk, milyen messze vagy a döntős szinttől, és mennyit kell fejlődnöd.',
+      'f.basis':'{n} döntős teljesítmény alapján: {list}.',
+      'f.avg':'Döntős átlag', 'f.yours':'Egyéni csúcsod', 'f.wr':'győzelmi arány', 'f.yourV':'Győzelmeid', 'f.yourD':'Vereségeid', 'f.fSeed':'A döntősök átlagos kiemelő köre: {v}GY–{d}V.', 'f.needW':'Egy 35 asszós körben ez kb. {n} győzelemmel több.', 'f.needW1':'Egy 35 asszós körben ez kb. 1 győzelemmel több.', 'f.aheadW1':'Egy 35 asszós körben ez kb. 1 győzelemmel több.', 'f.aheadW':'Egy 35 asszós körben ez kb. {n} győzelemmel több.', 'f.three':'Akadályfutás + úszás + lézerfutás', 'f.threeHint':'Töltsd ki az akadályfutást, az úszást és a lézerfutást, hogy a három együttes pontszámát összevesd a döntős átlaggal.',
+      'f.faster':'{p}%-kal gyorsabb a döntős átlagnál', 'f.slower':'{p}%-kal lassabb a döntős átlagnál',
+      'f.above':'{p}%-kal a döntős átlag felett', 'f.below':'{p}%-kal a döntős átlag alatt', 'f.equal':'Pontosan a döntős átlagon',
+      'f.needT':'{s} mp-cel kell gyorsabbnak lenned, hogy elérd.', 'f.aheadT':'{s} mp-cel jobb vagy nála.',
+      'f.needP':'{s} ponttal többre van szükséged, hogy elérd.', 'f.aheadP':'{s} ponttal jobb vagy nála.',
+      'f.youScore':'Ez {n} pont; a döntős átlag {a}.',
+      'f.total':'Összpontszámod', 'f.totalHint':'Töltsd ki mind a négyet, hogy az összpontszámodat is összevesd a döntős átlaggal.',
+      'f.byComp':'Döntős átlag versenyenként', 'f.all':'Összes verseny',
+      'f.fencingNote':'A döntőben a vívás pontjait az egyenes kiesésben elért hely adja, ezért az összevetés a kiemelő kör győzelmi arányát használja. Add meg egy körmérkőzésed győzelmeit és vereségeit.',
+      'f.note':'Az átlagok a kizárások nélkül számolnak. Akadályfutásban, úszásban és lézerfutásban a kisebb idő a jobb. A pályák és medencék helyszínenként eltérnek, ezért az összevetést tájékoztató jellegűnek tekintsd.',
       'about.title':'Az oldalról',
       'about.p1':'Azért hoztam létre ezt az oldalt, mert nem volt olyan hely, ahol a versenyzők szezonbeli átlageredményeit egy helyen meg lehetett volna nézni. A hivatalos eredmények minden versenyt külön mutatnak, az átlagok viszont sokkal többet elárulnak: mennyire egyenletes egy versenyző teljesítménye, hol vannak az erősségei, és mely számokban van a legtöbb fejlődési lehetőség.',
       'about.p2':'Célom, hogy ezek a számok könnyen áttekinthetők legyenek, így a versenyzők és az edzők reális célokat tűzhetnek ki, és jobban megtervezhetik a jövőbeli edzéseket.',
@@ -176,7 +205,7 @@
     listeners.forEach(fn => fn(l));
   }
 
-  const PAGES = [['index.html','nav.home'],['calculator.html','nav.calc'],['athletes.html','nav.athletes'],['bests.html','nav.bests'],['about.html','nav.about']];
+  const PAGES = [['index.html','nav.home'],['calculator.html','nav.calc'],['athletes.html','nav.athletes'],['bests.html','nav.bests'],['finals.html','nav.final'],['about.html','nav.about']];
 
   function nav(){
     const el = document.getElementById('nav'); if (!el) return;
