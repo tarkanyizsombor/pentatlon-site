@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="The fastest obstacle, swim and laser run of the 2026 modern pentathlon season, the best fencing and the highest totals.">
-<link rel="canonical" href="https://ottusaeredmenyek.com/bests.html">
+<link rel="canonical" href="https://ottusaeredmenyek.com/bests">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Modern Pentathlon by Tárkányi Zsombor">
 <meta property="og:title" content="Season Bests 2026 · Modern Pentathlon">
 <meta property="og:description" content="The fastest obstacle, swim and laser run of the 2026 modern pentathlon season, the best fencing and the highest totals.">
-<meta property="og:url" content="https://ottusaeredmenyek.com/bests.html">
+<meta property="og:url" content="https://ottusaeredmenyek.com/bests">
 <meta property="og:image" content="https://ottusaeredmenyek.com/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -79,6 +79,13 @@ const evById = Object.fromEntries(DATA.events.map(e => [e.id, e]));
 const evShort = e => SITE.lang === 'hu' && e.short_hu ? e.short_hu : e.short;
 const TOP = 10;
 let state = {g:'W', nat:''};
+// shareable address: #g=M&n=HUN
+{ const h = new URLSearchParams(location.hash.slice(1)); if (h.get('g') === 'M') state.g = 'M'; if (h.get('n')) state.nat = h.get('n').toUpperCase(); }
+function writeHash(){
+  const h = new URLSearchParams(); if (state.g !== 'W') h.set('g', state.g); if (state.nat) h.set('n', state.nat);
+  history.replaceState(null, '', location.pathname + (h.toString() ? '#' + h : ''));
+  $('gender').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.g === state.g));
+}
 
 function where(r){ return esc(evShort(evById[r.e])) + ' · ' + t('r.' + r.r) + (r.grp ? ' ' + esc(r.grp) : ''); }
 
@@ -105,6 +112,7 @@ function list(title, rows, value){
 }
 
 function render(){
+  writeHash();
   const timed = d => best(r => r[d].p !== undefined ? r[d].p : null);
   const time = (r, d) => esc(r[d].t.replace(/^00:/, '').replace(/^0(\d:)/, '$1')) + '<span>' + t('pts', {n:r[d].p}) + '</span>';
   // fencing: ranking-round win rate (qualification rounds), ties broken by number of victories
@@ -120,7 +128,7 @@ function render(){
 function fillNations(){
   const nats = [...new Set(Object.values(DATA.athletes).filter(a => a.g === state.g).map(a => a.c))].sort();
   if (state.nat && !nats.includes(state.nat)) state.nat = '';
-  $('nation').innerHTML = '<option value="">' + t('allNations') + '</option>' + nats.map(c => '<option>' + esc(c) + '</option>').join('');
+  $('nation').innerHTML = '<option value="">' + t('allNations') + '</option>' + nats.map(c => '<option value="' + esc(c) + '">' + esc(c) + (SITE.nation(c) !== c ? ' · ' + esc(SITE.nation(c)) : '') + '</option>').join('');
   $('nation').value = state.nat;
 }
 $('gender').addEventListener('click', e => {

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="The average of every 2026 finalist in each discipline. Enter your personal bests to see how far you are from final level.">
-<link rel="canonical" href="https://ottusaeredmenyek.com/finals.html">
+<link rel="canonical" href="https://ottusaeredmenyek.com/finals">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Modern Pentathlon by Tárkányi Zsombor">
 <meta property="og:title" content="Finals Level · Modern Pentathlon">
 <meta property="og:description" content="The average of every 2026 finalist in each discipline. Enter your personal bests to see how far you are from final level.">
-<meta property="og:url" content="https://ottusaeredmenyek.com/finals.html">
+<meta property="og:url" content="https://ottusaeredmenyek.com/finals">
 <meta property="og:image" content="https://ottusaeredmenyek.com/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -118,7 +118,7 @@ function parseT(s, minSec){
   return isFinite(v) && v > 0 ? v : NaN;
 }
 
-let g = 'W';
+let g = new URLSearchParams(location.hash.slice(1)).get('g') === 'M' ? 'M' : 'W';   // shareable: #g=M
 const store = {get(k){ try { return localStorage.getItem('pb.' + k) || ''; } catch(e){ return ''; } }, set(k, v){ try { localStorage.setItem('pb.' + k, v); } catch(e){} }};
 
 // Final-round performances only
@@ -213,6 +213,8 @@ function verdict(pct, kind){
 }
 
 function render(){
+  history.replaceState(null, '', location.pathname + (g === 'M' ? '#g=M' : ''));
+  $('gender').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.g === g));
   const rs = finals(), S = stats(rs);
   const evs = DATA.events.filter(e => rs.some(r => r.e === e.id));
   $('sub').textContent = t('f.sub', {n: evs.length});

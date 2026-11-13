@@ -7,7 +7,7 @@
   const I18N = {
     en: {
       'theme.dark':'Dark mode', 'theme.light':'Light mode',
-      'nav.home':'Home', 'nav.calc':'Calculator', 'nav.athletes':'Athletes', 'nav.bests':'Season bests', 'nav.final':'Finals level', 'nav.about':'About',
+      'nav.home':'Home', 'nav.calc':'Calculator', 'nav.athletes':'Athletes', 'nav.bests':'Season bests', 'nav.final':'Finals level', 'nav.nations':'Nations', 'nav.log':'My log', 'nav.about':'About',
       'g.W':'Women', 'g.M':'Men', 'allNations':'All nations', 'search':'Search athlete or nation',
       'd.f':'Fencing', 'd.o':'Obstacle', 'd.s':'Swim', 'd.l':'Laser Run', 'total':'Total', 'combined':'Combined',
       'rounds':'Rounds', 'rank':'Rank', 'athlete':'Athlete', 'place':'Place', 'round':'Round', 'points':'Points',
@@ -59,6 +59,27 @@
       'f.byComp':'Finals average by competition', 'f.all':'All competitions',
       'f.fencingNote':'Finals fencing points are set by direct-elimination place, so the comparison uses the seeding round win rate instead. Enter your victories and defeats from a ranking round.',
       'f.note':'Averages leave out eliminations. In obstacle, swimming and laser run a lower time is better. Courses and pools differ between venues, so treat the comparison as a guide.',
+
+      /* sharing */
+      'share':'Share', 'share.copied':'Link copied', 'share.athlete':'Share this athlete', 'share.h2h':'Share this comparison',
+
+      /* nations */
+      'n.title':'Nations', 'n.sub':'Medals, finalists and semi-finalists by nation across the {n} competitions of 2026.',
+      'n.all':'All', 'n.nation':'Nation', 'n.gold':'Gold', 'n.silver':'Silver', 'n.bronze':'Bronze', 'n.medals':'Medals',
+      'n.finals':'Finals', 'n.semis':'Semi-finals', 'n.athletes':'Athletes',
+      'n.note':'Medals are the top three in each individual final. Finals and semi-finals count every appearance (one athlete at five finals counts five). Each result counts for the nation the athlete represented at that competition. Tap a nation to see its athletes.',
+      'n.seeAll':'See {c} athletes →', 'n.best':'Best result', 'n.neutral':'Neutral athletes',
+
+      /* training log */
+      'log.title':'My training log', 'log.sub':'Save your competition and training results to see your progress and how close you are to the finals average. Everything stays on this device.',
+      'log.add':'Add a result', 'log.date':'Date', 'log.type':'Type', 'log.comp':'Competition', 'log.train':'Training', 'log.name':'Name or note (optional)',
+      'log.save':'Save result', 'log.saved':'Saved.', 'log.needOne':'Enter at least one discipline.', 'log.badTime':'Check the time in {d}.',
+      'log.compareWith':'Compare with the finals average of',
+      'log.pbs':'Personal bests', 'log.noPb':'No result yet', 'log.progress':'Progress', 'log.prog2':'Charts appear after two results in a discipline.',
+      'log.history':'All results', 'log.empty':'No results yet. Add your first one above.', 'log.delete':'Delete', 'log.confirmDel':'Delete this result?',
+      'log.finalsAvg':'finals avg', 'log.winRate':'win rate',
+      'log.backup':'Backup', 'log.backupHint':'Your log is saved only in this browser. Download a backup file now and then, and load it on another device to move your log.',
+      'log.export':'Download backup', 'log.import':'Load backup', 'log.imported':'Loaded {n} results.', 'log.badFile':'That file isn’t a valid backup.',
       /* about */
       'about.title':'About this site',
       'about.p1':'I created this site because there was no single place to see athletes’ average performances across a season. Official results show each competition on its own, but averages reveal much more: how consistent an athlete is, where their strengths lie, and which disciplines offer the most room for improvement.',
@@ -98,7 +119,7 @@
     },
     hu: {
       'theme.dark':'Sötét mód', 'theme.light':'Világos mód',
-      'nav.home':'Főoldal', 'nav.calc':'Kalkulátor', 'nav.athletes':'Versenyzők', 'nav.bests':'Szezonlegjobbak', 'nav.final':'Döntős szint', 'nav.about':'Rólam',
+      'nav.home':'Főoldal', 'nav.calc':'Kalkulátor', 'nav.athletes':'Versenyzők', 'nav.bests':'Szezonlegjobbak', 'nav.final':'Döntős szint', 'nav.nations':'Nemzetek', 'nav.log':'Edzésnaplóm', 'nav.about':'Rólam',
       'g.W':'Nők', 'g.M':'Férfiak', 'allNations':'Minden nemzet', 'search':'Versenyző vagy nemzet keresése',
       'd.f':'Vívás', 'd.o':'Akadályfutás', 'd.s':'Úszás', 'd.l':'Lézerfutás', 'total':'Összesen', 'combined':'Együtt',
       'rounds':'Fordulók', 'rank':'Hely.', 'athlete':'Versenyző', 'place':'Hely', 'round':'Forduló', 'points':'Pont',
@@ -147,6 +168,24 @@
       'f.byComp':'Döntős átlag versenyenként', 'f.all':'Összes verseny',
       'f.fencingNote':'A döntőben a vívás pontjait az egyenes kiesésben elért hely adja, ezért az összevetés a kiemelő kör győzelmi arányát használja. Add meg egy körmérkőzésed győzelmeit és vereségeit.',
       'f.note':'Az átlagok a kizárások nélkül számolnak. Akadályfutásban, úszásban és lézerfutásban a kisebb idő a jobb. A pályák és medencék helyszínenként eltérnek, ezért az összevetést tájékoztató jellegűnek tekintsd.',
+
+      'share':'Megosztás', 'share.copied':'Link kimásolva', 'share.athlete':'Versenyző megosztása', 'share.h2h':'Összehasonlítás megosztása',
+
+      'n.title':'Nemzetek', 'n.sub':'Érmek, döntősök és elődöntősök nemzetenként a 2026-os szezon {n} versenyén.',
+      'n.all':'Mind', 'n.nation':'Nemzet', 'n.gold':'Arany', 'n.silver':'Ezüst', 'n.bronze':'Bronz', 'n.medals':'Érmek',
+      'n.finals':'Döntők', 'n.semis':'Elődöntők', 'n.athletes':'Versenyzők',
+      'n.note':'Érmet az egyéni döntők első három helyezettje kap. A döntőknél és elődöntőknél minden szereplés számít (egy versenyző öt döntője ötnek számít). Minden eredmény annak a nemzetnek számít, amelyet a versenyző az adott versenyen képviselt. Koppints egy nemzetre a versenyzőiért.',
+      'n.seeAll':'{c} versenyzőinek megtekintése →', 'n.best':'Legjobb eredmény', 'n.neutral':'Semleges versenyzők',
+
+      'log.title':'Edzésnaplóm', 'log.sub':'Mentsd el a verseny- és edzéseredményeidet, hogy lásd a fejlődésedet és azt, mennyire vagy közel a döntős átlaghoz. Minden ezen az eszközön marad.',
+      'log.add':'Eredmény hozzáadása', 'log.date':'Dátum', 'log.type':'Típus', 'log.comp':'Verseny', 'log.train':'Edzés', 'log.name':'Név vagy megjegyzés (nem kötelező)',
+      'log.save':'Eredmény mentése', 'log.saved':'Elmentve.', 'log.needOne':'Adj meg legalább egy számot.', 'log.badTime':'Ellenőrizd az időt: {d}.',
+      'log.compareWith':'Összevetés ezzel a döntős átlaggal:',
+      'log.pbs':'Egyéni csúcsok', 'log.noPb':'Még nincs eredmény', 'log.progress':'Fejlődés', 'log.prog2':'A grafikonok két eredmény után jelennek meg egy számban.',
+      'log.history':'Összes eredmény', 'log.empty':'Még nincs eredmény. Add hozzá az elsőt fent.', 'log.delete':'Törlés', 'log.confirmDel':'Törlöd ezt az eredményt?',
+      'log.finalsAvg':'döntős átl.', 'log.winRate':'győzelmi arány',
+      'log.backup':'Biztonsági mentés', 'log.backupHint':'A naplód csak ebben a böngészőben van elmentve. Időnként tölts le egy mentést, és ezzel másik eszközre is átviheted.',
+      'log.export':'Mentés letöltése', 'log.import':'Mentés betöltése', 'log.imported':'{n} eredmény betöltve.', 'log.badFile':'Ez a fájl nem érvényes mentés.',
       'about.title':'Az oldalról',
       'about.p1':'Azért hoztam létre ezt az oldalt, mert nem volt olyan hely, ahol a versenyzők szezonbeli átlageredményeit egy helyen meg lehetett volna nézni. A hivatalos eredmények minden versenyt külön mutatnak, az átlagok viszont sokkal többet elárulnak: mennyire egyenletes egy versenyző teljesítménye, hol vannak az erősségei, és mely számokban van a legtöbb fejlődési lehetőség.',
       'about.p2':'Célom, hogy ezek a számok könnyen áttekinthetők legyenek, így a versenyzők és az edzők reális célokat tűzhetnek ki, és jobban megtervezhetik a jövőbeli edzéseket.',
@@ -196,6 +235,32 @@
     return s;
   }
 
+
+  // Country names (IOC codes) in English and Hungarian
+  const NATIONS = {
+    AFG:['Afghanistan','Afganisztán'], ANA:['Neutral athletes (A)','Semleges versenyzők (A)'], ANB:['Neutral athletes (B)','Semleges versenyzők (B)'], AIN:['Individual Neutral Athletes','Egyéni semleges versenyzők'], UIPM:['UIPM athletes','UIPM versenyzők'],
+    AUS:['Australia','Ausztrália'], AUT:['Austria','Ausztria'], BEL:['Belgium','Belgium'], BLR:['Belarus','Fehéroroszország'], BOL:['Bolivia','Bolívia'], BRA:['Brazil','Brazília'],
+    BUL:['Bulgaria','Bulgária'], BUR:['Burkina Faso','Burkina Faso'], CAN:['Canada','Kanada'], CHN:['China','Kína'], CUB:['Cuba','Kuba'], CZE:['Czechia','Csehország'],
+    ECU:['Ecuador','Ecuador'], EGY:['Egypt','Egyiptom'], ESP:['Spain','Spanyolország'], EST:['Estonia','Észtország'], FIN:['Finland','Finnország'], FRA:['France','Franciaország'],
+    GBR:['Great Britain','Nagy-Britannia'], GEO:['Georgia','Grúzia'], GER:['Germany','Németország'], GRE:['Greece','Görögország'], GUA:['Guatemala','Guatemala'], HKG:['Hong Kong','Hongkong'],
+    HUN:['Hungary','Magyarország'], INA:['Indonesia','Indonézia'], IND:['India','India'], IRI:['Iran','Irán'], IRL:['Ireland','Írország'], ITA:['Italy','Olaszország'],
+    JPN:['Japan','Japán'], KAZ:['Kazakhstan','Kazahsztán'], KGZ:['Kyrgyzstan','Kirgizisztán'], KOR:['South Korea','Dél-Korea'], KSA:['Saudi Arabia','Szaúd-Arábia'], LBN:['Lebanon','Libanon'],
+    LTU:['Lithuania','Litvánia'], MDA:['Moldova','Moldova'], MEX:['Mexico','Mexikó'], MGL:['Mongolia','Mongólia'], NEP:['Nepal','Nepál'], NZL:['New Zealand','Új-Zéland'],
+    PER:['Peru','Peru'], PHI:['Philippines','Fülöp-szigetek'], PLE:['Palestine','Palesztina'], POL:['Poland','Lengyelország'], RSA:['South Africa','Dél-afrikai Köztársaság'], RUS:['Russia','Oroszország'],
+    SGP:['Singapore','Szingapúr'], SRI:['Sri Lanka','Srí Lanka'], SUI:['Switzerland','Svájc'], SVK:['Slovakia','Szlovákia'], SWE:['Sweden','Svédország'], THA:['Thailand','Thaiföld'],
+    TPE:['Chinese Taipei','Kínai Tajpej'], TUR:['Türkiye','Törökország'], UKR:['Ukraine','Ukrajna'], USA:['United States','Egyesült Államok'], UZB:['Uzbekistan','Üzbegisztán'], VEN:['Venezuela','Venezuela']
+  };
+  const nation = c => (NATIONS[c] ? NATIONS[c][lang === 'hu' ? 1 : 0] : c);
+
+  // Share a link: the phone's share sheet when available, otherwise copy to the clipboard
+  async function share(url, title, btn){
+    try { if (navigator.share){ await navigator.share({url, title}); return; } } catch(e){ if (e && e.name === 'AbortError') return; }
+    try { await navigator.clipboard.writeText(url); } catch(e){
+      const ta = document.createElement('textarea'); ta.value = url; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch(_){} ta.remove();
+    }
+    if (btn){ const old = btn.textContent; btn.textContent = t('share.copied'); setTimeout(() => btn.textContent = old, 1600); }
+  }
+
   function apply(){
     document.documentElement.lang = lang;
     document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
@@ -232,13 +297,14 @@
     listeners.forEach(fn => fn(l));
   }
 
-  const PAGES = [['index.html','nav.home'],['calculator.html','nav.calc'],['athletes.html','nav.athletes'],['bests.html','nav.bests'],['finals.html','nav.final'],['about.html','nav.about']];
+  // Clean addresses (Vercel serves /calculator from calculator.html)
+  const PAGES = [['/','index','nav.home'],['/calculator','calculator','nav.calc'],['/athletes','athletes','nav.athletes'],['/nations','nations','nav.nations'],['/bests','bests','nav.bests'],['/finals','finals','nav.final'],['/log','log','nav.log'],['/about','about','nav.about']];
 
   function nav(){
     const el = document.getElementById('nav'); if (!el) return;
     const here = (location.pathname.split('/').pop() || 'index.html').replace(/\.html$/, '') || 'index';
-    el.innerHTML = '<div class="links">' + PAGES.map(([href, key]) => {
-      const on = href.replace(/\.html$/, '') === here;
+    el.innerHTML = '<div class="links">' + PAGES.map(([href, id, key]) => {
+      const on = id === here;
       return '<a href="' + href + '"' + (on ? ' class="on" aria-current="page"' : '') + ' data-i18n="' + key + '"></a>';
     }).join('') + '</div><div class="tools"><button class="theme" type="button" aria-pressed="false"></button><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="hu">HU</button></div></div>';
     el.querySelector('.theme').addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
@@ -277,7 +343,7 @@
     + '#nav .links a{padding:6px 10px;font-size:.84rem}#nav .lang,#nav .tools{flex:none}}';
   document.head.appendChild(css);
 
-  window.SITE = { t, get lang(){ return lang; }, get theme(){ return theme; }, onLang: fn => listeners.push(fn), onTheme: fn => themeListeners.push(fn), apply,
+  window.SITE = { t, nation, share, get lang(){ return lang; }, get theme(){ return theme; }, onLang: fn => listeners.push(fn), onTheme: fn => themeListeners.push(fn), apply,
     color: name => getComputedStyle(document.documentElement).getPropertyValue(name).trim() };
   document.addEventListener('DOMContentLoaded', () => { nav(); apply(); });
 })();

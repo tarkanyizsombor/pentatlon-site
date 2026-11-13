@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Official standings from the 2026 World Cups, European and World Championships, every athlete’s rounds, season averages and head-to-head comparisons.">
-<link rel="canonical" href="https://ottusaeredmenyek.com/athletes.html">
+<link rel="canonical" href="https://ottusaeredmenyek.com/athletes">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Modern Pentathlon by Tárkányi Zsombor">
 <meta property="og:title" content="Athlete Results 2026 · Modern Pentathlon">
 <meta property="og:description" content="Official standings from the 2026 World Cups, European and World Championships, every athlete’s rounds, season averages and head-to-head comparisons.">
-<meta property="og:url" content="https://ottusaeredmenyek.com/athletes.html">
+<meta property="og:url" content="https://ottusaeredmenyek.com/athletes">
 <meta property="og:image" content="https://ottusaeredmenyek.com/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -85,6 +85,10 @@ tr.detail>td{padding:0 0 12px;text-align:left;background:var(--soft);white-space
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
 .muted{color:var(--muted);font-size:.85rem}
+.shareRow{display:flex;justify-content:flex-end;margin:10px 12px 0}
+.sharebtn{font:inherit;font-size:.8rem;font-weight:600;color:var(--accent);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+.sharebtn:hover{border-color:var(--accent)}
+.sharebtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* head-to-head */
 .h2hpick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
@@ -170,6 +174,57 @@ const stByAth = {}; for (const s of DATA.standings) (stByAth[s.a] ||= []).push(s
 
 let state = {view:'results', g:'W', ev:DATA.events[DATA.events.length-1].id, nat:'', q:'', sort:'i', dir:1, open:null, ha:'', hb:''};
 
+/* ---------- shareable links: the address bar always describes what's on screen ---------- */
+const slugOf = n => n.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const SLUG = {}, ID_BY_SLUG = {};
+for (const [id, a] of Object.entries(DATA.athletes)){ let sl = slugOf(a.n); if (ID_BY_SLUG[sl]) sl += '-' + id.toLowerCase(); SLUG[id] = sl; ID_BY_SLUG[sl] = id; }
+const VIEWS = ['results','sf','q','all','h2h'];
+let scrollToOpen = false;
+function readHash(){
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (![...h.keys()].length) return false;
+  const v = h.get('tab'); state.view = VIEWS.includes(v) ? v : 'results';
+  const g = h.get('g'); if (g === 'W' || g === 'M') state.g = g;
+  const ev = h.get('ev'); if (ev && DATA.events.some(e => e.id === ev)) state.ev = ev;
+  state.nat = (h.get('n') || '').toUpperCase();
+  state.open = null; state.q = ''; $('q').value = '';
+  const a = ID_BY_SLUG[h.get('a') || ''];
+  if (a){
+    state.g = DATA.athletes[a].g; state.open = a; scrollToOpen = true;
+    if (!v) state.view = 'all';   // every athlete appears in the Averages tab
+    if (state.view === 'results' && !(DATA.standings.some(x => x.a === a && x.e === state.ev))){
+      const last = [...DATA.standings].reverse().find(x => x.a === a); if (last) state.ev = last.e;
+    }
+  }
+  const pair = (h.get('h2h') || '').split(',').map(x => ID_BY_SLUG[x]).filter(Boolean);
+  if (pair.length){
+    state.view = 'h2h'; state.g = DATA.athletes[pair[0]].g;
+    $('ha').value = DATA.athletes[pair[0]].n; $('hb').value = pair[1] ? DATA.athletes[pair[1]].n : '';
+  }
+  return true;
+}
+function currentPair(){
+  const m = {}; for (const [id, a] of Object.entries(DATA.athletes)) if (a.g === state.g) m[a.n.toLowerCase()] = id;
+  return [m[$('ha').value.trim().toLowerCase()], m[$('hb').value.trim().toLowerCase()]];
+}
+function writeHash(){
+  const h = new URLSearchParams();
+  if (state.view !== 'results') h.set('tab', state.view);
+  if (state.g !== 'W') h.set('g', state.g);
+  if (state.view === 'results' && state.ev !== DATA.events[DATA.events.length-1].id) h.set('ev', state.ev);
+  if (state.nat) h.set('n', state.nat);
+  if (state.view !== 'h2h' && state.open) h.set('a', SLUG[state.open]);
+  if (state.view === 'h2h'){ const [a, b] = currentPair(); if (a) h.set('h2h', [a, b].filter(Boolean).map(x => SLUG[x]).join(',')); }
+  const str = h.toString();
+  const url = location.pathname + location.search + (str ? '#' + str : '');
+  if (url !== location.pathname + location.search + location.hash) history.replaceState(null, '', url);
+}
+function syncControls(){
+  $('view').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.v === state.view));
+  $('gender').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.g === state.g));
+}
+const shareUrl = hash => location.origin + location.pathname + '#' + hash;
+
 const avg = a => a.length ? a.reduce((x,y) => x+y, 0) / a.length : null;
 const fmt = v => v === null || v === undefined ? '–' : (Number.isInteger(v) ? String(v) : v.toFixed(1));
 const matches = a => (!state.nat || a.c === state.nat) && (!state.q || (a.n + ' ' + a.c + ' ' + (a.alt || []).join(' ')).toLowerCase().includes(state.q));
@@ -234,7 +289,7 @@ function progress(ids){
 function detail(id){
   const rs = byAth[id] || [];
   const groups = {}; for (const r of rs) (groups[r.e] ||= []).push(r);
-  let h = progress([id]);
+  let h = '<div class="shareRow"><button class="sharebtn" type="button" data-share="a" data-id="' + esc(id) + '">↗ ' + t('share.athlete') + '</button></div>' + progress([id]);
   for (const ev of DATA.events){
     const g = groups[ev.id]; if (!g) continue;
     g.sort((a,b) => RORD[a.r] - RORD[b.r]);
@@ -376,7 +431,7 @@ function renderH2H(){
     }
     h += '</tbody></table></div>';
   }
-  out.innerHTML = h + '</div>';
+  out.innerHTML = '<div class="shareRow" style="margin:0 0 12px"><button class="sharebtn" type="button" data-share="h2h">↗ ' + t('share.h2h') + '</button></div>' + h + '</div>';
 }
 
 /* ---------- page ---------- */
@@ -386,7 +441,7 @@ function fillSelects(){
   $('event').value = state.ev;
   const nats = [...new Set(Object.values(DATA.athletes).filter(a => a.g === state.g).map(a => a.c))].sort();
   if (state.nat && !nats.includes(state.nat)) state.nat = '';
-  $('nation').innerHTML = '<option value="">' + t('allNations') + '</option>' + nats.map(c => '<option>' + esc(c) + '</option>').join('');
+  $('nation').innerHTML = '<option value="">' + t('allNations') + '</option>' + nats.map(c => '<option value="' + esc(c) + '">' + esc(c) + (SITE.nation(c) !== c ? ' · ' + esc(SITE.nation(c)) : '') + '</option>').join('');
   $('nation').value = state.nat;
 }
 function render(){
@@ -398,9 +453,19 @@ function render(){
   $('listWrap').hidden = h2h; $('h2h').hidden = !h2h;
   $('hint').textContent = t(HINT[state.view]);
   if (h2h) renderH2H(); else renderList();
+  syncControls(); writeHash();
+  if (scrollToOpen){ scrollToOpen = false; const row = document.querySelector('tr.ath.open'); if (row) requestAnimationFrame(() => row.scrollIntoView({block:'start', behavior:'smooth'})); }
 }
 
+readHash();
 fillSelects();
+window.addEventListener('hashchange', () => { if (readHash()){ fillSelects(); render(); } });
+document.addEventListener('click', e => {
+  const b = e.target.closest('.sharebtn'); if (!b) return;
+  e.stopPropagation();
+  if (b.dataset.share === 'a'){ const a = DATA.athletes[b.dataset.id]; SITE.share(shareUrl('a=' + SLUG[b.dataset.id]), a.n, b); }
+  else { const [a, c] = currentPair(); if (a && c) SITE.share(shareUrl('h2h=' + SLUG[a] + ',' + SLUG[c]), DATA.athletes[a].n + ' – ' + DATA.athletes[c].n, b); }
+}, true);
 $('view').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   state.view = b.dataset.v; state.open = null; state.sort = 'i'; state.dir = 1;
@@ -416,7 +481,7 @@ $('gender').addEventListener('click', e => {
 $('event').addEventListener('change', e => { state.ev = e.target.value; state.open = null; render(); });
 $('nation').addEventListener('change', e => { state.nat = e.target.value; state.open = null; render(); });
 $('q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); render(); });
-['ha','hb'].forEach(id => $(id).addEventListener('input', () => { if (state.view === 'h2h') renderH2H(); }));
+['ha','hb'].forEach(id => $(id).addEventListener('input', () => { if (state.view === 'h2h'){ renderH2H(); writeHash(); } }));
 $('head').addEventListener('click', e => {
   const th = e.target.closest('th'); if (!th) return;
   const k = th.dataset.k;

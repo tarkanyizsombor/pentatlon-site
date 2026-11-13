@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Medal table and nation rankings for the 2026 modern pentathlon season: medals, finalists, semi-finalists and athletes per country.">
+<link rel="canonical" href="https://ottusaeredmenyek.com/nations">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#1d4ed8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Modern Pentathlon by Tárkányi Zsombor">
+<meta property="og:title" content="Nations 2026 · Modern Pentathlon">
+<meta property="og:description" content="Medal table and nation rankings for the 2026 modern pentathlon season: medals, finalists, semi-finalists and athletes per country.">
+<meta property="og:url" content="https://ottusaeredmenyek.com/nations">
+<meta property="og:image" content="https://ottusaeredmenyek.com/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Modern Pentathlon by Tárkányi Zsombor: illustrated athletes fencing, running an obstacle course, swimming, laser shooting and running.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nations 2026 · Modern Pentathlon">
+<meta name="twitter:description" content="Medal table and nation rankings for the 2026 modern pentathlon season: medals, finalists, semi-finalists and athletes per country.">
+<meta name="twitter:image" content="https://ottusaeredmenyek.com/og-image.jpg">
+<title>Nations 2026 · Modern Pentathlon</title>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="common.js"></script>
+<script src="data.js"></script>
+<style>
+:root{--tint:#f5f8ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;--soft:#eef4ff;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 16px;max-width:68ch}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px;margin-bottom:16px}
+.seg button{border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--ink)}
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto;box-shadow:0 1px 3px rgba(29,78,216,.06)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600;vertical-align:bottom}
+th:nth-child(2),td:nth-child(2){text-align:left}
+tr.nat{cursor:pointer}
+tr.nat:hover,tr.nat.open{background:var(--soft)}
+td.rk{color:var(--muted);font-weight:700;width:36px}
+.code{font-weight:700}
+.full{color:var(--muted);font-size:.8rem;margin-left:8px}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15)}
+.g{background:#e8b923}.s{background:#b7c0cc}.b{background:#c9824a}
+td.zero{color:var(--muted);opacity:.6}
+td.tot{font-weight:700}
+tr.detail>td{background:var(--soft);text-align:left;white-space:normal;padding:4px 12px 14px}
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin:8px 0 10px}
+.person{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:.85rem}
+.person b{font-weight:600;display:block}
+.person span{color:var(--muted);font-size:.78rem}
+.natlinks a{display:inline-block;margin-right:12px;color:var(--accent);font-weight:600;font-size:.85rem;text-decoration:none}
+.natlinks a:hover{text-decoration:underline}
+.note{font-size:.8rem;color:var(--muted);margin-top:16px;line-height:1.5}
+@media (max-width:640px){.wrap{padding:12px 12px 40px}th,td{padding:9px 6px}th.c,td.c{display:none}.full{display:block;margin:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav id="nav"></nav>
+  <h1 data-i18n="n.title"></h1>
+  <p class="sub" id="sub"></p>
+  <div class="seg" id="gender"><button data-g="" class="on" data-i18n="n.all"></button><button data-g="W" data-i18n="g.W"></button><button data-g="M" data-i18n="g.M"></button></div>
+  <div class="tbl"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
+  <p class="note" data-i18n="n.note"></p>
+</div>
+<script>
+const DATA = window.DATA, t = SITE.t;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const evById = Object.fromEntries(DATA.events.map(e => [e.id, e]));
+const evShort = e => SITE.lang === 'hu' && e.short_hu ? e.short_hu : e.short;
+const slugOf = n => n.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+let g = ['W','M'].includes(new URLSearchParams(location.hash.slice(1)).get('g')) ? new URLSearchParams(location.hash.slice(1)).get('g') : '';
+let open = null;
+
+// nation each athlete represented at each competition
+const natAt = {}; for (const s of DATA.standings) natAt[s.e + '|' + s.a] = s.c;
+
+function table(){
+  const rows = {};
+  const get = c => rows[c] ||= {c, gold:0, silver:0, bronze:0, finals:0, semis:0, athletes:new Set(), people:{}};
+  for (const s of DATA.standings){
+    const a = DATA.athletes[s.a]; if (g && a.g !== g) continue;
+    const r = get(s.c);
+    r.athletes.add(s.a);
+    if (s.lvl === 'F'){ r.finals++; if (s.rank === 1) r.gold++; else if (s.rank === 2) r.silver++; else if (s.rank === 3) r.bronze++; }
+    const p = r.people[s.a] ||= {id:s.a, best:null};
+    if (!p.best || s.rank < p.best.rank) p.best = s;
+  }
+  for (const res of DATA.results){
+    if (res.r !== 'SF') continue;
+    const a = DATA.athletes[res.a]; if (g && a.g !== g) continue;
+    const c = natAt[res.e + '|' + res.a]; if (c) get(c).semis++;
+  }
+  return Object.values(rows).sort((x, y) => y.gold - x.gold || y.silver - x.silver || y.bronze - x.bronze || y.finals - x.finals || y.semis - x.semis || y.athletes.size - x.athletes.size || x.c.localeCompare(y.c));
+}
+
+function render(){
+  history.replaceState(null, '', location.pathname + (g ? '#g=' + g : ''));
+  $('gender').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.g === g));
+  $('sub').textContent = t('n.sub', {n: DATA.events.length});
+  $('head').innerHTML = '<tr><th>#</th><th>' + t('n.nation') + '</th><th><span class="dot g"></span>' + t('n.gold') + '</th><th><span class="dot s"></span>' + t('n.silver') + '</th><th><span class="dot b"></span>' + t('n.bronze') + '</th><th class="c">' + t('n.medals') + '</th><th>' + t('n.finals') + '</th><th class="c">' + t('n.semis') + '</th><th class="c">' + t('n.athletes') + '</th></tr>';
+  const rows = table();
+  let rank = 0, prev = null, h = '';
+  rows.forEach((r, i) => {
+    const key = [r.gold, r.silver, r.bronze, r.finals, r.semis].join();
+    if (key !== prev) rank = i + 1; prev = key;
+    const n = (v, cls) => '<td class="' + (cls || '') + (v ? '' : ' zero') + '">' + v + '</td>';
+    h += '<tr class="nat' + (open === r.c ? ' open' : '') + '" data-c="' + esc(r.c) + '"><td class="rk">' + rank + '</td><td><span class="code">' + esc(r.c) + '</span><span class="full">' + esc(SITE.nation(r.c)) + '</span></td>'
+      + n(r.gold) + n(r.silver) + n(r.bronze) + n(r.gold + r.silver + r.bronze, 'c tot') + n(r.finals) + n(r.semis, 'c') + '<td class="c">' + r.athletes.size + '</td></tr>';
+    if (open === r.c){
+      const people = Object.values(r.people).sort((x, y) => x.best.rank - y.best.rank || DATA.athletes[x.id].n.localeCompare(DATA.athletes[y.id].n));
+      const lvl = s => t('r.' + s.lvl);
+      h += '<tr class="detail"><td colspan="9"><div class="people">' + people.map(p => {
+        const a = DATA.athletes[p.id];
+        return '<a class="person" style="text-decoration:none;color:inherit" href="/athletes#a=' + slugOf(a.n) + '"><b>' + esc(a.n) + '</b><span>' + t('n.best') + ': ' + p.best.rank + '. · ' + lvl(p.best) + ' · ' + esc(evShort(evById[p.best.e])) + '</span></a>';
+      }).join('') + '</div><div class="natlinks">'
+        + ['W','M'].filter(x => (!g || g === x) && people.some(p => DATA.athletes[p.id].g === x)).map(x => '<a href="/athletes#tab=all&g=' + x + '&n=' + encodeURIComponent(r.c) + '">' + t('g.' + x) + ': ' + t('n.seeAll', {c: esc(r.c)}) + '</a>').join('')
+        + '</div></td></tr>';
+    }
+  });
+  $('body').innerHTML = h;
+}
+$('gender').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; g = b.dataset.g; open = null; render(); });
+$('body').addEventListener('click', e => { const tr = e.target.closest('tr.nat'); if (!tr) return; open = open === tr.dataset.c ? null : tr.dataset.c; render(); });
+SITE.onLang(render);
+render();
+</script>
+</body>
+</html>
