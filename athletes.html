@@ -5,9 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Athlete Results 2026</title>
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--text:#0f1722;--muted:#5b6675;--line:#dfe4ea;--accent:#0a7d6e;--ink:#fff;--soft:#e8f4f2;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e131a;--card:#161d27;--text:#eaeef3;--muted:#9aa6b5;--line:#263040;--accent:#3ccfb8;--ink:#06211c;--soft:#15302c;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0e131a;--card:#161d27;--text:#eaeef3;--muted:#9aa6b5;--line:#263040;--accent:#3ccfb8;--ink:#06211c;--soft:#15302c;color-scheme:dark}
+:root{--tint:#f5f8ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;--soft:#eef4ff;color-scheme:light}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:1000px;margin:0 auto;padding:16px 16px 48px}
@@ -20,9 +18,9 @@ h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
 .seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}
 .seg button{border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer}
 .seg button.on{background:var(--accent);color:var(--ink)}
-input,select{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text)}
+input,select{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--tint);color:var(--text)}
 input{flex:1 1 180px;min-width:0}
-.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto}
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto;box-shadow:0 1px 3px rgba(29,78,216,.06)}
 table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
 th,td{padding:9px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
 th{font-size:.75rem;text-transform:uppercase;vertical-align:bottom;letter-spacing:.04em;color:var(--muted);font-weight:600;cursor:pointer;user-select:none;position:sticky;top:0;background:var(--card)}
@@ -63,14 +61,14 @@ tr.detail>td{padding:0 0 12px;text-align:left;background:var(--soft)}
 .tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
 .tabs button{border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-weight:600;padding:9px 14px;border-radius:10px;cursor:pointer}
 .tabs button.on{background:var(--accent);border-color:var(--accent);color:var(--ink)}
-tr.grp td{background:var(--bg);color:var(--accent);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:14px 10px 6px}
+tr.grp td{background:var(--tint);color:var(--accent);font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:14px 10px 6px}
 .lvl{display:inline-block;font-size:.7rem;font-weight:700;padding:1px 7px;border-radius:999px;background:var(--soft);color:var(--accent)}
 .hint{font-size:.85rem;color:var(--muted);margin:0 0 12px}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <nav><a href="index.html">Calculator</a><a href="athletes.html" class="on">Athletes</a></nav>
+  <nav><a href="index.html">Home</a><a href="calculator.html">Calculator</a><a href="athletes.html" class="on">Athletes</a></nav>
   <h1>Athlete Results 2026</h1>
   <p class="sub" id="sub"></p>
 
