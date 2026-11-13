@@ -52,20 +52,20 @@ input:focus{outline:2px solid var(--accent);outline-offset:1px}
 
     <section class="card">
       <div class="head"><h2>Obstacle</h2><span class="pts" id="p-o">–</span></div>
-      <label for="o-t">Time (ss.00 or m:ss.00)</label>
+      <label for="o-t">Time (e.g. 27,60 or 27.60)</label>
       <input id="o-t" inputmode="decimal" placeholder="e.g. 27.60">
     </section>
 
     <section class="card">
       <div class="head"><h2>Swimming (100m)</h2><span class="pts" id="p-s">–</span></div>
-      <label for="s-t">Time (m:ss.00)</label>
+      <label for="s-t">Time (e.g. 1:01,50 or 1.01,50)</label>
       <input id="s-t" inputmode="decimal" placeholder="e.g. 1:01.50">
       <p class="hint">1:10.00 = 250 points.</p>
     </section>
 
     <section class="card">
       <div class="head"><h2>Laser Run</h2><span class="pts" id="p-l">–</span></div>
-      <label for="l-t">Running time (mm:ss.00)</label>
+      <label for="l-t">Running time (e.g. 11:45,00 or 11.45,00)</label>
       <input id="l-t" inputmode="decimal" placeholder="e.g. 11:45.00">
       <p class="hint">One point per second. 10:00 = 700 points.</p>
     </section>
@@ -76,16 +76,31 @@ input:focus{outline:2px solid var(--accent);outline-offset:1px}
 <script>
 const $ = id => document.getElementById(id);
 const up = x => Math.max(0, Math.ceil(x - 1e-9));
-function parseT(s){
-  s = s.trim(); if(!s) return null;
-  const p = s.split(':'); let t;
-  if(p.length === 1) t = parseFloat(p[0]);
-  else if(p.length === 2) t = parseInt(p[0],10)*60 + parseFloat(p[1]);
-  else return NaN;
+// Accepts 1:05.64, 1:05,64, 1.05,64, 65,64 or 65.64. Phones that only offer a comma (and no colon) work too.
+// minSec: if a single number is far too small to be a time in seconds (e.g. 11.45 for a laser run), read it as minutes.seconds.
+function parseT(s, minSec){
+  s = s.trim().replace(/\s+/g, '');
+  if(!s) return null;
+  let m, sec;
+  if(s.includes(':')){
+    const [a, b, ...rest] = s.split(':');
+    if(rest.length || b === undefined) return NaN;
+    m = a; sec = b.replace(',', '.');
+  } else {
+    const parts = s.split(/[.,]/);
+    if(parts.length === 3){ m = parts[0]; sec = parts[1] + '.' + parts[2]; }
+    else if(parts.length <= 2){
+      const v = parseFloat(parts.join('.'));
+      if(parts.length === 2 && minSec && v < minSec && parts[1].length === 2){ m = parts[0]; sec = parts[1]; }
+      else { m = '0'; sec = parts.join('.'); }
+    } else return NaN;
+  }
+  if(!/^\d*$/.test(m) || !/^\d+(\.\d+)?$/.test(sec)) return NaN;
+  const t = (parseInt(m || '0', 10) * 60) + parseFloat(sec);
   return isFinite(t) && t >= 0 ? t : NaN;
 }
-function timed(id, out, fn){
-  const t = parseT($(id).value);
+function timed(id, out, fn, minSec){
+  const t = parseT($(id).value, minSec);
   if(t === null){ $(out).textContent = '–'; return null; }
   if(isNaN(t)){ $(out).textContent = '?'; return null; }
   const p = fn(t); $(out).textContent = p; return p;
@@ -104,8 +119,8 @@ function calc(){
     h.textContent = (pl === 1 ? 'Won the final' : pl === 2 ? 'Lost the final' : pl <= 4 ? 'Lost in the semi-final' : pl <= 8 ? 'Lost in the round of 8' : pl <= 16 ? 'Lost in the round of 16' : 'Lost in the round of 32') + '.';
   }
   res.push(timed('o-t','p-o', t => up(445 - 3*t)));
-  res.push(timed('s-t','p-s', t => up(250 + 5*(70 - t))));
-  res.push(timed('l-t','p-l', t => up(1300 - t)));
+  res.push(timed('s-t','p-s', t => up(250 + 5*(70 - t)), 40));
+  res.push(timed('l-t','p-l', t => up(1300 - t), 300));
   const got = res.filter(x => x !== null && x !== undefined);
   $('total').textContent = got.reduce((a,b) => a+b, 0);
   $('count').textContent = got.length + ' of 4 events entered';
