@@ -91,7 +91,7 @@
       'about.contact':'Contact', 'about.insta':'Instagram', 'about.email':'Email',
 
       /* home */
-      'home.by':'by Tárkányi Zsombor',
+      'home.by':'by Tárkányi Zsombor', 'home.tag':'Points calculator · 2026 results · Season averages · Finals level',
       'home.calcT':'Points calculator', 'home.calcP':'Enter your fencing, obstacle, swimming and laser run results and see your total. Works for qualification and for semi-finals and finals.', 'home.calcA':'Open the calculator →',
       'home.athT':'Athlete results', 'home.athP':'Official standings from every competition, each athlete’s rounds, season averages and head-to-head comparisons.', 'home.athA':'See the results →',
       'home.bestT':'Season bests', 'home.bestP':'The fastest obstacle, swim and laser run of 2026, the best fencing and the highest totals.', 'home.bestA':'See the bests →',
@@ -198,7 +198,7 @@
       'about.p3':'Az eredmények a UIPM hivatalos eredményexportjaiból származnak, és minden verseny után frissülnek. Ha hibát találsz, vagy ötleted van az oldallal kapcsolatban, örömmel fogadom.',
       'about.contact':'Kapcsolat', 'about.insta':'Instagram', 'about.email':'E-mail',
 
-      'home.by':'készítette: Tárkányi Zsombor',
+      'home.by':'készítette: Tárkányi Zsombor', 'home.tag':'Pontszámító · 2026-os eredmények · Szezonátlagok · Döntős szint',
       'home.calcT':'Pontszámító', 'home.calcP':'Add meg a vívás, akadályfutás, úszás és lézerfutás eredményeidet, és megkapod az összpontszámot. Selejtezőre és elődöntőre/döntőre is működik.', 'home.calcA':'Kalkulátor megnyitása →',
       'home.athT':'Versenyzői eredmények', 'home.athP':'Minden verseny hivatalos végeredménye, a versenyzők fordulói, szezonátlagok és egymás elleni összevetések.', 'home.athA':'Eredmények megtekintése →',
       'home.bestT':'Szezonlegjobbak', 'home.bestP':'2026 leggyorsabb akadályfutásai, úszásai és lézerfutásai, a legjobb vívások és a legmagasabb összpontszámok.', 'home.bestA':'Legjobbak megtekintése →',

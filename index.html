@@ -30,7 +30,7 @@
 <script src="common.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,500..900&display=swap" rel="stylesheet">
 <style>
 :root{--tint:#f5f8ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;--soft:#eef4ff;color-scheme:light}
 *{box-sizing:border-box}
@@ -38,16 +38,33 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-a
 .wrap{max-width:960px;margin:0 auto;padding:16px 16px 56px}
 a{color:inherit}
 
-.hero{padding:44px 0 36px}
-.title{font-family:"Playfair Display",Georgia,"Times New Roman",serif;font-style:italic;font-weight:800;font-size:clamp(2.8rem,10vw,5.6rem);line-height:1;letter-spacing:-.02em;margin:0;max-width:none;
-  background:linear-gradient(100deg,#0b2a8a 0%,#1d4ed8 45%,#3b82f6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding-bottom:.08em}
-.by{margin:14px 0 0;font-size:.82rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.eyebrow{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-h1{font-size:clamp(2.1rem,6vw,3.4rem);line-height:1.05;letter-spacing:-.03em;margin:0 0 16px;max-width:14ch}
-.lead{font-size:1.1rem;color:var(--muted);max-width:52ch;margin:0}
-.stripe{display:flex;gap:6px;margin-top:28px;max-width:420px}
-.stripe span{flex:1;height:6px;border-radius:3px;background:var(--accent)}
-.stripe span:nth-child(2){opacity:.8}.stripe span:nth-child(3){opacity:.6}.stripe span:nth-child(4){opacity:.4}
+/* hero: same design as the share preview */
+.hero{position:relative;overflow:hidden;border-radius:28px;padding:34px 38px 30px;margin:4px 0 36px;color:#fff;font-family:Inter,"Inter Display",system-ui,sans-serif;
+  background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 45%,#14287a 100%);box-shadow:0 20px 50px rgba(20,40,122,.25)}
+:root[data-theme="dark"] .hero{background:linear-gradient(135deg,#1a46b8 0%,#12318f 45%,#081544 100%);box-shadow:none;border:1px solid #1e2a3d}
+.hero .g1{position:absolute;left:-18%;top:-55%;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(147,197,253,.55),rgba(96,165,250,0) 65%);pointer-events:none}
+.hero .g2{position:absolute;right:-20%;bottom:-70%;width:78%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.38),rgba(34,211,238,0) 62%);pointer-events:none}
+.hero .dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.10) 1.2px,transparent 1.3px);background-size:24px 24px;-webkit-mask-image:linear-gradient(180deg,#000,transparent 70%);mask-image:linear-gradient(180deg,#000,transparent 70%);pointer-events:none}
+.hero>*{position:relative}
+.hero .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.hero .brand{display:flex;align-items:center;gap:12px;font-weight:600;font-size:1rem;opacity:.95}
+.hero .brand svg{width:44px;height:44px;display:block;border-radius:11px;box-shadow:0 6px 16px rgba(8,20,80,.3)}
+.hero .by{font-weight:600;font-size:.9rem;opacity:.88;margin:0}
+.hero h1{font-weight:900;font-size:clamp(2.3rem,7.2vw,4.6rem);line-height:1;letter-spacing:-.035em;margin:26px 0 10px;max-width:none}
+.hero .tag{font-size:clamp(.95rem,2.2vw,1.12rem);font-weight:500;opacity:.92;margin:0}
+.hero .row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:28px}
+.pcard{border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.07));border:1.5px solid rgba(255,255,255,.28);
+  box-shadow:0 14px 32px rgba(8,20,80,.25),inset 0 1px 0 rgba(255,255,255,.35);overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:4px 0 14px}
+.pcard .art{width:100%}
+.pcard svg{display:block;width:100%;height:auto}
+.pcard span{font-weight:700;font-size:.95rem;letter-spacing:.01em;margin-top:2px}
+@media (max-width:760px){
+  .hero{padding:24px 20px 22px;border-radius:22px}
+  .hero h1{margin-top:20px}
+  .hero .row{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:42%;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:20px;scrollbar-width:none;margin:22px -20px 0;padding:0 20px 6px}
+  .hero .row::-webkit-scrollbar{display:none}
+  .pcard{scroll-snap-align:start}
+}
 
 .go{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:48px}
 .go a{display:flex;flex-direction:column;gap:8px;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 1px 3px rgba(29,78,216,.06);transition:border-color .15s,transform .15s}
@@ -67,7 +84,7 @@ h3.sec{font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(-
 .disc b{color:var(--text);font-weight:600}
 
 footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
-@media (max-width:640px){.hero{padding:28px 0 28px}.wrap{padding:12px 16px 48px}}
+@media (max-width:640px){.wrap{padding:12px 16px 48px}}
 </style>
 </head>
 <body>
@@ -75,9 +92,155 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
   <nav id="nav"></nav>
 
   <header class="hero">
-    <h1 class="title">Modern Pentathlon</h1>
-    <p class="by" data-i18n="home.by"></p>
-    <div class="stripe" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <div class="g1"></div><div class="g2"></div><div class="dots"></div>
+    <div class="top">
+      <div class="brand"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="Hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2563eb"/><stop offset=".55" stop-color="#1d4ed8"/><stop offset="1" stop-color="#172f8f"/></linearGradient>
+<radialGradient id="Hglow" cx=".22" cy=".18" r=".75"><stop offset="0" stop-color="#93c5fd" stop-opacity=".75"/><stop offset=".45" stop-color="#60a5fa" stop-opacity=".18"/><stop offset="1" stop-color="#60a5fa" stop-opacity="0"/></radialGradient>
+<radialGradient id="Hglow2" cx=".95" cy="1" r=".6"><stop offset="0" stop-color="#22d3ee" stop-opacity=".45"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+<linearGradient id="Hshine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient><clipPath id="Hc"><rect width="512" height="512" rx="112"/></clipPath></defs><g clip-path="url(#Hc)"><rect width="512" height="512" fill="url(#Hbg)"/><rect width="512" height="512" fill="url(#Hglow)"/><rect width="512" height="512" fill="url(#Hglow2)"/><rect width="512" height="256" fill="url(#Hshine)"/><path d="M43.95195312499999 357.85546875H99.73320312499999V279.10546875C99.73320312499999 265.98046875 98.63945312499999 239.8671875 97.95585937499999 214.7109375C104.51835937499999 239.59375 111.35429687499999 265.296875 115.59257812499999 279.10546875L139.655078125 357.85546875H185.592578125L209.244921875 279.10546875C213.483203125 264.75 220.592578125 237.81640625 227.018359375 212.25C226.471484375 238.08984375 225.241015625 265.43359375 225.241015625 279.10546875V357.85546875H281.022265625V154.14453125H195.846484375L177.799609375 217.85546875C173.834765625 231.6640625 167.819140625 255.31640625 162.623828125 276.234375C157.428515625 255.31640625 151.276171875 231.6640625 147.311328125 217.85546875L128.991015625 154.14453125H43.95195312499999ZM308.497265625 357.85546875H365.372265625V296.33203125H395.040234375C443.712109375 296.33203125 474.200390625 268.8515625 474.200390625 225.23828125C474.200390625 181.625 443.712109375 154.14453125 395.040234375 154.14453125H308.497265625ZM365.372265625 249.57421875V200.90234375H390.801953125C407.891796875 200.90234375 418.692578125 210.3359375 418.692578125 225.23828125C418.692578125 240.140625 407.891796875 249.57421875 390.801953125 249.57421875Z" fill="#fff"/></g></svg><span>ottusaeredmenyek.com</span></div>
+      <p class="by" data-i18n="home.by"></p>
+    </div>
+    <h1>Modern Pentathlon</h1>
+    <p class="tag" data-i18n="home.tag"></p>
+    <div class="row">
+      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+    <ellipse cx="100" cy="206" rx="74" ry="7" fill="#0b1b5a" opacity=".28"/>
+    <rect x="14" y="200" width="172" height="5" rx="2.5" fill="#fff" opacity=".35"/>
+    <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- back arm (raised) -->
+      <path d="M92 104 L72 88 L64 66" stroke="#eef2ff" stroke-width="13"/>
+      <circle cx="63" cy="63" r="6.5" fill="#1f2937" stroke="none"/>
+      <!-- back leg -->
+      <path d="M86 140 L62 168 L40 196" stroke="#f8fafc" stroke-width="15"/>
+      <!-- front leg (lunge) -->
+      <path d="M90 140 L128 152 L136 196" stroke="#f8fafc" stroke-width="15"/>
+      <!-- torso -->
+      <path d="M88 140 L98 100" stroke="#ffffff" stroke-width="30"/>
+      <!-- front arm + épée -->
+      <path d="M100 104 L124 110 L148 110" stroke="#eef2ff" stroke-width="12"/>
+      <path d="M152 110 L194 104" stroke="#cbd5e1" stroke-width="3"/>
+    </g>
+    <circle cx="150" cy="110" r="7" fill="#e2e8f0"/><circle cx="148" cy="110" r="5.5" fill="#1f2937"/>
+    <!-- shoes -->
+    <ellipse cx="38" cy="198" rx="11" ry="5" fill="#1e293b"/><ellipse cx="141" cy="198" rx="11" ry="5" fill="#1e293b"/>
+    <!-- mask -->
+    <path d="M91 86 Q90 62 108 60 Q124 60 124 80 Q123 92 108 96 Z" fill="#334155"/>
+    <path d="M110 64 V92 M116 66 V90 M104 64 V93 M98 70 L122 70 M96 78 L124 78 M97 86 L122 86" stroke="#64748b" stroke-width="1.4"/>
+    <path d="M94 88 Q104 100 118 94 L112 104 Q100 106 94 98Z" fill="#fff"/>
+    <!-- lamé stripe accent -->
+    <path d="M86 128 L100 106" stroke="#3b82f6" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+  </svg></div><span data-i18n="disc.fen"></span></div>
+      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+    <ellipse cx="104" cy="206" rx="70" ry="7" fill="#0b1b5a" opacity=".28"/>
+    <!-- obstacle box -->
+    <rect x="62" y="146" width="84" height="58" rx="8" fill="#fbbf24"/>
+    <path d="M62 166 H146 M62 186 H146" stroke="#f59e0b" stroke-width="5"/>
+    <rect x="62" y="146" width="84" height="10" rx="5" fill="#fde68a"/>
+    <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- trailing leg -->
+      <path d="M96 104 L72 112 L56 96" stroke="#0f172a" stroke-width="15"/>
+      <path d="M72 112 L56 96" stroke="#c68642" stroke-width="12"/>
+      <!-- back arm -->
+      <path d="M116 78 L100 92 L92 112" stroke="#c68642" stroke-width="11"/>
+      <!-- torso -->
+      <path d="M98 104 L120 74" stroke="#22d3ee" stroke-width="28"/>
+      <!-- lead leg -->
+      <path d="M100 106 L136 112 L166 106" stroke="#0f172a" stroke-width="15"/>
+      <path d="M140 112 L166 106" stroke="#c68642" stroke-width="12"/>
+      <!-- front arm on the box -->
+      <path d="M122 80 L128 104 L120 140" stroke="#c68642" stroke-width="11"/>
+    </g>
+    <ellipse cx="54" cy="92" rx="10" ry="5.5" transform="rotate(-50 54 92)" fill="#f97316"/>
+    <ellipse cx="172" cy="104" rx="11" ry="5.5" transform="rotate(-10 172 104)" fill="#f97316"/>
+    <!-- head -->
+    <circle cx="132" cy="56" r="14" fill="#c68642"/>
+    <path d="M118 54 Q120 38 136 40 Q148 44 145 56 Q138 46 124 50Z" fill="#1f2937"/>
+    <!-- motion lines -->
+    <path d="M22 80 H44 M14 100 H38 M24 120 H42" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".45"/>
+  </svg></div><span data-i18n="disc.obs"></span></div>
+      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+    <defs>
+      <linearGradient id="wb" x1="0" y1="140" x2="0" y2="236" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#38bdf8" stop-opacity=".6"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></linearGradient>
+      <linearGradient id="wf" x1="0" y1="150" x2="0" y2="236" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0ea5e9" stop-opacity=".9"/><stop offset=".55" stop-color="#0ea5e9" stop-opacity=".55"/><stop offset="1" stop-color="#0ea5e9" stop-opacity="0"/></linearGradient>
+    </defs>
+    <!-- water back layer -->
+    <path d="M0 150 Q25 138 50 150 T100 150 T150 150 T200 150 V236 H0Z" fill="url(#wb)"/>
+    <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- legs kicking -->
+      <path d="M70 150 L40 142" stroke="#1e3a8a" stroke-width="13"/>
+      <path d="M70 154 L42 162" stroke="#1e3a8a" stroke-width="13"/>
+      <path d="M42 142 L26 138 M42 162 L28 168" stroke="#f1c27d" stroke-width="10"/>
+      <!-- body -->
+      <path d="M72 152 L124 146" stroke="#1e3a8a" stroke-width="26"/>
+      <!-- recovering arm over the water -->
+      <path d="M120 140 L112 104 L150 92" stroke="#f1c27d" stroke-width="11"/>
+    </g>
+    <!-- head with cap & goggles -->
+    <circle cx="140" cy="142" r="14" fill="#f1c27d"/>
+    <path d="M126 140 Q128 124 144 126 Q156 130 154 140 Z" fill="#f97316"/>
+    <rect x="142" y="139" width="12" height="6" rx="3" fill="#0f172a"/>
+    <!-- water front layer -->
+    <path d="M0 160 Q20 150 40 160 T80 160 T120 160 T160 160 T200 160 V236 H0Z" fill="url(#wf)"/>
+    <path d="M0 160 Q20 150 40 160 T80 160 T120 160 T160 160 T200 160" stroke="#bae6fd" stroke-width="3" fill="none" opacity=".9"/>
+    <!-- splash -->
+    <circle cx="26" cy="132" r="4" fill="#e0f2fe"/><circle cx="18" cy="144" r="3" fill="#e0f2fe"/><circle cx="34" cy="122" r="2.5" fill="#e0f2fe"/>
+    <circle cx="160" cy="88" r="3" fill="#e0f2fe" opacity=".9"/><circle cx="168" cy="98" r="2.2" fill="#e0f2fe" opacity=".9"/>
+  </svg></div><span data-i18n="disc.swim"></span></div>
+      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+    <ellipse cx="86" cy="206" rx="44" ry="7" fill="#0b1b5a" opacity=".28"/>
+    <!-- target -->
+    <rect x="166" y="96" width="4" height="110" rx="2" fill="#e2e8f0" opacity=".7"/>
+    <circle cx="168" cy="96" r="22" fill="#fff"/><circle cx="168" cy="96" r="15" fill="#0f172a"/><circle cx="168" cy="96" r="8" fill="#fff"/><circle cx="168" cy="96" r="3.5" fill="#22c55e"/>
+    <!-- laser beam -->
+    <path d="M118 98 L146 97" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="5 4" stroke-linecap="round"/>
+    <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- legs -->
+      <path d="M80 146 L72 176 L68 198" stroke="#0f172a" stroke-width="15"/>
+      <path d="M86 146 L94 176 L98 198" stroke="#0f172a" stroke-width="15"/>
+      <path d="M72 176 L68 198 M94 176 L98 198" stroke="#8d5524" stroke-width="12"/>
+      <!-- free arm on hip -->
+      <path d="M80 106 L66 126 L78 140" stroke="#8d5524" stroke-width="11"/>
+      <!-- torso -->
+      <path d="M84 146 L84 104" stroke="#facc15" stroke-width="30"/>
+      <!-- shooting arm -->
+      <path d="M88 100 L114 98" stroke="#8d5524" stroke-width="11"/>
+    </g>
+    <!-- pistol -->
+    <rect x="108" y="92" width="18" height="8" rx="2" fill="#1f2937"/><rect x="110" y="96" width="6" height="12" rx="2" fill="#1f2937"/>
+    <ellipse cx="66" cy="200" rx="11" ry="5" fill="#f97316"/><ellipse cx="101" cy="200" rx="11" ry="5" fill="#f97316"/>
+    <!-- head -->
+    <circle cx="88" cy="74" r="14" fill="#8d5524"/>
+    <path d="M74 72 Q76 56 92 58 Q102 60 102 70 Q92 64 80 68Z" fill="#111827"/>
+    <rect x="70" y="122" width="28" height="18" rx="3" fill="#fff" opacity=".95"/><path d="M78 131 H90" stroke="#1d4ed8" stroke-width="4" stroke-linecap="round"/>
+  </svg></div><span data-i18n="disc.shoot"></span></div>
+      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+    <ellipse cx="104" cy="206" rx="50" ry="7" fill="#0b1b5a" opacity=".28"/>
+    <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <!-- back arm -->
+      <path d="M104 94 L86 108 L76 124" stroke="#e0ac69" stroke-width="11"/>
+      <!-- back leg pushing off -->
+      <path d="M96 140 L78 170 L50 176" stroke="#0f172a" stroke-width="15"/>
+      <path d="M78 170 L50 176" stroke="#e0ac69" stroke-width="12"/>
+      <!-- torso (leaning forward) -->
+      <path d="M98 140 L112 98" stroke="#f43f5e" stroke-width="30"/>
+      <!-- front leg knee up -->
+      <path d="M100 140 L134 150 L130 184" stroke="#0f172a" stroke-width="15"/>
+      <path d="M134 152 L130 184" stroke="#e0ac69" stroke-width="12"/>
+      <!-- front arm -->
+      <path d="M114 98 L132 112 L146 96" stroke="#e0ac69" stroke-width="11"/>
+    </g>
+    <ellipse cx="46" cy="174" rx="11" ry="5" transform="rotate(-15 46 174)" fill="#22d3ee"/>
+    <ellipse cx="136" cy="188" rx="11" ry="5" fill="#22d3ee"/>
+    <!-- bib -->
+    <rect x="96" y="108" width="20" height="18" rx="3" transform="rotate(18 106 117)" fill="#fff"/>
+    <!-- head -->
+    <circle cx="120" cy="72" r="14" fill="#e0ac69"/>
+    <path d="M106 70 Q106 54 124 56 Q136 58 134 70 Q126 60 112 66Z" fill="#7c2d12"/>
+    <path d="M104 62 L92 56" stroke="#7c2d12" stroke-width="7" stroke-linecap="round"/>
+    <!-- speed lines -->
+    <path d="M20 110 H52 M12 132 H44 M24 154 H50" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".45"/>
+  </svg></div><span data-i18n="disc.run"></span></div>
+    </div>
   </header>
 
   <section class="go" aria-label="Get started">
