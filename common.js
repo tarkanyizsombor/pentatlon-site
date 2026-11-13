@@ -1,7 +1,12 @@
-/* Shared code for every page: menu, English/Hungarian switch, translations. */
+/* Shared code for every page: menu, English/Hungarian switch, light/dark mode, translations. */
 (function(){
+  let theme = 'light';
+  try { if (localStorage.getItem('theme') === 'dark') theme = 'dark'; } catch(e){}
+  document.documentElement.dataset.theme = theme;
+
   const I18N = {
     en: {
+      'theme.dark':'Dark mode', 'theme.light':'Light mode',
       'nav.home':'Home', 'nav.calc':'Calculator', 'nav.athletes':'Athletes', 'nav.bests':'Season bests', 'nav.final':'Finals level', 'nav.about':'About',
       'g.W':'Women', 'g.M':'Men', 'allNations':'All nations', 'search':'Search athlete or nation',
       'd.f':'Fencing', 'd.o':'Obstacle', 'd.s':'Swim', 'd.l':'Laser Run', 'total':'Total', 'combined':'Combined',
@@ -92,6 +97,7 @@
       'c.note':'All formulas were checked against every result from the 2026 World Cups, European Championships and World Championships. In qualification, fencing is the ranking round (70% of bouts won = 250 points); in semi-finals and finals it is direct elimination, scored by final place. A red card in the ranking round costs 10 points; enter it as penalty points.'
     },
     hu: {
+      'theme.dark':'Sötét mód', 'theme.light':'Világos mód',
       'nav.home':'Főoldal', 'nav.calc':'Kalkulátor', 'nav.athletes':'Versenyzők', 'nav.bests':'Szezonlegjobbak', 'nav.final':'Döntős szint', 'nav.about':'Rólam',
       'g.W':'Nők', 'g.M':'Férfiak', 'allNations':'Minden nemzet', 'search':'Versenyző vagy nemzet keresése',
       'd.f':'Vívás', 'd.o':'Akadályfutás', 'd.s':'Úszás', 'd.l':'Lézerfutás', 'total':'Összesen', 'combined':'Együtt',
@@ -196,6 +202,27 @@
     document.querySelectorAll('[data-i18n-html]').forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
     document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = t(el.dataset.i18nPh));
     document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.l === lang));
+    paintThemeButton();
+  }
+
+  const MOON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  const SUN = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>';
+  const themeListeners = [];
+  function paintThemeButton(){
+    const b = document.querySelector('#nav .theme'); if (!b) return;
+    const dark = theme === 'dark';
+    b.innerHTML = dark ? SUN : MOON;
+    b.setAttribute('aria-pressed', String(dark));
+    b.setAttribute('aria-label', t(dark ? 'theme.light' : 'theme.dark'));
+    b.title = t(dark ? 'theme.light' : 'theme.dark');
+  }
+  function setTheme(v){
+    theme = v;
+    document.documentElement.dataset.theme = v;
+    try { localStorage.setItem('theme', v); } catch(e){}
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = v === 'dark' ? '#05080f' : '#1d4ed8';
+    paintThemeButton();
+    themeListeners.forEach(fn => fn(v));
   }
 
   function setLang(l){
@@ -213,14 +240,29 @@
     el.innerHTML = '<div class="links">' + PAGES.map(([href, key]) => {
       const on = href.replace(/\.html$/, '') === here;
       return '<a href="' + href + '"' + (on ? ' class="on" aria-current="page"' : '') + ' data-i18n="' + key + '"></a>';
-    }).join('') + '</div><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="hu">HU</button></div>';
+    }).join('') + '</div><div class="tools"><button class="theme" type="button" aria-pressed="false"></button><div class="lang" role="group" aria-label="Language"><button data-l="en">EN</button><button data-l="hu">HU</button></div></div>';
+    el.querySelector('.theme').addEventListener('click', () => setTheme(theme === 'dark' ? 'light' : 'dark'));
+    paintThemeButton();
     const cur = el.querySelector('.links a.on');
     if (cur) requestAnimationFrame(() => { const L = el.querySelector('.links'); L.scrollLeft = Math.max(0, cur.offsetLeft - L.offsetLeft - 40); });
     el.querySelector('.lang').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setLang(b.dataset.l); });
   }
 
   const css = document.createElement('style');
-  css.textContent = '#nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}'
+  css.textContent = ':root{--s1:#1d4ed8;--s2:#eb6834}'
+    + ':root[data-theme="dark"]{--bg:#05080f;--card:#0c1220;--tint:#111a2b;--text:#e6f0ff;--muted:#93a4bd;--line:#1e2a3d;--accent:#7cc8ff;--ink:#04121f;--soft:#0e2238;--behind:#fb923c;--b:#e0632d;--s1:#4096f0;--s2:#e0632d;color-scheme:dark}'
+    + ':root[data-theme="dark"] body{background:var(--bg);color:var(--text)}'
+    + ':root[data-theme="dark"] .title{background:linear-gradient(100deg,#e0f2fe 0%,#7cc8ff 50%,#38bdf8 100%);-webkit-background-clip:text;background-clip:text}'
+    + ':root[data-theme="dark"] .el,:root[data-theme="dark"] .err{color:#f87171}'
+    + ':root[data-theme="dark"] .cmp td.win.b{color:#fdba74;background:#2a1608}:root[data-theme="dark"] .cmp th.b{color:#fdba74}'
+    + ':root[data-theme="dark"] .total .k,:root[data-theme="dark"] .total .big small,:root[data-theme="dark"] .total .muted,:root[data-theme="dark"] .total small{color:rgba(4,18,31,.72)}'
+    + ':root[data-theme="dark"] .total .big,:root[data-theme="dark"] .total .res .pct,:root[data-theme="dark"] .total b{color:var(--ink)}'
+    + ':root[data-theme="dark"] .card,:root[data-theme="dark"] .tbl,:root[data-theme="dark"] .go a{box-shadow:none}'
+    + '#nav .tools{display:flex;align-items:center;gap:6px;flex:none}'
+    + '#nav .theme{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;padding:0}'
+    + '#nav .theme:hover{color:var(--accent);border-color:var(--accent)}'
+    + '#nav .theme:focus-visible,#nav .lang button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}'
+    + '#nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}'
     + '#nav .links{display:flex;flex-wrap:wrap;gap:2px}'
     + '#nav .links a{padding:7px 12px;border-radius:999px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.88rem;white-space:nowrap}'
     + '#nav .links a:hover{color:var(--accent)}'
@@ -232,9 +274,10 @@
     + '#nav .links{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;min-width:0;'
     + '-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent);padding-right:18px}'
     + '#nav .links::-webkit-scrollbar{display:none}'
-    + '#nav .links a{padding:6px 10px;font-size:.84rem}#nav .lang{flex:none}}';
+    + '#nav .links a{padding:6px 10px;font-size:.84rem}#nav .lang,#nav .tools{flex:none}}';
   document.head.appendChild(css);
 
-  window.SITE = { t, get lang(){ return lang; }, onLang: fn => listeners.push(fn), apply };
+  window.SITE = { t, get lang(){ return lang; }, get theme(){ return theme; }, onLang: fn => listeners.push(fn), onTheme: fn => themeListeners.push(fn), apply,
+    color: name => getComputedStyle(document.documentElement).getPropertyValue(name).trim() };
   document.addEventListener('DOMContentLoaded', () => { nav(); apply(); });
 })();

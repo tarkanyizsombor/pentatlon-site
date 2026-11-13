@@ -147,8 +147,8 @@ tr.detail>td{padding:0 0 12px;text-align:left;background:var(--soft);white-space
 
   <div id="h2h" hidden>
     <div class="h2hpick">
-      <div><label for="ha"><i style="background:var(--accent)"></i><span data-i18n="h2h.a"></span></label><input id="ha" list="names" data-i18n-ph="h2h.ph" autocomplete="off"></div>
-      <div><label for="hb"><i style="background:var(--b)"></i><span data-i18n="h2h.b"></span></label><input id="hb" list="names" data-i18n-ph="h2h.ph" autocomplete="off"></div>
+      <div><label for="ha"><i style="background:var(--s1)"></i><span data-i18n="h2h.a"></span></label><input id="ha" list="names" data-i18n-ph="h2h.ph" autocomplete="off"></div>
+      <div><label for="hb"><i style="background:var(--s2)"></i><span data-i18n="h2h.b"></span></label><input id="hb" list="names" data-i18n-ph="h2h.ph" autocomplete="off"></div>
     </div>
     <datalist id="names"></datalist>
     <div id="h2hOut"></div>
@@ -222,7 +222,7 @@ function chart(title, series, evIds){
   return '<div class="chart"><h4>' + esc(title) + '</h4><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(title) + '">' + g + '</svg></div>';
 }
 function progress(ids){
-  const people = ids.map((id, i) => ({id, name:DATA.athletes[id].n, color: i === 0 ? '#1d4ed8' : '#eb6834'}));
+  const people = ids.map((id, i) => ({id, name:DATA.athletes[id].n, color: SITE.color(i === 0 ? '--s1' : '--s2')}));
   const evIds = DATA.events.map(e => e.id).filter(e => ids.some(id => (byAth[id] || []).some(r => r.e === e)));
   let h = '<div class="prog"><h3>' + t('prog.title') + '</h3><p class="s">' + t('prog.sub') + '</p>';
   if (evIds.length < 2) return h + '<p class="muted">' + t('prog.need2') + '</p></div>';
@@ -429,6 +429,7 @@ $('body').addEventListener('click', e => {
   render();
 });
 SITE.onLang(() => { fillSelects(); render(); });
+SITE.onTheme(render);
 render();
 </script>
 </body>
