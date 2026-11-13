@@ -7,7 +7,7 @@
   const I18N = {
     en: {
       'theme.dark':'Dark mode', 'theme.light':'Light mode',
-      'nav.home':'Home', 'nav.calc':'Calculator', 'nav.athletes':'Athletes', 'nav.bests':'Season bests', 'nav.final':'Finals level', 'nav.nations':'Nations', 'nav.log':'Training log', 'nav.about':'About',
+      'nav.home':'Home', 'nav.calc':'Calculator', 'nav.athletes':'Athletes', 'nav.bests':'Bests', 'nav.final':'Finals level', 'nav.nations':'Nations', 'nav.rank':'Ranking', 'nav.next':'Next event', 'nav.log':'Log', 'nav.about':'About',
       'g.W':'Women', 'g.M':'Men', 'allNations':'All nations', 'search':'Search athlete or nation',
       'd.f':'Fencing', 'd.o':'Obstacle', 'd.s':'Swim', 'd.l':'Laser Run', 'total':'Total', 'combined':'Combined',
       'rounds':'Rounds', 'rank':'Rank', 'athlete':'Athlete', 'place':'Place', 'round':'Round', 'points':'Points',
@@ -83,6 +83,25 @@
       'log.min':'{m} min', 'log.prev':'Previous month', 'log.next':'Next month',
       'log.backup':'Backup', 'log.backupHint':'Your log is saved only in this browser. Download a backup file now and then, and load it on another device to move your log.',
       'log.export':'Download backup', 'log.import':'Load backup', 'log.imported':'Loaded {n} trainings.', 'log.badFile':'That file isn’t a valid backup.',
+
+      /* relays */
+      'tab.relay':'Relays', 'g.X':'Mixed', 'rel.team':'Team', 'rel.gap':'Gap', 'rel.none':'No relays at this competition.',
+      'hint.relay':'Relay results from the competitions that held relays. Each team is two athletes; tap a name to see their individual results.',
+      'rel.nh':'not held', 'rel.noteObs':'There was no obstacle in this relay.',
+      'updated':'Results last updated: {d}',
+
+      /* world ranking */
+      'wr.title':'World ranking', 'wr.sub':'The official UIPM senior Pentathlon World Ranking.',
+      'wr.basis':'Counts competitions up to {d} (latest: Asian Games, Aichi-Nagoya). Copied from uipmworld.org on {r}.',
+      'wr.source':'Official source', 'wr.points':'Points', 'wr.best':'Best 2026 result on this site', 'wr.count':'{n} athletes ranked',
+      'wr.note':'Ranking points are calculated by UIPM from the competitions listed on the official page, including events this site has no results files for (World Cup Final, Asian Games, continental championships). Tap a name to see their results here.',
+
+      /* next competition */
+      'nx.title':'Next competition', 'nx.next':'Next up', 'nx.now':'Happening now', 'nx.d':'days', 'nx.h':'hours', 'nx.m':'minutes', 'nx.s':'seconds',
+      'nx.starts':'Starts {d}', 'nx.ics':'Add to calendar', 'nx.coming':'Coming up', 'nx.tba':'Dates to be announced', 'nx.inDays':'in {n} days', 'nx.tomorrow':'tomorrow',
+      'nx.updates':'Updates', 'nx.results':'Results on this site last updated: {d}', 'nx.latest':'Latest results: {e}',
+      'nx.cal':'Calendar last checked: {d}, from the official UIPM calendar.', 'nx.calSrc':'UIPM calendar',
+      'nx.none':'No upcoming competitions in the calendar yet.',
       /* about */
       'about.title':'About this site',
       'about.p1':'I created this site because there was no single place to see athletes’ average performances across a season. Official results show each competition on its own, but averages reveal much more: how consistent an athlete is, where their strengths lie, and which disciplines offer the most room for improvement.',
@@ -122,7 +141,7 @@
     },
     hu: {
       'theme.dark':'Sötét mód', 'theme.light':'Világos mód',
-      'nav.home':'Főoldal', 'nav.calc':'Kalkulátor', 'nav.athletes':'Versenyzők', 'nav.bests':'Szezonlegjobbak', 'nav.final':'Döntős szint', 'nav.nations':'Nemzetek', 'nav.log':'Edzésnapló', 'nav.about':'Rólam',
+      'nav.home':'Főoldal', 'nav.calc':'Kalkulátor', 'nav.athletes':'Versenyzők', 'nav.bests':'Legjobbak', 'nav.final':'Döntősök', 'nav.nations':'Nemzetek', 'nav.rank':'Ranglista', 'nav.next':'Következő', 'nav.log':'Napló', 'nav.about':'Rólam',
       'g.W':'Nők', 'g.M':'Férfiak', 'allNations':'Minden nemzet', 'search':'Versenyző vagy nemzet keresése',
       'd.f':'Vívás', 'd.o':'Akadályfutás', 'd.s':'Úszás', 'd.l':'Lézerfutás', 'total':'Összesen', 'combined':'Együtt',
       'rounds':'Fordulók', 'rank':'Hely.', 'athlete':'Versenyző', 'place':'Hely', 'round':'Forduló', 'points':'Pont',
@@ -192,6 +211,22 @@
       'log.min':'{m} perc', 'log.prev':'Előző hónap', 'log.next':'Következő hónap',
       'log.backup':'Biztonsági mentés', 'log.backupHint':'A naplód csak ebben a böngészőben van elmentve. Időnként tölts le egy mentést, és ezzel másik eszközre is átviheted.',
       'log.export':'Mentés letöltése', 'log.import':'Mentés betöltése', 'log.imported':'{n} edzés betöltve.', 'log.badFile':'Ez a fájl nem érvényes mentés.',
+
+      'tab.relay':'Váltók', 'g.X':'Vegyes', 'rel.team':'Csapat', 'rel.gap':'Hátrány', 'rel.none':'Ezen a versenyen nem volt váltó.',
+      'hint.relay':'Váltóeredmények azokról a versenyekről, ahol volt váltó. Minden csapat két versenyzőből áll; koppints egy névre az egyéni eredményekért.',
+      'rel.nh':'nem volt', 'rel.noteObs':'Ebben a váltóban nem volt akadályfutás.',
+      'updated':'Eredmények utolsó frissítése: {d}',
+
+      'wr.title':'Világranglista', 'wr.sub':'A UIPM hivatalos felnőtt öttusa-világranglistája.',
+      'wr.basis':'A {d}-ig tartott versenyeket számolja (utolsó: Ázsiai Játékok, Aicsi-Nagoja). A uipmworld.org oldalról átvéve: {r}.',
+      'wr.source':'Hivatalos forrás', 'wr.points':'Pont', 'wr.best':'Legjobb 2026-os eredmény az oldalon', 'wr.count':'{n} rangsorolt versenyző',
+      'wr.note':'A ranglistapontokat a UIPM számolja a hivatalos oldalon felsorolt versenyekből, olyanokból is, amelyekről ezen az oldalon nincs eredményfájl (Világkupa-döntő, Ázsiai Játékok, kontinensbajnokságok). Koppints egy névre az itteni eredményeiért.',
+
+      'nx.title':'Következő verseny', 'nx.next':'Következő', 'nx.now':'Most zajlik', 'nx.d':'nap', 'nx.h':'óra', 'nx.m':'perc', 'nx.s':'másodperc',
+      'nx.starts':'Kezdés: {d}', 'nx.ics':'Hozzáadás a naptárhoz', 'nx.coming':'Közelgő versenyek', 'nx.tba':'Időpont később', 'nx.inDays':'{n} nap múlva', 'nx.tomorrow':'holnap',
+      'nx.updates':'Frissítések', 'nx.results':'Az eredmények utolsó frissítése: {d}', 'nx.latest':'Legutóbbi eredmények: {e}',
+      'nx.cal':'A versenynaptár utolsó ellenőrzése: {d}, a UIPM hivatalos naptára alapján.', 'nx.calSrc':'UIPM naptár',
+      'nx.none':'Még nincs közelgő verseny a naptárban.',
       'about.title':'Az oldalról',
       'about.p1':'Azért hoztam létre ezt az oldalt, mert nem volt olyan hely, ahol a versenyzők szezonbeli átlageredményeit egy helyen meg lehetett volna nézni. A hivatalos eredmények minden versenyt külön mutatnak, az átlagok viszont sokkal többet elárulnak: mennyire egyenletes egy versenyző teljesítménye, hol vannak az erősségei, és mely számokban van a legtöbb fejlődési lehetőség.',
       'about.p2':'Célom, hogy ezek a számok könnyen áttekinthetők legyenek, így a versenyzők és az edzők reális célokat tűzhetnek ki, és jobban megtervezhetik a jövőbeli edzéseket.',
@@ -253,7 +288,8 @@
     JPN:['Japan','Japán'], KAZ:['Kazakhstan','Kazahsztán'], KGZ:['Kyrgyzstan','Kirgizisztán'], KOR:['South Korea','Dél-Korea'], KSA:['Saudi Arabia','Szaúd-Arábia'], LBN:['Lebanon','Libanon'],
     LTU:['Lithuania','Litvánia'], MDA:['Moldova','Moldova'], MEX:['Mexico','Mexikó'], MGL:['Mongolia','Mongólia'], NEP:['Nepal','Nepál'], NZL:['New Zealand','Új-Zéland'],
     PER:['Peru','Peru'], PHI:['Philippines','Fülöp-szigetek'], PLE:['Palestine','Palesztina'], POL:['Poland','Lengyelország'], RSA:['South Africa','Dél-afrikai Köztársaság'], RUS:['Russia','Oroszország'],
-    SGP:['Singapore','Szingapúr'], SRI:['Sri Lanka','Srí Lanka'], SUI:['Switzerland','Svájc'], SVK:['Slovakia','Szlovákia'], SWE:['Sweden','Svédország'], THA:['Thailand','Thaiföld'],
+    SGP:['Singapore','Szingapúr'], ARG:['Argentina','Argentína'], PAN:['Panama','Panama'], DOM:['Dominican Republic','Dominikai Köztársaság'], KUW:['Kuwait','Kuvait'],
+    MAS:['Malaysia','Malajzia'], UAE:['United Arab Emirates','Egyesült Arab Emírségek'], SRI:['Sri Lanka','Srí Lanka'], SUI:['Switzerland','Svájc'], SVK:['Slovakia','Szlovákia'], SWE:['Sweden','Svédország'], THA:['Thailand','Thaiföld'],
     TPE:['Chinese Taipei','Kínai Tajpej'], TUR:['Türkiye','Törökország'], UKR:['Ukraine','Ukrajna'], USA:['United States','Egyesült Államok'], UZB:['Uzbekistan','Üzbegisztán'], VEN:['Venezuela','Venezuela']
   };
   const nation = c => (NATIONS[c] ? NATIONS[c][lang === 'hu' ? 1 : 0] : c);
@@ -304,7 +340,7 @@
   }
 
   // Clean addresses (Vercel serves /calculator from calculator.html)
-  const PAGES = [['/','index','nav.home'],['/calculator','calculator','nav.calc'],['/athletes','athletes','nav.athletes'],['/nations','nations','nav.nations'],['/bests','bests','nav.bests'],['/finals','finals','nav.final'],['/log','log','nav.log'],['/about','about','nav.about']];
+  const PAGES = [['/','index','nav.home'],['/calculator','calculator','nav.calc'],['/athletes','athletes','nav.athletes'],['/rankings','rankings','nav.rank'],['/nations','nations','nav.nations'],['/bests','bests','nav.bests'],['/finals','finals','nav.final'],['/next','next','nav.next'],['/log','log','nav.log'],['/about','about','nav.about']];
 
   function nav(){
     const el = document.getElementById('nav'); if (!el) return;
@@ -335,8 +371,8 @@
     + '#nav .theme:hover{color:var(--accent);border-color:var(--accent)}'
     + '#nav .theme:focus-visible,#nav .lang button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}'
     + '#nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap}'
-    + '#nav .links{display:flex;flex-wrap:wrap;gap:2px}'
-    + '#nav .links a{padding:7px 12px;border-radius:999px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.88rem;white-space:nowrap}'
+    + '#nav .links{display:flex;flex-wrap:nowrap;gap:2px;overflow-x:auto;scrollbar-width:none;min-width:0}#nav .links::-webkit-scrollbar{display:none}#nav{flex-wrap:nowrap}'
+    + '#nav .links a{padding:7px 10px;border-radius:999px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.86rem;white-space:nowrap}'
     + '#nav .links a:hover{color:var(--accent)}'
     + '#nav .links a.on{background:var(--accent);color:var(--ink)}'
     + '#nav .lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--card)}'

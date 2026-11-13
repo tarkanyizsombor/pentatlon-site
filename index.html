@@ -28,6 +28,7 @@
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <script src="common.js"></script>
+<script src="calendar.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,500..900&display=swap" rel="stylesheet">
@@ -66,6 +67,11 @@ a{color:inherit}
   .pcard{scroll-snap-align:start}
 }
 
+.nextbar{display:flex;align-items:center;gap:12px;margin:-14px 0 28px;padding:14px 18px;border-radius:16px;background:var(--soft);border:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:600}
+.nextbar:hover{border-color:var(--accent)}
+.nextbar b{color:var(--accent);font-size:1.25rem;font-variant-numeric:tabular-nums}
+.nextbar .go2{margin-left:auto;color:var(--accent);white-space:nowrap}
+.nextbar .lbl{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);display:block}
 .go{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:48px}
 .go a{display:flex;flex-direction:column;gap:8px;text-decoration:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 1px 3px rgba(29,78,216,.06);transition:border-color .15s,transform .15s}
 .go a:hover{border-color:var(--accent);transform:translateY(-2px)}
@@ -243,6 +249,8 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
     </div>
   </header>
 
+  <a class="nextbar" id="nextbar" href="/next" hidden></a>
+
   <section class="go" aria-label="Get started">
     <a href="/calculator" class="primary">
       <h2 data-i18n="home.calcT"></h2>
@@ -272,6 +280,21 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
   </section>
 
   <footer data-i18n="footer"></footer>
+<script>
+(function(){
+  const bar = document.getElementById('nextbar'), cal = window.CALENDAR; if (!cal) return;
+  const startMs = e => Date.parse(e.start + 'T00:00:00' + (e.utc || 'Z')), endMs = e => Date.parse(e.end + 'T23:59:59' + (e.utc || 'Z'));
+  function draw(){
+    const now = Date.now(), e = cal.events.filter(x => x.start && endMs(x) >= now).sort((a, b) => startMs(a) - startMs(b))[0];
+    if (!e){ bar.hidden = true; return; }
+    const n = Math.max(0, Math.ceil((startMs(e) - now) / 86400000));
+    const name = SITE.lang === 'hu' && e.name_hu ? e.name_hu : e.name;
+    bar.innerHTML = '<b>' + (startMs(e) <= now ? '●' : n) + '</b><span><span class="lbl">' + SITE.t('nx.next') + '</span>' + name + ' · ' + (startMs(e) <= now ? SITE.t('nx.now') : (n === 1 ? SITE.t('nx.tomorrow') : SITE.t('nx.inDays', {n}))) + '</span><span class="go2">' + SITE.t('nx.title') + ' →</span>';
+    bar.hidden = false;
+  }
+  SITE.onLang(draw); draw();
+})();
+</script>
 </div>
 </body>
 </html>

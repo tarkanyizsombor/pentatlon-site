@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="The official UIPM senior Pentathlon World Ranking for women and men, with links to each athlete’s 2026 results.">
+<link rel="canonical" href="https://ottusaeredmenyek.com/rankings">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#1d4ed8">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Modern Pentathlon by Tárkányi Zsombor">
+<meta property="og:title" content="World Ranking · Modern Pentathlon">
+<meta property="og:description" content="The official UIPM senior Pentathlon World Ranking for women and men, with links to each athlete’s 2026 results.">
+<meta property="og:url" content="https://ottusaeredmenyek.com/rankings">
+<meta property="og:image" content="https://ottusaeredmenyek.com/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Modern Pentathlon by Tárkányi Zsombor: illustrated athletes fencing, running an obstacle course, swimming, laser shooting and running.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="World Ranking · Modern Pentathlon">
+<meta name="twitter:description" content="The official UIPM senior Pentathlon World Ranking for women and men, with links to each athlete’s 2026 results.">
+<meta name="twitter:image" content="https://ottusaeredmenyek.com/og-image.jpg">
+<title>World Ranking · Modern Pentathlon</title>
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<script src="common.js"></script>
+<script src="data.js"></script>
+<script src="rankings.js"></script>
+<style>
+:root{--tint:#f5f8ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;--soft:#eef4ff;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px 16px 48px}
+h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 4px}
+.basis{color:var(--muted);font-size:.82rem;margin:0 0 14px}
+.basis a{color:var(--accent);font-weight:600}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;align-items:center}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:7px 14px;border-radius:8px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--ink)}
+input,select{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--tint);color:var(--text);min-width:0}
+#q{flex:1 1 180px}
+.count{color:var(--muted);font-size:.85rem;margin:0 0 8px}
+.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto;box-shadow:0 1px 3px rgba(29,78,216,.06)}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:9px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
+th:nth-child(2),td:nth-child(2),th:nth-child(4),td:nth-child(4){text-align:left}
+td.rk{font-weight:800;color:var(--muted);width:44px}
+tr.top td.rk{color:var(--accent)}
+td.pts{font-weight:800;color:var(--accent)}
+.name a{color:inherit;text-decoration:none;font-weight:600}
+.name a:hover{color:var(--accent);text-decoration:underline}
+.name span{color:var(--muted);font-size:.8rem;margin-left:6px}
+.best{color:var(--muted);font-size:.82rem}
+.bar{display:inline-block;height:6px;border-radius:3px;background:var(--s1);opacity:.35;vertical-align:middle;margin-right:8px}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+.note{font-size:.8rem;color:var(--muted);margin-top:14px;line-height:1.5}
+@media (max-width:640px){.wrap{padding:12px 12px 40px}th,td{padding:9px 6px}th.c,td.c{display:none}.name span{display:block;margin:0}.bar{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav id="nav"></nav>
+  <h1 data-i18n="wr.title"></h1>
+  <p class="sub" data-i18n="wr.sub"></p>
+  <p class="basis" id="basis"></p>
+  <div class="controls">
+    <div class="seg" id="gender"><button data-g="W" class="on" data-i18n="g.W"></button><button data-g="M" data-i18n="g.M"></button></div>
+    <select id="nation" aria-label="Nation"></select>
+    <input id="q" type="search" data-i18n-ph="search" aria-label="Search">
+  </div>
+  <p class="count" id="count"></p>
+  <div class="tbl"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
+  <p class="note" data-i18n="wr.note"></p>
+</div>
+<script>
+const t = SITE.t, R = window.RANKINGS, DATA = window.DATA;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtDay = s => new Date(s + 'T12:00').toLocaleDateString(SITE.lang === 'hu' ? 'hu-HU' : 'en-GB', {year:'numeric', month:'long', day:'numeric'});
+const slugOf = n => n.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const evById = Object.fromEntries(DATA.events.map(e => [e.id, e]));
+const evShort = e => SITE.lang === 'hu' && e.short_hu ? e.short_hu : e.short;
+const bestByAth = {}; for (const s of DATA.standings) if (!bestByAth[s.a] || s.rank < bestByAth[s.a].rank) bestByAth[s.a] = s;
+
+const h0 = new URLSearchParams(location.hash.slice(1));
+let state = {g: h0.get('g') === 'M' ? 'M' : 'W', nat: (h0.get('n') || '').toUpperCase(), q: ''};
+
+function render(){
+  history.replaceState(null, '', location.pathname + (() => { const h = new URLSearchParams(); if (state.g !== 'W') h.set('g', state.g); if (state.nat) h.set('n', state.nat); return h.toString() ? '#' + h : ''; })());
+  $('gender').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.g === state.g));
+  $('basis').innerHTML = esc(t('wr.basis', {d: fmtDay(R.through), r: fmtDay(R.retrieved)})) + ' <a href="' + R.source[state.g] + '" target="_blank" rel="noopener">' + t('wr.source') + ' ↗</a>';
+  const all = R[state.g];
+  const nats = [...new Set(all.map(r => r[3]))].sort();
+  if (state.nat && !nats.includes(state.nat)) state.nat = '';
+  $('nation').innerHTML = '<option value="">' + t('allNations') + '</option>' + nats.map(c => '<option value="' + esc(c) + '">' + esc(c) + (SITE.nation(c) !== c ? ' · ' + esc(SITE.nation(c)) : '') + '</option>').join('');
+  $('nation').value = state.nat;
+  const rows = all.filter(r => (!state.nat || r[3] === state.nat) && (!state.q || (r[2] + ' ' + r[3] + ' ' + SITE.nation(r[3])).toLowerCase().includes(state.q)));
+  $('count').textContent = t('wr.count', {n: rows.length});
+  const max = all[0][1];
+  $('head').innerHTML = '<tr><th>#</th><th>' + t('athlete') + '</th><th>' + t('wr.points') + '</th><th class="c">' + t('wr.best') + '</th></tr>';
+  $('body').innerHTML = rows.length ? rows.map(([rk, pts, name, c, lic]) => {
+    const a = DATA.athletes[lic];
+    const nm = a ? '<a href="/athletes#a=' + slugOf(a.n) + '">' + esc(name) + '</a>' : esc(name);
+    const b = bestByAth[lic];
+    const best = b ? b.rank + '. · ' + t('r.' + b.lvl) + ' · ' + esc(evShort(evById[b.e])) : '–';
+    return '<tr class="' + (rk <= 3 ? 'top' : '') + '"><td class="rk">' + rk + '</td><td class="name">' + nm + '<span>' + esc(c) + ' · ' + esc(SITE.nation(c)) + '</span></td>'
+      + '<td class="pts"><span class="bar" style="width:' + Math.max(4, Math.round(60 * pts / max)) + 'px"></span>' + pts + '</td><td class="c best">' + best + '</td></tr>';
+  }).join('') : '<tr><td colspan="4" class="empty">' + t('noAthletes') + '</td></tr>';
+}
+$('gender').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; state.g = b.dataset.g; render(); });
+$('nation').addEventListener('change', e => { state.nat = e.target.value; render(); });
+$('q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+SITE.onLang(render);
+render();
+</script>
+</body>
+</html>
