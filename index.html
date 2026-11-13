@@ -90,6 +90,23 @@ a{color:inherit}
   .nextbar b{display:inline-block;min-width:2ch}
 }
 
+/* discipline info panel under the cards */
+.pcard{position:relative;cursor:pointer;outline:none}
+.pcard:focus-visible{box-shadow:0 0 0 3px #fff,0 14px 32px rgba(8,20,80,.25)}
+.hero .row.focus .pcard:not(.on){opacity:.55}
+.pcard.on{background-color:rgba(255,255,255,.12);border-color:rgba(255,255,255,.75)}
+.pinfo{margin-top:16px;min-height:140px;border-radius:18px;background:rgba(8,20,80,.28);border:1.5px solid rgba(255,255,255,.18);padding:16px 20px;display:flex;align-items:center}
+.pinfo .pchint{margin:0;width:100%;font-size:.88rem;opacity:.8;text-align:center}
+.pinfo .in{display:grid;grid-template-columns:150px 1fr 1fr;gap:6px 22px;width:100%;align-items:start}
+.pinfo h3{margin:0;font-size:1.2rem;font-weight:900;letter-spacing:-.01em}
+.pinfo small{display:block;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:#93c5fd;margin-bottom:3px}
+.pinfo .ff small{color:#fcd34d}
+.pinfo p{margin:0;font-size:.9rem;line-height:1.45}
+.pcard,.hero .row .pcard{transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,background-color .35s,opacity .25s,border-color .25s}
+@media (prefers-reduced-motion:no-preference){@keyframes pin{from{opacity:0;transform:translateY(6px)}}.pinfo .in{animation:pin .3s cubic-bezier(.2,.7,.2,1)}}
+@media (max-width:1000px){.pinfo{min-height:162px}}
+@media (max-width:760px){.pinfo{min-height:0;padding:14px 16px}.pinfo .in{grid-template-columns:1fr;gap:10px}.pinfo p{font-size:.86rem}}
+
 /* Los Angeles 2028 countdown */
 .la{position:relative;overflow:hidden;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center;border-radius:24px;padding:26px 30px;margin:0 0 30px;color:#fff;
   background:linear-gradient(120deg,#c2410c 0%,#be185d 48%,#5b21b6 100%);box-shadow:0 18px 44px rgba(190,24,93,.22)}
@@ -163,7 +180,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
     <h1><span class="shine">Modern Pentathlon</span></h1>
     <p class="tag" data-i18n="home.tag"></p>
     <div class="row">
-      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+      <div class="pcard" tabindex="0" role="button" aria-controls="pinfo" aria-pressed="false" data-k="fen"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
     <ellipse cx="100" cy="206" rx="74" ry="7" fill="#0b1b5a" opacity=".28"/>
     <rect x="14" y="200" width="172" height="5" rx="2.5" fill="#fff" opacity=".35"/>
     <g stroke-linecap="round" stroke-linejoin="round" fill="none">
@@ -190,7 +207,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
     <!-- lamé stripe accent -->
     <path d="M86 128 L100 106" stroke="#3b82f6" stroke-width="4" stroke-linecap="round" opacity=".7"/>
   </svg></div><span data-i18n="disc.fen"></span></div>
-      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+      <div class="pcard" tabindex="0" role="button" aria-controls="pinfo" aria-pressed="false" data-k="obs"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
     <ellipse cx="104" cy="206" rx="70" ry="7" fill="#0b1b5a" opacity=".28"/>
     <!-- obstacle box -->
     <rect x="62" y="146" width="84" height="58" rx="8" fill="#fbbf24"/>
@@ -218,7 +235,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
     <!-- motion lines -->
     <path d="M22 80 H44 M14 100 H38 M24 120 H42" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".45"/>
   </svg></div><span data-i18n="disc.obs"></span></div>
-      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+      <div class="pcard" tabindex="0" role="button" aria-controls="pinfo" aria-pressed="false" data-k="swim"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
     <defs>
       <linearGradient id="wb" x1="0" y1="140" x2="0" y2="236" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#38bdf8" stop-opacity=".6"/><stop offset="1" stop-color="#38bdf8" stop-opacity="0"/></linearGradient>
       <linearGradient id="wf" x1="0" y1="150" x2="0" y2="236" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0ea5e9" stop-opacity=".9"/><stop offset=".55" stop-color="#0ea5e9" stop-opacity=".55"/><stop offset="1" stop-color="#0ea5e9" stop-opacity="0"/></linearGradient>
@@ -246,7 +263,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
     <circle cx="26" cy="132" r="4" fill="#e0f2fe"/><circle cx="18" cy="144" r="3" fill="#e0f2fe"/><circle cx="34" cy="122" r="2.5" fill="#e0f2fe"/>
     <circle cx="160" cy="88" r="3" fill="#e0f2fe" opacity=".9"/><circle cx="168" cy="98" r="2.2" fill="#e0f2fe" opacity=".9"/>
   </svg></div><span data-i18n="disc.swim"></span></div>
-      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+      <div class="pcard" tabindex="0" role="button" aria-controls="pinfo" aria-pressed="false" data-k="shoot"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
     <ellipse cx="86" cy="206" rx="44" ry="7" fill="#0b1b5a" opacity=".28"/>
     <!-- target -->
     <rect x="166" y="96" width="4" height="110" rx="2" fill="#e2e8f0" opacity=".7"/>
@@ -273,7 +290,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
     <path d="M74 72 Q76 56 92 58 Q102 60 102 70 Q92 64 80 68Z" fill="#111827"/>
     <rect x="70" y="122" width="28" height="18" rx="3" fill="#fff" opacity=".95"/><path d="M78 131 H90" stroke="#1d4ed8" stroke-width="4" stroke-linecap="round"/>
   </svg></div><span data-i18n="disc.shoot"></span></div>
-      <div class="pcard"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
+      <div class="pcard" tabindex="0" role="button" aria-controls="pinfo" aria-pressed="false" data-k="run"><div class="art" aria-hidden="true"><svg focusable="false" viewBox="0 0 200 236">
     <ellipse cx="104" cy="206" rx="50" ry="7" fill="#0b1b5a" opacity=".28"/>
     <g stroke-linecap="round" stroke-linejoin="round" fill="none">
       <!-- back arm -->
@@ -301,6 +318,7 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
     <path d="M20 110 H52 M12 132 H44 M24 154 H50" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".45"/>
   </svg></div><span data-i18n="disc.run"></span></div>
     </div>
+    <div class="pinfo" id="pinfo" aria-live="polite"><p class="pchint" data-i18n="pc.hint"></p></div>
   </header>
 
   <a class="nextbar" id="nextbar" href="/next" hidden></a>
@@ -417,6 +435,29 @@ footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-si
       if (b.textContent !== v){ const first = b.textContent === '–'; b.textContent = v; if (!first){ b.classList.remove('tk'); void b.offsetWidth; b.classList.add('tk'); } } });
   }
   SITE.onLang(draw); draw(); setInterval(tick, 1000);
+})();
+(function(){
+  // hover (computer), tap (phone) or Enter/Space (keyboard) shows what you do + a fun fact under the cards
+  const row = document.querySelector('.hero .row'), panel = document.getElementById('pinfo'), cards = [...row.querySelectorAll('.pcard')];
+  const fine = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  let shown = null, pinned = null;
+  function show(k){
+    if (k === shown) return; shown = k;
+    cards.forEach(c => { const on = c.dataset.k === k; c.classList.toggle('on', on); c.setAttribute('aria-pressed', String(on)); });
+    row.classList.toggle('focus', !!k);
+    const t = SITE.t;
+    panel.innerHTML = k ? '<div class="in"><h3>' + t('disc.' + k) + '</h3><div><small>' + t('pc.do') + '</small><p>' + t('pc.' + k + '.do') + '</p></div><div class="ff"><small>' + t('pc.ff') + '</small><p>' + t('pc.' + k + '.ff') + '</p></div></div>'
+      : '<p class="pchint">' + t('pc.hint') + '</p>';
+  }
+  cards.forEach(c => {
+    if (fine) c.addEventListener('mouseenter', () => show(c.dataset.k));
+    c.addEventListener('click', () => { pinned = pinned === c.dataset.k && !fine ? null : c.dataset.k; show(pinned); });
+    c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); c.click(); } });
+    c.addEventListener('focus', () => { if (fine) show(c.dataset.k); });
+  });
+  if (fine) row.addEventListener('mouseleave', () => show(pinned));
+  document.addEventListener('click', e => { if (!e.target.closest('.hero .row')) { pinned = null; show(null); } });
+  SITE.onLang(() => { const k = shown; shown = undefined; show(k); });
 })();
 (function(){
   const h = document.querySelector('.hero'); if (!h || !matchMedia('(pointer:fine)').matches) return;
