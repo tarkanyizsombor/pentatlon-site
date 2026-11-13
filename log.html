@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Track your own modern pentathlon results over time: personal bests, progress charts and how close you are to the 2026 finals average. Saved on your device.">
+<meta name="description" content="A modern pentathlon training diary: write down what you trained in fencing, obstacle, swimming, shooting, running and laser run, and count your sessions per month and year. Saved on your device.">
 <link rel="canonical" href="https://ottusaeredmenyek.com/log">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -12,79 +12,91 @@
 <meta name="theme-color" content="#1d4ed8">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Modern Pentathlon by Tárkányi Zsombor">
-<meta property="og:title" content="My Training Log · Modern Pentathlon">
-<meta property="og:description" content="Track your own modern pentathlon results over time: personal bests, progress charts and how close you are to the 2026 finals average. Saved on your device.">
+<meta property="og:title" content="Training Log · Modern Pentathlon">
+<meta property="og:description" content="A modern pentathlon training diary: write down what you trained in fencing, obstacle, swimming, shooting, running and laser run, and count your sessions per month and year. Saved on your device.">
 <meta property="og:url" content="https://ottusaeredmenyek.com/log">
 <meta property="og:image" content="https://ottusaeredmenyek.com/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Modern Pentathlon by Tárkányi Zsombor: illustrated athletes fencing, running an obstacle course, swimming, laser shooting and running.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="My Training Log · Modern Pentathlon">
-<meta name="twitter:description" content="Track your own modern pentathlon results over time: personal bests, progress charts and how close you are to the 2026 finals average. Saved on your device.">
+<meta name="twitter:title" content="Training Log · Modern Pentathlon">
+<meta name="twitter:description" content="A modern pentathlon training diary: write down what you trained in fencing, obstacle, swimming, shooting, running and laser run, and count your sessions per month and year. Saved on your device.">
 <meta name="twitter:image" content="https://ottusaeredmenyek.com/og-image.jpg">
-<title>My Training Log · Modern Pentathlon</title>
+<title>Training Log · Modern Pentathlon</title>
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <script src="common.js"></script>
-<script src="data.js"></script>
 <style>
-:root{--tint:#f5f8ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;--soft:#eef4ff;--behind:#b8471b;color-scheme:light}
+:root{--tint:#f5f8ff;--bg:#ffffff;--card:#ffffff;--text:#0b1b3a;--muted:#5a6b85;--line:#dde5f0;--accent:#1d4ed8;--ink:#ffffff;--soft:#eef4ff;color-scheme:light}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:1000px;margin:0 auto;padding:16px 16px 48px}
 h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
-h2{font-size:1.05rem;margin:26px 0 10px}
-.sub{color:var(--muted);margin:0 0 14px;max-width:70ch}
-.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:6px;font-size:.88rem;color:var(--muted)}
-.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}
-.seg button{border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer}
-.seg button.on{background:var(--accent);color:var(--ink)}
+h2{font-size:1.05rem;margin:28px 0 10px}
+.sub{color:var(--muted);margin:0 0 6px;max-width:70ch}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:0 1px 3px rgba(29,78,216,.06)}
-.form{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.form .wide{grid-column:span 2}
-label{display:block;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-input{width:100%;font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--tint);color:var(--text);margin-top:4px}
-input:focus{outline:2px solid var(--accent);outline-offset:1px}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+label,.lbl{display:block;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+input,textarea{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--tint);color:var(--text)}
+textarea{min-height:84px;resize:vertical;line-height:1.45}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.row{display:grid;grid-template-columns:180px 1fr;gap:14px;margin-bottom:14px}
+.row>div{min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:.9rem;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer}
+.chip small{font-weight:500;color:var(--muted);margin-left:4px}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.chip[aria-pressed="true"] small{color:inherit;opacity:.8}
+.chip:focus-visible,.btn:focus-visible,.nav button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mins{max-width:220px}
 .actions{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
 .btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 18px;background:var(--accent);color:var(--ink);cursor:pointer}
 .btn.ghost{background:var(--card);color:var(--accent);border:1px solid var(--line)}
-.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .msg{font-size:.88rem;color:var(--muted)}
 .msg.err{color:#c0392b}
-.pbs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.pb .k{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.pb .v{font-size:1.6rem;font-weight:800;color:var(--accent);letter-spacing:-.02em;line-height:1.15;font-variant-numeric:tabular-nums}
-.pb .m{font-size:.8rem;color:var(--muted)}
-.pb .gap{font-size:.85rem;font-weight:700;margin-top:4px}
-.ahead{color:var(--accent)} .behind{color:var(--behind)}
-.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px 24px}
-.chart h4{font-size:.8rem;margin:0 0 2px}
-.chart svg{width:100%;height:auto;display:block;overflow:visible}
+
+.monthbar{display:flex;align-items:center;gap:10px;margin:28px 0 10px}
+.monthbar h2{margin:0;flex:1}
+.nav{display:inline-flex;align-items:center;gap:6px}
+.nav button{font:inherit;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;font-size:1.05rem;line-height:1}
+.nav span{font-weight:700;min-width:9.5em;text-align:center}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.tile.all{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.tile .k{font-size:.78rem;font-weight:700;color:var(--muted)}
+.tile.all .k,.tile.all .m,.tile.all .y{color:inherit;opacity:.85}
+.tile .n{font-size:2rem;font-weight:800;letter-spacing:-.02em;line-height:1.05;color:var(--accent);font-variant-numeric:tabular-nums}
+.tile.all .n{color:inherit}
+.tile .y{font-size:.75rem;color:var(--muted)}
+.tile .m{font-size:.82rem;font-weight:600;margin-top:6px}
+.chart{margin-top:12px}
+.chart h3{font-size:.85rem;margin:0 0 4px}
+.chart svg{width:100%;height:auto;display:block}
 .chart .ax{fill:var(--muted);font-size:10px}
 .chart .gl{stroke:var(--line);stroke-width:1}
-.chart .ref{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4}
-.chart .reflab{fill:var(--muted);font-size:9.5px;font-weight:600}
-.chart .ln{fill:none;stroke:var(--s1);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
-.chart .pt{fill:var(--s1);stroke:var(--card);stroke-width:2}
-.chart .lab{font-size:10px;font-weight:700;fill:var(--text)}
-.chart .empty{font-size:.8rem;color:var(--muted);padding:30px 0;text-align:center;border:1px dashed var(--line);border-radius:10px}
-.tbl{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow-x:auto;box-shadow:0 1px 3px rgba(29,78,216,.06)}
-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-th,td{padding:9px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
-th{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:600}
-th:nth-child(-n+2),td:nth-child(-n+2){text-align:left}
-td span{display:block;color:var(--muted);font-size:.72rem}
-td.tot{font-weight:700}
-.del{font:inherit;font-size:.78rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:4px 8px;cursor:pointer}
-.del:hover{color:#c0392b;border-color:#c0392b}
-.tag{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:1px 7px;border-radius:999px;background:var(--soft);color:var(--accent);margin-right:6px}
-.empty{color:var(--muted);padding:20px;text-align:center}
-.note{font-size:.8rem;color:var(--muted);margin-top:8px;line-height:1.5}
-@media (max-width:760px){.form{grid-template-columns:1fr 1fr}.form .wide{grid-column:span 2}}
-@media (max-width:640px){.wrap{padding:12px 12px 40px}th,td{padding:8px 6px;font-size:.82rem}.form{grid-template-columns:1fr 1fr}.form>div:nth-child(-n+3){grid-column:span 2}}
-.form>div{min-width:0}.seg button{min-width:0}
+.chart .bar{fill:var(--s1);opacity:.45;cursor:pointer}
+.chart .bar.sel{opacity:1}
+.chart .val{fill:var(--text);font-size:10px;font-weight:700}
+.day{margin-bottom:12px}
+.day h3{font-size:.85rem;color:var(--muted);margin:0 0 6px;font-weight:700}
+.entry{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);margin-bottom:8px}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;background:var(--soft);color:var(--accent);white-space:nowrap}
+.what{white-space:pre-wrap;word-break:break-word}
+.what small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+.ops{display:flex;gap:6px}
+.ops button{font:inherit;font-size:.78rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:4px 9px;cursor:pointer}
+.ops button:hover{color:var(--accent);border-color:var(--accent)}
+.ops button.del:hover{color:#c0392b;border-color:#c0392b}
+.empty{color:var(--muted);padding:18px;text-align:center;border:1px dashed var(--line);border-radius:12px}
+.note{font-size:.8rem;color:var(--muted);line-height:1.5}
+@media (max-width:640px){
+  .wrap{padding:12px 12px 40px}
+  .row{grid-template-columns:1fr}
+  .entry{grid-template-columns:1fr auto}.entry .tag{grid-column:1/-1;justify-self:start}
+  .nav span{min-width:7.5em;font-size:.9rem}
+  .monthbar{flex-wrap:wrap}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+}
 </style>
 </head>
 <body>
@@ -92,30 +104,28 @@ td.tot{font-weight:700}
   <nav id="nav"></nav>
   <h1 data-i18n="log.title"></h1>
   <p class="sub" data-i18n="log.sub"></p>
-  <div class="bar"><span data-i18n="log.compareWith"></span><div class="seg" id="gender"><button data-g="W" data-i18n="g.W"></button><button data-g="M" data-i18n="g.M"></button></div></div>
 
-  <h2 data-i18n="log.add"></h2>
-  <div class="card">
-    <div class="form">
+  <h2 id="formTitle" data-i18n="log.add"></h2>
+  <div class="card" id="formCard">
+    <div class="row">
       <div><label for="f-date" data-i18n="log.date"></label><input id="f-date" type="date"></div>
-      <div><label data-i18n="log.type"></label><div class="seg" id="type" style="margin-top:4px;display:flex"><button data-t="comp" class="on" data-i18n="log.comp" style="flex:1"></button><button data-t="train" data-i18n="log.train" style="flex:1"></button></div></div>
-      <div class="wide"><label for="f-name" data-i18n="log.name"></label><input id="f-name" maxlength="60"></div>
-      <div><label data-i18n="d.f"></label><div class="pair"><input id="f-v" inputmode="numeric" data-i18n-ph="c.v" aria-label="Victories"><input id="f-d" inputmode="numeric" data-i18n-ph="c.d" aria-label="Defeats"></div></div>
-      <div><label for="f-o" data-i18n="d.o"></label><input id="f-o" inputmode="decimal" placeholder="30,00"></div>
-      <div><label for="f-s" data-i18n="d.s"></label><input id="f-s" inputmode="decimal" placeholder="1:05,00"></div>
-      <div><label for="f-l" data-i18n="d.l"></label><input id="f-l" inputmode="decimal" placeholder="11:30,00"></div>
+      <div><span class="lbl" data-i18n="log.disc"></span><div class="chips" id="chips" role="group"></div></div>
     </div>
-    <div class="actions"><button class="btn" id="save" type="button" data-i18n="log.save"></button><span class="msg" id="msg" role="status"></span></div>
+    <label for="f-what" data-i18n="log.what"></label>
+    <textarea id="f-what" maxlength="600" data-i18n-ph="log.whatPh"></textarea>
+    <div style="margin-top:12px"><label for="f-mins" data-i18n="log.mins"></label><input id="f-mins" class="mins" inputmode="numeric" placeholder="60"></div>
+    <div class="actions"><button class="btn" id="save" type="button"></button><button class="btn ghost" id="cancel" type="button" hidden data-i18n="log.cancel"></button><span class="msg" id="msg" role="status"></span></div>
   </div>
 
-  <h2 data-i18n="log.pbs"></h2>
-  <div class="pbs" id="pbs"></div>
+  <div class="monthbar">
+    <h2 data-i18n="log.counts"></h2>
+    <div class="nav"><button id="prev" type="button">‹</button><span id="monthLabel"></span><button id="next" type="button">›</button></div>
+  </div>
+  <div class="tiles" id="tiles"></div>
+  <div class="card chart" id="chart"></div>
 
-  <h2 data-i18n="log.progress"></h2>
-  <div class="card"><div class="charts" id="charts"></div></div>
-
-  <h2 data-i18n="log.history"></h2>
-  <div class="tbl"><table><thead id="hh"></thead><tbody id="hb"></tbody></table></div>
+  <h2 id="histTitle"></h2>
+  <div id="hist"></div>
 
   <h2 data-i18n="log.backup"></h2>
   <div class="card">
@@ -124,167 +134,124 @@ td.tot{font-weight:700}
   </div>
 </div>
 <script>
-const DATA = window.DATA, t = SITE.t;
+const t = SITE.t;
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const num = (v, d=1) => v.toLocaleString(SITE.lang === 'hu' ? 'hu-HU' : 'en-GB', {minimumFractionDigits:d, maximumFractionDigits:d});
-const avg = a => a.length ? a.reduce((x,y) => x+y, 0) / a.length : null;
-const up = x => Math.max(0, Math.ceil(x - 1e-9));
-const toSec = s => { const p = s.split(':'); return p.length === 2 ? (+p[0]) * 60 + parseFloat(p[1]) : parseFloat(p[0]); };
-const fmtTime = sec => { const m = Math.floor(sec / 60), s = sec - m * 60; return (m ? m + ':' + (s < 10 ? '0' : '') : '') + s.toFixed(2); };
-const POINTS = {o: t => up(445 - 3*t), s: t => up(250 + 5*(70 - t)), l: t => up(1300 - t)};
-const MINSEC = {o: 0, s: 40, l: 300};
-// ranking-round fencing points from victories and defeats (same rule as the calculator)
-function fencePts(v, d){ const b = v + d; if (!b || !v) return v === 0 && b ? 0 : null; const w = b <= 29 ? 7 : b <= 33 ? 6 : 5; return Math.max(0, Math.round(250 + w * (v - Math.floor((7*b + 5)/10)))); }
-
-function parseT(s, minSec){
-  s = s.trim().replace(/\s+/g, ''); if (!s) return null;
-  let m, sec;
-  if (s.includes(':')){ const [a, b, ...rest] = s.split(':'); if (rest.length || b === undefined) return NaN; m = a; sec = b.replace(',', '.'); }
-  else {
-    const parts = s.split(/[.,]/);
-    if (parts.length === 3){ m = parts[0]; sec = parts[1] + '.' + parts[2]; }
-    else if (parts.length <= 2){ const v = parseFloat(parts.join('.')); if (parts.length === 2 && minSec && v < minSec && parts[1].length === 2){ m = parts[0]; sec = parts[1]; } else { m = '0'; sec = parts.join('.'); } }
-    else return NaN;
-  }
-  if (!/^\d*$/.test(m) || !/^\d+(\.\d+)?$/.test(sec)) return NaN;
-  const v = parseInt(m || '0', 10) * 60 + parseFloat(sec);
-  return isFinite(v) && v > 0 ? v : NaN;
-}
+const DISC = ['fen','obs','swim','shoot','run','lr','other'];
+const loc = () => SITE.lang === 'hu' ? 'hu-HU' : 'en-GB';
+const pad = n => String(n).padStart(2, '0');
+const todayStr = () => { const d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); };
 
 /* ---------- storage (this device only) ---------- */
-const KEY = 'mp.log';
+const KEY = 'mp.train';
 const load = () => { try { const v = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(v) ? v : []; } catch(e){ return []; } };
-const save = list => { try { localStorage.setItem(KEY, JSON.stringify(list)); return true; } catch(e){ return false; } };
-let entries = load();
-let g = (() => { try { return localStorage.getItem('mp.logG') === 'M' ? 'M' : 'W'; } catch(e){ return 'W'; } })();
-let type = 'comp';
+const store = () => { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){} };
+let list = load();
 
-/* ---------- finals averages (for comparison) ---------- */
-function finalsAvg(){
-  const F = DATA.results.filter(r => r.r === 'F' && DATA.athletes[r.a].g === g);
-  const out = {};
-  for (const d of ['o','s','l']){ const ok = F.filter(r => r[d].p !== undefined); out[d] = avg(ok.map(r => r[d].p)); out[d + 't'] = avg(ok.map(r => toSec(r[d].t))); }
-  const fs = F.filter(r => r.f.v !== undefined && r.f.v + r.f.d > 0);
-  out.f = avg(fs.map(r => 100 * r.f.v / (r.f.v + r.f.d)));
-  return out;
+const now = new Date();
+let view = {y: now.getFullYear(), m: now.getMonth() + 1};   // month shown in counts and history
+let form = {d: null, editId: null};
+
+const monthName = (y, m) => new Date(y, m - 1, 1).toLocaleDateString(loc(), {year:'numeric', month:'long'});
+const dayName = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d).toLocaleDateString(loc(), {weekday:'long', day:'numeric', month:'long'}); };
+const inMonth = (e, y, m) => e.date.startsWith(y + '-' + pad(m) + '-');
+const inYear = (e, y) => e.date.startsWith(y + '-');
+
+/* ---------- form ---------- */
+function renderChips(){
+  $('chips').innerHTML = DISC.map(d => '<button type="button" class="chip" data-d="' + d + '" aria-pressed="' + (form.d === d) + '">' + t('disc.' + d) + (d === 'other' ? '<small>(' + t('disc.otherHint') + ')</small>' : '') + '</button>').join('');
+  $('save').textContent = t(form.editId ? 'log.saveEdit' : 'log.save');
+  $('formTitle').textContent = t(form.editId ? 'log.edit' : 'log.add');
+  $('cancel').hidden = !form.editId;
+}
+function resetForm(keepDate){
+  form = {d: null, editId: null};
+  if (!keepDate) $('f-date').value = todayStr();
+  $('f-what').value = ''; $('f-mins').value = '';
+  renderChips();
 }
 
-const sorted = () => [...entries].sort((a, b) => a.date.localeCompare(b.date) || a.id - b.id);
-const dateLabel = d => { const [y, m, day] = d.split('-').map(Number); return new Date(y, m - 1, day).toLocaleDateString(SITE.lang === 'hu' ? 'hu-HU' : 'en-GB', {day:'numeric', month:'short'}); };
-const fullDate = d => { const [y, m, day] = d.split('-').map(Number); return new Date(y, m - 1, day).toLocaleDateString(SITE.lang === 'hu' ? 'hu-HU' : 'en-GB', {year:'numeric', month:'short', day:'numeric'}); };
-const winRate = e => (e.fv !== undefined && e.fv + e.fd > 0) ? 100 * e.fv / (e.fv + e.fd) : null;
-
-/* ---------- personal bests ---------- */
-function renderPBs(A){
-  const tile = (d, title) => {
-    let best = null;
-    for (const e of entries){
-      const val = d === 'f' ? winRate(e) : e[d];
-      if (val === null || val === undefined) continue;
-      if (!best || (d === 'f' ? val > best.val : val < best.val)) best = {val, e};
-    }
-    let h = '<div class="card pb"><div class="k">' + esc(title) + '</div>';
-    if (!best) return h + '<div class="v">–</div><div class="m">' + t('log.noPb') + '</div></div>';
-    if (d === 'f'){
-      const gap = best.val - A.f;
-      h += '<div class="v">' + num(best.val, 0) + '%</div><div class="m">' + best.e.fv + '–' + best.e.fd + ' · ' + fullDate(best.e.date) + '</div>'
-        + '<div class="gap ' + (gap >= 0 ? 'ahead' : 'behind') + '">' + (gap >= 0 ? '▲ ' : '▼ ') + t(gap >= 0 ? 'f.above' : 'f.below', {p: num(Math.abs(gap / A.f * 100))}) + '</div>';
-    } else {
-      const pct = (A[d + 't'] - best.val) / A[d + 't'] * 100;
-      h += '<div class="v">' + fmtTime(best.val) + '</div><div class="m">' + t('pts', {n: POINTS[d](best.val)}) + ' · ' + fullDate(best.e.date) + '</div>'
-        + '<div class="gap ' + (pct >= 0 ? 'ahead' : 'behind') + '">' + (pct >= 0 ? '▲ ' : '▼ ') + t(pct >= 0 ? 'f.faster' : 'f.slower', {p: num(Math.abs(pct))}) + '</div>';
-    }
-    return h + '</div>';
+/* ---------- counts ---------- */
+function renderCounts(){
+  $('monthLabel').textContent = monthName(view.y, view.m);
+  const month = list.filter(e => inMonth(e, view.y, view.m)), year = list.filter(e => inYear(e, view.y));
+  const mins = arr => arr.reduce((s, e) => s + (e.mins || 0), 0);
+  const tile = (key, label, cls) => {
+    const ym = key ? year.filter(e => e.d === key) : year, mm = key ? month.filter(e => e.d === key) : month;
+    const m = mins(mm);
+    return '<div class="tile ' + (cls || '') + '"><div class="k">' + esc(label) + '</div><div class="n">' + ym.length + '</div><div class="y">' + t('log.thisYear', {y: view.y}) + '</div>'
+      + '<div class="m">' + t('log.thisMonth', {n: mm.length}) + '</div>' + (m ? '<div class="y">' + t('log.minsMonth', {m}) + '</div>' : '') + '</div>';
   };
-  $('pbs').innerHTML = tile('f', t('d.f') + ' · ' + t('log.winRate')) + tile('o', t('d.o')) + tile('s', t('d.s')) + tile('l', t('d.l'));
+  $('tiles').innerHTML = tile(null, t('log.allDisc'), 'all') + DISC.map(d => tile(d, t('disc.' + d))).join('');
+  // trainings per month (bars); tap a bar to jump to that month
+  const counts = Array.from({length: 12}, (_, i) => year.filter(e => inMonth(e, view.y, i + 1)).length);
+  const W = 600, H = 150, L = 26, R = 6, T = 16, B = 22, max = Math.max(4, ...counts);
+  const top = Math.ceil(max / 4) * 4, bw = (W - L - R) / 12;
+  const y = v => T + (top - v) * (H - T - B) / top;
+  let s = '';
+  for (const v of [0, top / 2, top]) s += '<line class="gl" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(v) + '" y2="' + y(v) + '"/><text class="ax" x="' + (L - 6) + '" y="' + (y(v) + 3) + '" text-anchor="end">' + v + '</text>';
+  counts.forEach((c, i) => {
+    const x = L + i * bw + 4, w = bw - 8, h = Math.max(c ? 3 : 0, (H - T - B) * c / top);
+    const label = new Date(view.y, i, 1).toLocaleDateString(loc(), {month:'short'}).replace('.', '');
+    s += '<g data-m="' + (i + 1) + '"><title>' + esc(monthName(view.y, i + 1) + ': ' + c) + '</title><rect x="' + (L + i * bw) + '" y="' + T + '" width="' + bw + '" height="' + (H - T - B) + '" fill="transparent" style="cursor:pointer"/>'
+      + (c ? '<path class="bar' + (i + 1 === view.m ? ' sel' : '') + '" d="M' + x + ' ' + (y(0)) + 'V' + (y(0) - h + 4) + 'q0 -4 4 -4h' + (w - 8) + 'q4 0 4 4V' + y(0) + 'Z"/>' : '')
+      + (c ? '<text class="val" x="' + (x + w / 2) + '" y="' + (y(0) - h - 4) + '" text-anchor="middle">' + c + '</text>' : '')
+      + '<text class="ax" x="' + (x + w / 2) + '" y="' + (H - 6) + '" text-anchor="middle"' + (i + 1 === view.m ? ' style="font-weight:700;fill:var(--text)"' : '') + '>' + esc(label) + '</text></g>';
+  });
+  $('chart').innerHTML = '<h3>' + t('log.perMonth', {y: view.y}) + '</h3><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(t('log.perMonth', {y: view.y})) + '">' + s + '</svg>';
 }
 
-/* ---------- progress charts: points over time, dashed line = finals average ---------- */
-function chart(title, pts, ref, unit, fmtTip){
-  if (pts.length < 2) return '<div class="chart"><h4>' + esc(title) + '</h4><div class="empty">' + t('log.prog2') + '</div></div>';
-  const W = 300, H = 150, L = 34, R = 22, T = 16, B = 26;
-  const vals = pts.map(p => p.y).concat([ref]);
-  let lo = Math.min(...vals), hi = Math.max(...vals);
-  const pad = Math.max(3, (hi - lo) * 0.15); lo = Math.floor((lo - pad) / 5) * 5; hi = Math.ceil((hi + pad) / 5) * 5;
-  const x = i => L + i * (W - L - R) / (pts.length - 1), y = v => T + (hi - v) * (H - T - B) / (hi - lo);
-  let g_ = '';
-  for (const v of [lo, (lo + hi) / 2, hi]) g_ += '<line class="gl" x1="' + L + '" x2="' + (W - R + 6) + '" y1="' + y(v) + '" y2="' + y(v) + '"/><text class="ax" x="' + (L - 6) + '" y="' + (y(v) + 3) + '" text-anchor="end">' + Math.round(v) + '</text>';
-  g_ += '<line class="ref" x1="' + L + '" x2="' + (W - R + 6) + '" y1="' + y(ref) + '" y2="' + y(ref) + '"/><text class="reflab" x="' + (L + 4) + '" y="' + (y(ref) - 5) + '">' + t('log.finalsAvg') + '</text>';
-  const step = Math.ceil(pts.length / 5);
-  pts.forEach((p, i) => { if (i % step === 0 || i === pts.length - 1) g_ += '<text class="ax" x="' + x(i) + '" y="' + (H - 8) + '" text-anchor="middle">' + esc(dateLabel(p.date)) + '</text>'; });
-  g_ += '<path class="ln" d="' + pts.map((p, i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(p.y).toFixed(1)).join('') + '"/>';
-  pts.forEach((p, i) => { g_ += '<g><title>' + esc(fullDate(p.date) + ': ' + fmtTip(p)) + '</title><circle cx="' + x(i) + '" cy="' + y(p.y) + '" r="12" fill="transparent"/><circle class="pt" cx="' + x(i) + '" cy="' + y(p.y) + '" r="4.5"/></g>'; });
-  const last = pts[pts.length - 1];
-  g_ += '<text class="lab" x="' + (x(pts.length - 1)) + '" y="' + (y(last.y) - 9) + '" text-anchor="middle">' + Math.round(last.y) + unit + '</text>';
-  return '<div class="chart"><h4>' + esc(title) + '</h4><svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(title) + '">' + g_ + '</svg></div>';
-}
-function renderCharts(A){
-  const list = sorted();
-  const f = list.filter(e => winRate(e) !== null).map(e => ({date:e.date, y:winRate(e), e}));
-  const series = d => list.filter(e => e[d] !== undefined).map(e => ({date:e.date, y:POINTS[d](e[d]), e}));
-  $('charts').innerHTML =
-    chart(t('d.f') + ' · ' + t('log.winRate'), f, A.f, '%', p => num(p.y, 0) + '% (' + p.e.fv + '–' + p.e.fd + ')') +
-    ['o','s','l'].map(d => chart(t('d.' + d) + ' · ' + t('points').toLowerCase(), series(d), A[d], '', p => fmtTime(p.e[d]) + ' · ' + t('pts', {n:p.y}))).join('');
-}
-
-/* ---------- history ---------- */
+/* ---------- history (selected month) ---------- */
 function renderHistory(){
-  $('hh').innerHTML = '<tr><th>' + t('log.date') + '</th><th>' + t('log.type') + '</th><th>' + t('d.f') + '</th><th>' + t('d.o') + '</th><th>' + t('d.s') + '</th><th>' + t('d.l') + '</th><th>' + t('points') + '</th><th></th></tr>';
-  const list = sorted().reverse();
-  if (!list.length){ $('hb').innerHTML = '<tr><td colspan="8" class="empty">' + t('log.empty') + '</td></tr>'; return; }
-  $('hb').innerHTML = list.map(e => {
-    let tot = 0, n = 0;
-    const fp = e.fv !== undefined ? fencePts(e.fv, e.fd) : null; if (fp !== null){ tot += fp; n++; }
-    const cell = d => { if (e[d] === undefined) return '<td>–</td>'; const p = POINTS[d](e[d]); tot += p; n++; return '<td>' + fmtTime(e[d]) + '<span>' + t('pts', {n:p}) + '</span></td>'; };
-    const f = e.fv !== undefined ? '<td>' + e.fv + '–' + e.fd + '<span>' + num(winRate(e), 0) + '% · ' + t('pts', {n:fp}) + '</span></td>' : '<td>–</td>';
-    const row = cell('o') + cell('s') + cell('l');
-    return '<tr><td>' + fullDate(e.date) + '</td><td><span class="tag">' + t(e.type === 'train' ? 'log.train' : 'log.comp') + '</span>' + esc(e.name || '') + '</td>' + f + row
-      + '<td class="tot">' + (n ? tot : '–') + '<span>' + (n ? n + '/4' : '') + '</span></td><td><button class="del" type="button" data-id="' + e.id + '">' + t('log.delete') + '</button></td></tr>';
-  }).join('');
+  $('histTitle').textContent = t('log.history', {m: monthName(view.y, view.m)});
+  const month = list.filter(e => inMonth(e, view.y, view.m)).sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
+  if (!month.length){ $('hist').innerHTML = '<div class="empty">' + t('log.empty') + '</div>'; return; }
+  const days = {}; for (const e of month) (days[e.date] ||= []).push(e);
+  $('hist').innerHTML = Object.entries(days).map(([date, es]) => '<div class="day"><h3>' + esc(dayName(date)) + '</h3>' + es.map(e =>
+    '<div class="entry"><span class="tag">' + t('disc.' + e.d) + '</span><div class="what">' + esc(e.what) + (e.mins ? '<small>' + t('log.min', {m: e.mins}) + '</small>' : '') + '</div>'
+    + '<div class="ops"><button type="button" class="edit" data-id="' + e.id + '">' + t('log.editBtn') + '</button><button type="button" class="del" data-id="' + e.id + '">' + t('log.delete') + '</button></div></div>').join('') + '</div>').join('');
 }
 
-function render(){
-  $('gender').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.g === g));
-  $('type').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.t === type));
-  const A = finalsAvg();
-  renderPBs(A); renderCharts(A); renderHistory();
-}
+function render(){ renderChips(); renderCounts(); renderHistory(); $('prev').setAttribute('aria-label', t('log.prev')); $('next').setAttribute('aria-label', t('log.next')); }
 
 /* ---------- events ---------- */
-const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
-$('f-date').value = today();
-$('gender').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; g = b.dataset.g; try { localStorage.setItem('mp.logG', g); } catch(_){} render(); });
-$('type').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; type = b.dataset.t; render(); });
+$('f-date').value = todayStr();
+$('chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; form.d = b.dataset.d; renderChips(); });
 $('save').addEventListener('click', () => {
   const msg = $('msg'); msg.classList.remove('err');
-  const e = {id: Date.now(), date: $('f-date').value || today(), type, name: $('f-name').value.trim()};
-  const V = $('f-v').value.trim(), D = $('f-d').value.trim();
-  if (V !== '' || D !== ''){
-    const v = parseInt(V, 10), d = parseInt(D, 10);
-    if (isNaN(v) || isNaN(d) || v < 0 || d < 0 || v + d === 0){ msg.textContent = t('log.badTime', {d: t('d.f')}); msg.classList.add('err'); return; }
-    e.fv = v; e.fd = d;
-  }
-  for (const d of ['o','s','l']){
-    const raw = $('f-' + d).value; if (!raw.trim()) continue;
-    const sec = parseT(raw, MINSEC[d]);
-    if (sec === null || isNaN(sec)){ msg.textContent = t('log.badTime', {d: t('d.' + d)}); msg.classList.add('err'); return; }
-    e[d] = Math.round(sec * 100) / 100;
-  }
-  if (e.fv === undefined && ['o','s','l'].every(d => e[d] === undefined)){ msg.textContent = t('log.needOne'); msg.classList.add('err'); return; }
-  entries.push(e); save(entries);
-  ['f-name','f-v','f-d','f-o','f-s','f-l'].forEach(id => $(id).value = '');
+  if (!form.d){ msg.textContent = t('log.needDisc'); msg.classList.add('err'); return; }
+  const what = $('f-what').value.trim();
+  if (!what){ msg.textContent = t('log.needWhat'); msg.classList.add('err'); return; }
+  const date = $('f-date').value || todayStr();
+  const minsRaw = parseInt($('f-mins').value, 10);
+  const entry = {id: form.editId || Date.now(), date, d: form.d, what};
+  if (minsRaw > 0 && minsRaw < 1000) entry.mins = minsRaw;
+  if (form.editId) list = list.map(x => x.id === form.editId ? entry : x); else list.push(entry);
+  store();
+  const [y, m] = date.split('-').map(Number); view = {y, m};   // show the month you just logged
+  resetForm(true);
   msg.textContent = t('log.saved'); setTimeout(() => { if (msg.textContent === t('log.saved')) msg.textContent = ''; }, 2500);
-  render();
+  renderCounts(); renderHistory();
 });
-$('hb').addEventListener('click', e => {
-  const b = e.target.closest('.del'); if (!b) return;
-  if (!confirm(t('log.confirmDel'))) return;
-  entries = entries.filter(x => String(x.id) !== b.dataset.id); save(entries); render();
+$('cancel').addEventListener('click', () => { resetForm(false); $('msg').textContent = ''; });
+$('hist').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const id = Number(b.dataset.id), entry = list.find(x => x.id === id); if (!entry) return;
+  if (b.classList.contains('del')){
+    if (!confirm(t('log.confirmDel'))) return;
+    list = list.filter(x => x.id !== id); store(); if (form.editId === id) resetForm(false); renderCounts(); renderHistory();
+  } else {
+    form = {d: entry.d, editId: id};
+    $('f-date').value = entry.date; $('f-what').value = entry.what; $('f-mins').value = entry.mins || '';
+    renderChips(); $('formCard').scrollIntoView({behavior:'smooth', block:'center'}); $('f-what').focus({preventScroll:true});
+  }
 });
+$('chart').addEventListener('click', e => { const g = e.target.closest('g[data-m]'); if (!g) return; view.m = Number(g.dataset.m); renderCounts(); renderHistory(); });
+$('prev').addEventListener('click', () => { view.m--; if (view.m < 1){ view.m = 12; view.y--; } renderCounts(); renderHistory(); });
+$('next').addEventListener('click', () => { view.m++; if (view.m > 12){ view.m = 1; view.y++; } renderCounts(); renderHistory(); });
 $('exp').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify({app:'ottusaeredmenyek.com', version:1, entries}, null, 1)], {type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'pentathlon-log-' + today() + '.json';
+  const blob = new Blob([JSON.stringify({app:'ottusaeredmenyek.com', kind:'training-log', version:2, trainings:list}, null, 1)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'training-log-' + todayStr() + '.json';
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 });
 $('impBtn').addEventListener('click', () => $('imp').click());
@@ -294,24 +261,19 @@ $('imp').addEventListener('change', () => {
   r.onload = () => {
     const m = $('bmsg'); m.classList.remove('err');
     try {
-      const data = JSON.parse(r.result); const list = Array.isArray(data) ? data : data.entries;
-      if (!Array.isArray(list)) throw 0;
-      const clean = list.filter(x => x && /^\d{4}-\d{2}-\d{2}$/.test(x.date) && typeof x.id === 'number').map(x => {
-        const e = {id:x.id, date:x.date, type: x.type === 'train' ? 'train' : 'comp', name: String(x.name || '').slice(0, 60)};
-        if (Number.isInteger(x.fv) && Number.isInteger(x.fd) && x.fv >= 0 && x.fd >= 0) { e.fv = x.fv; e.fd = x.fd; }
-        for (const d of ['o','s','l']) if (typeof x[d] === 'number' && x[d] > 0 && x[d] < 3600) e[d] = x[d];
-        return e;
-      });
-      const have = new Set(entries.map(e => e.id));
-      const added = clean.filter(e => !have.has(e.id));
-      entries = entries.concat(added); save(entries);
-      m.textContent = t('log.imported', {n: added.length}); render();
+      const data = JSON.parse(r.result); const arr = Array.isArray(data) ? data : data.trainings;
+      if (!Array.isArray(arr)) throw 0;
+      const clean = arr.filter(x => x && typeof x.id === 'number' && /^\d{4}-\d{2}-\d{2}$/.test(x.date) && DISC.includes(x.d) && typeof x.what === 'string')
+        .map(x => { const e = {id:x.id, date:x.date, d:x.d, what:x.what.slice(0, 600)}; if (Number.isInteger(x.mins) && x.mins > 0 && x.mins < 1000) e.mins = x.mins; return e; });
+      const have = new Set(list.map(e => e.id)), added = clean.filter(e => !have.has(e.id));
+      list = list.concat(added); store();
+      m.textContent = t('log.imported', {n: added.length}); renderCounts(); renderHistory();
     } catch(_){ m.textContent = t('log.badFile'); m.classList.add('err'); }
     $('imp').value = '';
   };
   r.readAsText(file);
 });
-SITE.onLang(render); SITE.onTheme(render);
+SITE.onLang(render);
 render();
 </script>
 </body>
